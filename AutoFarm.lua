@@ -1,4 +1,3 @@
-
 local npc_name_to_Model = {}
 for _,npcmodel in pairs(game:GetService("Workspace").Npcs:GetChildren()) do
     if npcmodel:FindFirstChild("Head") then
@@ -84,11 +83,10 @@ end
 
 
 Char.Humanoid.Sit = true
-_G.AutoFarm = true
 
 
 
-while _G.AutoFarm do
+while getgenv().AutoFarm do
     checklevel()
     Char.StandEvents.Jump:FireServer()
     questRev = workspace.Npcs:FindFirstChild(Quest)
