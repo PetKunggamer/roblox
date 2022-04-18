@@ -22,6 +22,15 @@ end
 local Whitelist_Stand = getgenv().Whitelist_Stand or {}
 local Whitelist_Attribute = getgenv().Whitelist_Attribute or {}
 
+function Change_Name()
+local Backpack = game.Players.LocalPlayer.Backpack:GetChildren()
+    for i,v in ipairs(Backpack) do
+        if v.Name == "Charged Arrow" then
+          v.Name = "Stand Arrow"
+        end
+    end
+end
+
 function check_Stand()
     local Stand_WL = Whitelist_Stand
     for i,Whitelist in ipairs(Stand_WL) do
@@ -50,6 +59,11 @@ function check_Attribute()
         end
     end
     return false
+end
+
+while getgenv().Charged_Arrow do
+    wait(1)
+    Change_Name()
 end
 
 while getgenv().AutoStand do
