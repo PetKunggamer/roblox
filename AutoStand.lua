@@ -19,6 +19,9 @@ function EquipTool(tool)
     end
 end
 
+local Whitelist_Stand = getgenv().Whitelist_Stand or {}
+local Whitelist_Attribute = getgenv().Whitelist_Attribute or {}
+
 function check_Stand()
     local Stand_WL = Whitelist_Stand
     for i,Whitelist in ipairs(Stand_WL) do
@@ -49,13 +52,14 @@ function check_Attribute()
     return false
 end
 
-_G.AutoStand = not _G.AutoStand
-while _G.AutoStand do
-    wait(2.5)
+while getgenv().AutoStand do
+    wait(3)
+    Whitelist_Stand = getgenv().Whitelist_Stand
+    Whitelist_Attribute = getgenv().Whitelist_Attribute
     local stand_result = check_Stand()
     local attribute_result = check_Attribute()
     if stand_result or attribute_result then
-        _G.AutoStand = false
+        _G.A = false
         break
     end
     if Stand.Text == "None" and StandHumanoid then
