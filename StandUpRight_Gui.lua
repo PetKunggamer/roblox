@@ -4,13 +4,36 @@ local w = Library:Window("Chaiwat Hub")
 
 local p = Library:Window("Auto Buy")
 
-local c = Library:Window("Item Farm")
+local c = Library:Window("Misc")
 
 c:Toggle(
-    "Farm",
+    "Item Farm",
     function(v)
         getgenv().ItemFarm = v
         loadstring(game:HttpGet "https://raw.githubusercontent.com/PetKunggamer/roblox/main/ItemFarm.lua")()
+    end
+)
+
+c:Toggle(
+    "Auto Hamon",
+    function(v)
+        getgenv().AutoHamon = v
+        while getgenv().AutoHamon do
+            wait()
+            if game.Players.LocalPlayer.Character.SecondaryHandler:FindFirstChild("B") then
+                game:GetService("Players").LocalPlayer.Character.SecondaryHandler.B:FireServer(true)
+            else
+                game.StarterGui:SetCore(
+                    "SendNotification",
+                    {
+                        Title = "Detected Error",
+                        Text = "ไหน Hamon มึงไอสัดไม่มีแล้วกดไอเวร",
+                        Icon = "rbxassetid://2263444659",
+                        Duration = 5
+                    }
+                )
+            end
+        end
     end
 )
 
