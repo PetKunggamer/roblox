@@ -1,24 +1,3 @@
-
-Clip = false
-local speaker = game.Players.LocalPlayer
-local function NoclipLoop()
-    if Clip == false and speaker.Character ~= nil then
-        for _, child in pairs(speaker.Character:GetDescendants()) do
-            if child:IsA("BasePart") and child.CanCollide == true then
-                child.CanCollide = false
-            end
-        end
-    end
-end
-
-
-Noclipping = game:GetService('RunService').Stepped:connect(NoclipLoop)
-
-
-
-local Plr = game.Players.LocalPlayer
-
-
 function checklevel()
     if game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGUI") then
         local Level = tonumber(game:GetService("Players").LocalPlayer.PlayerGui.PlayerGUI.ingame.XP.Level.Text:sub(8))
