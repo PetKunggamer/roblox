@@ -1,5 +1,3 @@
-function NPC()
-
 local npc_name_to_Model = {}
 for _,npcmodel in pairs(game:GetService("Workspace").Fartinglloll:GetChildren()) do
     if npcmodel:FindFirstChild("Head") then
@@ -23,9 +21,7 @@ for ModelName,Model in pairs(npc_name_to_Model) do
         print("Type Not Match", typeof(ModelName), customtostring(ModelName))
     end
 end
-end
 
-function Bypass()
 
 local OldNameCall
 local OldIndex
@@ -66,4 +62,3 @@ OldNameCall = hookmetamethod(game, "__namecall", function(Self, ...)
 
     return OldNameCall(...)
 end)
-end
