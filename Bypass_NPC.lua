@@ -1,5 +1,5 @@
 local npc_name_to_Model = {}
-for _,npcmodel in pairs(game:GetService("Workspace").Npcs:GetChildren()) do
+for _,npcmodel in pairs(game:GetService("Workspace").Fartinglloll:GetChildren()) do
     if npcmodel:FindFirstChild("Head") then
         if npcmodel.Head:FindFirstChild("Main") then
             npc_name_to_Model[npcmodel.Head.Main.Text.Text:gsub("\n","")] = npcmodel
@@ -20,3 +20,4 @@ for ModelName,Model in pairs(npc_name_to_Model) do
         print("Type Not Match", typeof(ModelName), customtostring(ModelName))
     end
 end
+
