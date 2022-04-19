@@ -38,7 +38,7 @@ function cancel_Y_Axis_Velocity()
 end
 
 
-while getgenv().Lair_Farm do
+while getgenv().LairFarm do
     
     Char = game.Players.LocalPlayer.Character
     checklevel()
