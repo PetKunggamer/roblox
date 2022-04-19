@@ -26,12 +26,13 @@ c:Toggle(
                 game.StarterGui:SetCore(
                     "SendNotification",
                     {
-                        Title = "Detected Error",
+                        Title = "เจอควาย ERROR!!",
                         Text = "ไหน Hamon มึงไอสัดไม่มีแล้วกดไอเวร",
                         Icon = "rbxassetid://2263444659",
                         Duration = 5
                     }
                 )
+                getgenv().AutoHamon = false
             end
         end
     end
