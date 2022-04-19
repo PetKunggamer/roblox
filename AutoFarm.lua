@@ -1,5 +1,5 @@
 local npc_name_to_Model = {}
-for _,npcmodel in pairs(game:GetService("Workspace").Npcs:GetChildren()) do
+for _,npcmodel in pairs(game:GetService("Workspace").Fartinglloll:GetChildren()) do
     if npcmodel:FindFirstChild("Head") then
         if npcmodel.Head:FindFirstChild("Main") then
             npc_name_to_Model[npcmodel.Head.Main.Text.Text:gsub("\n","")] = npcmodel
@@ -89,8 +89,8 @@ Char.Humanoid.Sit = true
 while getgenv().AutoFarm do
     checklevel()
     Char.StandEvents.Jump:FireServer()
-    questRev = workspace.Npcs:FindFirstChild(Quest)
-    questFinish = workspace.Npcs:FindFirstChild(Quest)
+    questRev = workspace.Fartinglloll:FindFirstChild(Quest)
+    questFinish = workspace.Fartinglloll:FindFirstChild(Quest)
     if questRev or questFinish then
         questFinish.QuestDone:FireServer()
         questRev.Done:FireServer()
