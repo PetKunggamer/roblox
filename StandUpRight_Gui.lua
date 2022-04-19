@@ -9,12 +9,6 @@ local c = Library:Window("Item Farm")
 c:Toggle("Farm", function(v)
     getgenv().ItemFarm = v
    loadstring(game:HttpGet"https://raw.githubusercontent.com/PetKunggamer/roblox/main/ItemFarm.lua")()
-        game.StarterGui:SetCore("SendNotification", {
-        Title = "Anti Cheat"; -- the title (ofc)
-        Text = "Bypass is on";
-        Icon = "rbxassetid://57254792";
-        Duration = 5;
-})
 end)
 
 
@@ -34,7 +28,13 @@ end)
 
 
 w:Button("Bypass", function()
+   loadstring(game:HttpGet"https://raw.githubusercontent.com/PetKunggamer/roblox/main/Bypass_NPC.lua")()
    loadstring(game:HttpGet"https://github.com/PetKunggamer/roblox/blob/main/BypassStandUR.lua")()
+        game.StarterGui:SetCore("SendNotification", {
+        Title = "Anti Cheat";
+        Text = "Bypass successfully!!";
+        Icon = "rbxassetid://57254792";
+        Duration = 5;
         
 end)
 
