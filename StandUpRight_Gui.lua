@@ -2,9 +2,35 @@ local Library = loadstring(game:HttpGet("https://pastebin.com/raw/6W1ZqV53"))()
 
 local w = Library:Window("Chaiwat Hub")
 
+local c = Library:Window("Misc")
+
 local p = Library:Window("Auto Buy")
 
-local c = Library:Window("Misc")
+local t = Library:Window("Teleport")
+
+
+
+t:Button(
+    "Stand Board",
+    function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-661, 67, -449)
+    end
+)
+
+t:Button(
+    "Storage Room",
+    function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-377, 24, -293)
+    end
+)
+
+t:Button(
+    "Inner Sanctum",
+    function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-315, 16, -10114)
+    end
+)
+
 
 c:Toggle(
     "Item Farm",
@@ -38,101 +64,45 @@ c:Toggle(
     end
 )
 
+
+
 p:Button(
     "Stand Arrow",
     function()
-        function StandArrow()
-            game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option3")
-        end
-        StandArrow()
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option3")
     end
 )
 
 p:Button(
     "Rokakaka",
     function()
-        function Rokaka()
-            game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option1")
-        end
-        Rokaka()
+        game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option1")
     end
 )
 
-w:Button(
-    "Bypass",
+p:Button(
+    "Umbrella",
     function()
-        loadstring(game:HttpGet "https://raw.githubusercontent.com/PetKunggamer/roblox/main/Bypass_NPC.lua")()
-        local OldNameCall
-        local OldIndex
-
-        OldIndex =
-            hookmetamethod(
-            game,
-            "__index",
-            function(...)
-                local Args = {...}
-                local Self = Args[1]
-                local Key = Args[2]
-                local vaild, name =
-                    pcall(
-                    function()
-                        return Self
-                    end
-                )
-                if vaild then
-                    if Key == "Kick" or Key == "kick" then
-                        print("Block Kick(Index)")
-                        return function()
-                        end
-                    end
-                end
-                if not vaild then
-                    print(name)
-                end
-                return OldIndex(...)
-            end
-        )
-        OldNameCall =
-            hookmetamethod(
-            game,
-            "__namecall",
-            function(Self, ...)
-                local Args = {...}
-                local NamecallMethod = getnamecallmethod()
-                local vaild, name =
-                    pcall(
-                    function()
-                        return Self.name
-                    end
-                )
-                if vaild and name then
-                    if
-                        (NamecallMethod == "Kick" or NamecallMethod == "kick") or
-                            (NamecallMethod == "FireServer" and name == "PlayerStandMainHandle") or
-                            (NamecallMethod == "FireServer" and name == "SpeedJump")
-                     then
-                        print("Block Kick(namecall)")
-                        return nil
-                    else
-                        return OldNameCall(Self, ...)
-                    end
-                end
-
-                return OldNameCall(...)
-            end
-        )
-
-        game.StarterGui:SetCore(
-            "SendNotification",
-            {
-                Title = "Anti Cheat",
-                Text = "Bypass successfully!!",
-                Icon = "rbxassetid://57254792",
-                Duration = 5
-            }
-        )
+        workspace.Fartinglloll:FindFirstChild("Umbrella Seller").Done:FireServer()
     end
 )
+
+p:Button(
+    "Vehicle",
+    function()
+        workspace.Fartinglloll:FindFirstChild("Vehicle Man").Done:FireServer()
+    end
+)
+
+p:Button(
+    "Hamon",
+    function()
+        workspace.Fartinglloll:FindFirstChild("Hamon Dealer").Done:FireServer()
+    end
+)
+
+
+
 
 w:Toggle(
     "Auto Farm",
@@ -210,3 +180,74 @@ w:Toggle(
         end
     end
 )
+
+loadstring(game:HttpGet "https://raw.githubusercontent.com/PetKunggamer/roblox/main/Bypass_NPC.lua")()
+        local OldNameCall
+        local OldIndex
+
+        OldIndex =
+            hookmetamethod(
+            game,
+            "__index",
+            function(...)
+                local Args = {...}
+                local Self = Args[1]
+                local Key = Args[2]
+                local vaild, name =
+                    pcall(
+                    function()
+                        return Self
+                    end
+                )
+                if vaild then
+                    if Key == "Kick" or Key == "kick" then
+                        print("Block Kick(Index)")
+                        return function()
+                        end
+                    end
+                end
+                if not vaild then
+                    print(name)
+                end
+                return OldIndex(...)
+            end
+        )
+        OldNameCall =
+            hookmetamethod(
+            game,
+            "__namecall",
+            function(Self, ...)
+                local Args = {...}
+                local NamecallMethod = getnamecallmethod()
+                local vaild, name =
+                    pcall(
+                    function()
+                        return Self.name
+                    end
+                )
+                if vaild and name then
+                    if
+                        (NamecallMethod == "Kick" or NamecallMethod == "kick") or
+                            (NamecallMethod == "FireServer" and name == "PlayerStandMainHandle") or
+                            (NamecallMethod == "FireServer" and name == "SpeedJump")
+                     then
+                        print("Block Kick(namecall)")
+                        return nil
+                    else
+                        return OldNameCall(Self, ...)
+                    end
+                end
+
+                return OldNameCall(...)
+            end
+        )
+
+        game.StarterGui:SetCore(
+            "SendNotification",
+            {
+                Title = "Anti Cheat",
+                Text = "Bypass successfully!!",
+                Icon = "rbxassetid://57254792",
+                Duration = 5
+            }
+        )
