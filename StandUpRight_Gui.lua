@@ -67,17 +67,21 @@ c:Toggle(
 
 
 p:Button(
-    "Stand Arrow",
+    "100 Stand Arrow",
     function()
+		for _= 1,20 do
         game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option3")
-    end
+    		end
+end
 )
 
 p:Button(
-    "Rokakaka",
+    "100 Rokakaka",
     function()
+		for _= 1,20 do
         game:GetService("ReplicatedStorage").Events.BuyItem:FireServer("MerchantAU", "Option1")
-    end
+    		end
+end
 )
 
 p:Button(
