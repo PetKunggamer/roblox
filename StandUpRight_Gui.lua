@@ -186,66 +186,39 @@ w:Toggle(
 )
 
 loadstring(game:HttpGet "https://raw.githubusercontent.com/PetKunggamer/roblox/main/Bypass_NPC.lua")()
-        local OldNameCall
-        local OldIndex
 
-        OldIndex =
-            hookmetamethod(
-            game,
-            "__index",
-            function(...)
-                local Args = {...}
-                local Self = Args[1]
-                local Key = Args[2]
-                local vaild, name =
-                    pcall(
-                    function()
-                        return Self
-                    end
-                )
-                if vaild then
-                    if Key == "Kick" or Key == "kick" then
-                        print("Block Kick(Index)")
-                        return function()
-                        end
-                    end
-                end
-                if not vaild then
-                    print(name)
-                end
-                return OldIndex(...)
-            end
-        )
-        OldNameCall =
-            hookmetamethod(
-            game,
-            "__namecall",
-            function(Self, ...)
-                local Args = {...}
-                local NamecallMethod = getnamecallmethod()
-                local vaild, name =
-                    pcall(
-                    function()
-                        return Self.name
-                    end
-                )
-                if vaild and name then
-                    if
-                        (NamecallMethod == "Kick" or NamecallMethod == "kick") or
-                            (NamecallMethod == "FireServer" and name == "PlayerStandMainHandle") or
-                            (NamecallMethod == "FireServer" and name == "SpeedJump")
-                     then
-                        print("Block Kick(namecall)")
-                        return nil
-                    else
-                        return OldNameCall(Self, ...)
-                    end
-                end
+	local send_remote = game.ReplicatedStorage.Events.SpeedJump;
+local player = game.Players.LocalPlayer;
 
-                return OldNameCall(...)
-            end
-        )
-
+--Bypass
+do
+    local old;
+    old = hookmetamethod(game, '__namecall', function(...)
+        local self = ...
+        if not checkcaller() then
+            if self == send_remote and getnamecallmethod() == 'FireServer' then
+                return old(self, 16, 7.199999809265137, 50);
+            elseif getnamecallmethod() == 'Destroy' and self.Name == 'Fortnite' then
+                return;
+            end;
+        end;
+        return old(...);
+    end);
+  
+    if not player.Character or (player.Character and not player.Character:FindFirstChild('Fortnite')) then
+        repeat wait() until player.Character and player.Character:FindFirstChild('Fortnite');
+    end;
+  
+    player.Character.Fortnite.Disabled = true;
+    
+    player.CharacterAdded:Connect(function(c)
+        c.ChildAdded:Connect(function(v)
+            if v.Name == 'Fortnite' then
+                v.Disabled = true;
+            end;
+        end);
+    end);
+end;
         game.StarterGui:SetCore(
             "SendNotification",
             {
