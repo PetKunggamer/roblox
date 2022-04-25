@@ -1,18 +1,3 @@
-Clip = false
-local speaker = game.Players.LocalPlayer
-local function NoclipLoop()
-    if Clip == false and speaker.Character ~= nil then
-        for _, child in pairs(speaker.Character:GetDescendants()) do
-            if child:IsA("BasePart") and child.CanCollide == true then
-                child.CanCollide = false
-            end
-        end
-    end
-end
-
-
-Noclipping = game:GetService('RunService').Stepped:connect(NoclipLoop)
-
 function linear_interpolation(object,targetproperty,time)
     local tweenInfo = TweenInfo.new(time/100000,Enum.EasingStyle.Linear,Enum.EasingDirection.In,0,false,0)
     local tweenService = game:GetService("TweenService")
