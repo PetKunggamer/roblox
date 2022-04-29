@@ -54,12 +54,12 @@ local Players = game.Players
 end)
 
 t:Button("Park",function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36, 145, -1160)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36, 150, -1160)
 end)
 
 
 t:Button("Storage",function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-86, 145, -614)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-86, 150, -614)
 end)
 
 m:Toggle("Item Farm",function(v)
