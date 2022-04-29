@@ -5,8 +5,29 @@ local t = Library:Window("Teleport")
 local c = Library:Window("Misc")
 
 
+c:Button("Check Boss",function()
+    local mob = game:GetService("Workspace").Characters["Kirei Kotomine"]
+if mob.Humanoid.Health >= 1 then
+    game.StarterGui:SetCore("SendNotification",
+            {
+                Title = "Boss Spawn",
+                Text = "Kirei Kotomine",
+                Duration = 1.5
+            })
+    else
+        game.StarterGui:SetCore("SendNotification",    
+        {
+                Title = "Boss Spawn",
+                Text = "Not Found",
+                Duration = 1.5
+            })
+end
+
+end)
+
+
 c:Button("Anti afk",function()
-local GC = getconnections or get_signal_cons
+    local GC = getconnections or get_signal_cons
 local Players = game.Players
 	if GC then
 		for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
@@ -30,6 +51,10 @@ local Players = game.Players
                 Duration = 1.5
             })
 	end
+end)
+
+t:Button("Park",function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36, 145, -1160)
 end)
 
 
