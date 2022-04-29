@@ -5,7 +5,7 @@ local t = Library:Window("Teleport")
 local c = Library:Window("Misc")
 
 
-c:Button("Anti AFk",function()
+c:Button("Anti afk",function()
 local GC = getconnections or get_signal_cons
 local Players = game.Players
 	if GC then
