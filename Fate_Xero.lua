@@ -6,23 +6,48 @@ local c = Library:Window("Misc")
 
 
 c:Button("Check Boss",function()
-    local mob = game:GetService("Workspace").Characters["Kirei Kotomine"]
+function create_notification(Title,Text,Duration,Callback,Button1,Button2)
+    local bindablefunc = Instance.new("BindableFunction")
+    bindablefunc.OnInvoke = function(button)
+        if button == Button1 then 
+            Callback()
+        else
+            print(button)
+        end
+    end
+    game.StarterGui:SetCore(
+        "SendNotification",
+        {
+            Title = Title,
+            Text = Text,
+            Duration = Duration or 20.5,
+            Callback = bindablefunc,
+            Button1 = Button1,
+            Button2 = Button2
+        }
+    )
+end
+
+local mob = game:GetService("Workspace").Characters["Kirei Kotomine"]
 if mob.Humanoid.Health >= 1 then
-    game.StarterGui:SetCore("SendNotification",
-            {
-                Title = "Boss Spawn",
-                Text = "Kirei Kotomine",
-                Duration = 1.5
-            })
+    create_notification(
+    "Checking Boss",
+    "Kirei Kotomine",
+    nil,
+    function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3547, 20, -857)
+    end,
+    "Teleport",
+    "No"
+)
     else
         game.StarterGui:SetCore("SendNotification",    
         {
-                Title = "Boss Spawn",
+                Title = "Checking Boss",
                 Text = "Not Found",
                 Duration = 1.5
             })
 end
-
 end)
 
 
