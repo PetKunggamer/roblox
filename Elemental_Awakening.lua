@@ -11,11 +11,42 @@ local Tab1 = Window:CreateTab("Main")
 local Tab2 = Window:CreateTab("UI Settings")
 
 local Section1 = Tab1:CreateSection("Farms")
-local Section2 = Tab1:CreateSection("Misc.")
-local Section3 = Tab2:CreateSection("Menu")
-local Section4 = Tab2:CreateSection("Background")
+local Section2 = Tab1:CreateSection("Teleport")
+local Section3 = Tab1:CreateSection("Misc.")
+local Section5 = Tab2:CreateSection("Menu")
+local Section6 = Tab2:CreateSection("Background")
 
-local Button1 = Section2:CreateButton("Remove Killbricks", function()
+
+local Button1 = Section2:CreateButton("Safe Place", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7175, 1450, 2799)
+end)
+Button1:AddToolTip("ห้องแม่เซ็น")
+
+local Button1 = Section2:CreateButton("The Plains", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1385, 410, 1501)
+end)
+
+local Button2 = Section2:CreateButton("The Monolith", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1699, 261, -479)
+end)
+
+local Button3 = Section2:CreateButton("World's Zenith", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1994, 1467, 2112)
+end)
+
+local Button4 = Section2:CreateButton("The Origin", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-26465, 1618, 3058)
+end)
+
+local Button5 = Section2:CreateButton("Arena", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2522, 406, 3028)
+end)
+
+
+
+
+
+local Button1 = Section3:CreateButton("Remove Killbricks", function()
 	local Kb = game:GetService("Workspace").Killbricks
     for i,v in ipairs(Kb:GetDescendants()) do
         if v.Name == "TouchInterest" then
@@ -25,10 +56,35 @@ local Button1 = Section2:CreateButton("Remove Killbricks", function()
 end)
 Button1:AddToolTip("No more Killbricks")
 
-local Button2 = Section2:CreateButton("Safe Place", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7175, 1450, 2799)
+
+local Button3 = Section3:CreateButton("Anti Afk", function()
+	   local GC = getconnections or get_signal_cons
+local Players = game.Players
+	if GC then
+		for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
+			if v["Disable"] then
+				v["Disable"](v)
+			elseif v["Disconnect"] then
+				v["Disconnect"](v)
+			end
+		end
+		game.StarterGui:SetCore("SendNotification",
+            {
+                Title = "Syn0xz Hub",
+                Text = "Antiafk : On",
+                Duration = 1.5
+            })
+	else
+		game.StarterGui:SetCore("SendNotification",
+            {
+                Title = "Syn0xz Hub",
+                Text = "Your exploit not support",
+                Duration = 1.5
+            })
+	end
 end)
-Button2:AddToolTip("ห้องแม่เซ็น")
+
+Button3:AddToolTip("ANTI IDLE")
 
 Section1:CreateToggle("Auto Farm",nil,function(x)
     getgenv().AutoFarm = x 
@@ -72,7 +128,7 @@ end)
 
 
 
-local Toggle3 = Section3:CreateToggle("UI Toggle", nil, function(State)
+local Toggle3 = Section5:CreateToggle("UI Toggle", nil, function(State)
 	Window:Toggle(State)
 end)
 Toggle3:CreateKeybind(tostring(Config.Keybind):gsub("Enum.KeyCode.", ""), function(Key)
@@ -80,13 +136,13 @@ Toggle3:CreateKeybind(tostring(Config.Keybind):gsub("Enum.KeyCode.", ""), functi
 end)
 Toggle3:SetState(true)
 
-local Colorpicker3 = Section3:CreateColorpicker("UI Color", function(Color)
+local Colorpicker3 = Section5:CreateColorpicker("UI Color", function(Color)
 	Window:ChangeColor(Color)
 end)
 Colorpicker3:UpdateColor(Config.Color)
 
 -- credits to jan for patterns
-local Dropdown3 = Section4:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
+local Dropdown3 = Section6:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
 	if Name == "Default" then
 		Window:SetBackground("2151741365")
 	elseif Name == "Hearts" then
@@ -105,17 +161,17 @@ local Dropdown3 = Section4:CreateDropdown("Image", {"Default","Hearts","Abstract
 end)
 Dropdown3:SetOption("Default")
 
-local Colorpicker4 = Section4:CreateColorpicker("Color", function(Color)
+local Colorpicker4 = Section6:CreateColorpicker("Color", function(Color)
 	Window:SetBackgroundColor(Color)
 end)
 Colorpicker4:UpdateColor(Color3.new(1,1,1))
 
-local Slider3 = Section4:CreateSlider("Transparency",0,1,nil,false, function(Value)
+local Slider3 = Section6:CreateSlider("Transparency",0,1,nil,false, function(Value)
 	Window:SetBackgroundTransparency(Value)
 end)
 Slider3:SetValue(0)
 
-local Slider4 = Section4:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
+local Slider4 = Section6:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
 	Window:SetTileScale(Value)
 end)
 Slider4:SetValue(0.5)
