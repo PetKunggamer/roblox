@@ -86,14 +86,15 @@ end)
 
 Button3:AddToolTip("ANTI IDLE")
 
-Section1:CreateToggle("Auto Farm",nil,function(x)
-    getgenv().AutoFarm = x 
+
+Section1:CreateToggle("Auto Skill",nil,function(x)
+    getgenv().AutoSkill = x 
 local Backpack = game.Players.LocalPlayer.Backpack
 local Char = game.Players.LocalPlayer.Character
 local plr = game.Players.LocalPlayer
 
 
-while getgenv().AutoFarm do wait(.5)
+while getgenv().AutoSkill do wait(.5)
     for i,v1 in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
         if v1:IsA'Tool' then
             v1.Parent = game.Players.LocalPlayer.Backpack;
@@ -126,6 +127,83 @@ while getgenv().AutoFarm do wait(.5)
     end
 end)
 
+Section1:CreateToggle("Auto Farm [BETA]",nil,function(x)
+    getgenv().AutoFarm = x 
+function mysplit (inputstr, sep)
+        if sep == nil then
+                sep = "%s"
+        end
+        local t={}
+        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                table.insert(t, str)
+        end
+        return t
+end
+
+while getgenv().AutoFarm do wait()
+
+    if game.Players.LocalPlayer == nil then
+       game.Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+    end
+
+        if game.Players.LocalPlayer:FindFirstChild("PlayerGui") and game.Players.LocalPlayer.PlayerGui.MainGUI:FindFirstChild("Start") then
+            local Events = getconnections(game.Players.LocalPlayer.PlayerGui.MainGUI.Start.PlayButton.MouseButton1Click)
+               for i,v in pairs(Events) do
+                   v:Fire()
+               end
+        end
+        
+        if game.Players.LocalPlayer.Character then
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7175, 1450, 2799)
+        end
+        
+        if game:GetService("Players").LocalPlayer.PlayerGui.MainGUI:FindFirstChild("StatsGUI") then
+    pcall(function()
+        local manas = mysplit(game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.StatsGUI.MagicEnergyGUI.ME.Text, "/")
+        
+        if tonumber(manas[1]) <= Mana then
+            game.Players.LocalPlayer.Character:BreakJoints()
+        else
+            local Backpack = game.Players.LocalPlayer.Backpack
+                for i,v in ipairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
+                    if v:IsA("Tool") and Backpack:FindFirstChild(v.Name) then
+                        Backpack:FindFirstChild(v.Name).Parent = game.Players.LocalPlayer.Character
+                    local args = {
+                    [1] = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild(v.Name),
+                        [2] = Vector3.new(0,0,0),
+                        [3] = Vector3.new(1e9, -1e9, -1e9),
+                        [4] = true
+                    }
+                }
+    
+                game:GetService("ReplicatedStorage").Events.SpellCast:FireServer(unpack(args))
+    
+                local args = {
+                    [1] = {
+                        [1] = game:GetService("Players").LocalPlayer.Character:FindFirstChild(v.Name),
+                        [2] = Vector3.new(0,0,0)
+                    }
+                }
+    
+                game:GetService("ReplicatedStorage").Events.SpellCast:FireServer(unpack(args))
+                
+                    for i,v1 in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                        if v1:IsA'Tool' then
+                            v1.Parent = game.Players.LocalPlayer.Backpack;
+                        end
+                            end    
+                        end
+                    end
+                end
+            end)
+        end
+    end
+end)
+
+local Slider1 = Section1:CreateSlider("Mana น้อยกว่าจะ Reset", 0,1000,nil,true, function(Value)
+	Mana = Value
+end)
 
 
 local Toggle3 = Section5:CreateToggle("UI Toggle", nil, function(State)
