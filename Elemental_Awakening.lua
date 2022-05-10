@@ -1,5 +1,5 @@
 local Config = {
-    WindowName = "Syn0xz Hub [Elemental Awakening]",
+    WindowName = "Syn0xz Hub [ Elemental Awakening ]",
 	Color = Color3.fromRGB(255,128,64),
 	Keybind = Enum.KeyCode.RightShift
 }
@@ -164,9 +164,6 @@ while getgenv().AutoFarm do wait()
         if tonumber(manas[1]) <= Mana then
             game.Players.LocalPlayer.Character:BreakJoints()
         else
-            if game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.StatsGUI.SpinsGUI.Spins.Text == "Hi" then
-            game.Players.LocalPlayer.Character:BreakJoints()
-            end
             local Backpack = game.Players.LocalPlayer.Backpack
                 for i,v in ipairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
                     if v:IsA("Tool") and Backpack:FindFirstChild(v.Name) then
