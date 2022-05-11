@@ -145,23 +145,26 @@ while getgenv().AutoFarm do wait()
     if game.Players.LocalPlayer == nil then
        game.Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
     end
-
-        if game.Players.LocalPlayer:FindFirstChild("PlayerGui") and game.Players.LocalPlayer.PlayerGui.MainGUI:FindFirstChild("Start") then
-            local Events = getconnections(game.Players.LocalPlayer.PlayerGui.MainGUI.Start.PlayButton.MouseButton1Click)
-               for i,v in pairs(Events) do
-                   v:Fire()
-               end
+    for _,GUI in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+	pcall(function()
+        if game.Players.LocalPlayer:FindFirstChild("PlayerGui") and GUI:FindFirstChild("Start") then
+            local Events = getconnections(GUI:FindFirstChild("Start").PlayButton.MouseButton1Click)
+            for i,v in pairs(Events) do
+                v:Fire()
+            end
         end
         
+    end)
         if game.Players.LocalPlayer.Character then
            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7175, 1450, 2799)
         end
         
-        if game:GetService("Players").LocalPlayer.PlayerGui.MainGUI:FindFirstChild("StatsGUI") then
+        if GUI:FindFirstChild("StatsGUI") then
+            
     pcall(function()
-        local manas = mysplit(game:GetService("Players").LocalPlayer.PlayerGui.MainGUI.StatsGUI.MagicEnergyGUI.ME.Text, "/")
-    
-        if tonumber(manas[1]) <= Mana then
+        local manas = mysplit(GUI:FindFirstChild("StatsGUI").MagicEnergyGUI.ME.Text, "/")
+        
+        if GUI:FindFirstChild("StatsGUI").MagicEnergyGUI.ME.Text == "Label" or tonumber(manas[1]) <= Mana then
             game.Players.LocalPlayer.Character:BreakJoints()
         else
             local Backpack = game.Players.LocalPlayer.Backpack
@@ -199,9 +202,10 @@ while getgenv().AutoFarm do wait()
             end)
         end
     end
+    end
 end)
 
-local Slider1 = Section1:CreateSlider("Mana น้อยกว่าจะ Reset", 0,1000,nil,true, function(Value)
+local Slider1 = Section1:CreateSlider("Mana น้อยกว่าจะ Reset", 100,1000,nil,true, function(Value)
 	Mana = Value
 end)
 
