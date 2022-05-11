@@ -73,3 +73,28 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
     })
 
 
+local GC = getconnections or get_signal_cons
+local Players = game.Players
+	if GC then
+		for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
+			if v["Disable"] then
+				v["Disable"](v)
+			elseif v["Disconnect"] then
+				v["Disconnect"](v)
+			end
+		end
+		game.StarterGui:SetCore("SendNotification",
+            {
+                Title = "Syn0xz Hub",
+                Text = "Anti-Afk : Enable",
+                Duration = 1.5
+            })
+	else
+		game.StarterGui:SetCore("SendNotification",
+            {
+                Title = "Syn0xz Hub",
+                Text = "Anti-Afk : Error with your Exploit",
+                Duration = 1.5
+            })
+	end
+
