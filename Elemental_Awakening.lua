@@ -56,35 +56,16 @@ local Button1 = Section3:CreateButton("Remove Killbricks", function()
 end)
 Button1:AddToolTip("No more Killbricks")
 
-
-local Button3 = Section3:CreateButton("Anti Afk", function()
-	   local GC = getconnections or get_signal_cons
-local Players = game.Players
-	if GC then
-		for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
-			if v["Disable"] then
-				v["Disable"](v)
-			elseif v["Disconnect"] then
-				v["Disconnect"](v)
-			end
-		end
-		game.StarterGui:SetCore("SendNotification",
-            {
-                Title = "Syn0xz Hub",
-                Text = "Antiafk : On",
-                Duration = 1.5
-            })
-	else
-		game.StarterGui:SetCore("SendNotification",
-            {
-                Title = "Syn0xz Hub",
-                Text = "Your exploit not support",
-                Duration = 1.5
-            })
+local Button2 = Section3:CreateButton("Mod Magic", function()
+	local mod = require(game:GetService("ReplicatedStorage").SpellLibrary)
+	for i,v in ipairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
+	    mod[v.Name].CastTime = 0
+	    mod[v.Name].EndLag = 0
+	    mod[v.Name].Range = 1e999
+	    
 	end
 end)
-
-Button3:AddToolTip("ANTI IDLE")
+Button2:AddToolTip("Make ยู ร่ายMagic แบบ Coolๆ นะ")
 
 
 Section1:CreateToggle("Auto Skill",nil,function(x)
@@ -257,3 +238,4 @@ local Slider4 = Section6:CreateSlider("Tile Scale",0,1,nil,false, function(Value
 	Window:SetTileScale(Value)
 end)
 Slider4:SetValue(0.5)
+
