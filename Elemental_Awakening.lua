@@ -61,7 +61,7 @@ local Button2 = Section3:CreateButton("Mod Magic", function()
 	for i,v in ipairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
 	    mod[v.Name].CastTime = 0
 	    mod[v.Name].EndLag = 0
-	    mod[v.Name].Range = 1e999
+	    mod[v.Name].Range = 1000000
 	    
 	end
 end)
