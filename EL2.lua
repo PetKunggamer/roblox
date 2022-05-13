@@ -14,8 +14,9 @@ local Section1 = Tab1:CreateSection("Farms")
 local Section2 = Tab1:CreateSection("Misc.")
 local Section3 = Tab1:CreateSection("Trinket")
 local Section4 = Tab1:CreateSection("NPC")
-local Section5 = Tab2:CreateSection("Menu")
-local Section6 = Tab2:CreateSection("Background")
+local Section5 = Tab1:CreateSection("TweenService")
+local UI_1 = Tab2:CreateSection("Menu")
+local UI_2 = Tab2:CreateSection("Background")
 
 
 local NPC = {}
@@ -33,6 +34,22 @@ Section4:CreateDropdown("Talk NPC",NPC,function(x)
             end
         end
 end)
+
+
+local Button1 = Section5:CreateButton("CR Purple Pad", function()
+function TP(Object)
+            local tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Object).magnitude/200,Enum.EasingStyle.Linear,Enum.EasingDirection.In,0,false,0)
+            local tween = tweenService:Create(game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart, tweenInfo, {CFrame = CFrame.new(Object)})
+            local speaker = game.Players.LocalPlayer
+            local Noclipping = game:GetService('RunService').Stepped:connect(NoclipLoop)
+            tween:Play()
+            tween.Completed:Wait()
+            Noclipping:Disconnect()
+end
+
+TP(Vector3.new(5786, 419, 641)) -- Cr Purple Pad
+end)
+Button1:AddToolTip("Make Sure ก่อนว่าเปิด Noclip แล่ว")
 
 local Button2 = Section2:CreateButton("Remove KillBricks", function()
     for i,v in ipairs(game:GetService("Workspace").Map.KillBricks:GetDescendants()) do
@@ -133,7 +150,7 @@ local Slider1 = Section1:CreateSlider("JumpPower", 0,200,nil,false, function(x)
 	JP = x
 end)
 
-local Toggle3 = Section5:CreateToggle("UI Toggle", nil, function(State)
+local Toggle3 = UI_1:CreateToggle("UI Toggle", nil, function(State)
 	Window:Toggle(State)
 end)
 Toggle3:CreateKeybind(tostring(Config.Keybind):gsub("Enum.KeyCode.", ""), function(Key)
@@ -141,13 +158,13 @@ Toggle3:CreateKeybind(tostring(Config.Keybind):gsub("Enum.KeyCode.", ""), functi
 end)
 Toggle3:SetState(true)
 
-local Colorpicker3 = Section5:CreateColorpicker("UI Color", function(Color)
+local Colorpicker3 = UI_1:CreateColorpicker("UI Color", function(Color)
 	Window:ChangeColor(Color)
 end)
 Colorpicker3:UpdateColor(Config.Color)
 
 -- credits to jan for patterns
-local Dropdown3 = Section6:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
+local Dropdown3 = UI_2:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
 	if Name == "Default" then
 		Window:SetBackground("2151741365")
 	elseif Name == "Hearts" then
@@ -166,17 +183,17 @@ local Dropdown3 = Section6:CreateDropdown("Image", {"Default","Hearts","Abstract
 end)
 Dropdown3:SetOption("Default")
 
-local Colorpicker4 = Section6:CreateColorpicker("Color", function(Color)
+local Colorpicker4 = UI_2:CreateColorpicker("Color", function(Color)
 	Window:SetBackgroundColor(Color)
 end)
 Colorpicker4:UpdateColor(Color3.new(1,1,1))
 
-local Slider3 = Section6:CreateSlider("Transparency",0,1,nil,false, function(Value)
+local Slider3 = UI_2:CreateSlider("Transparency",0,1,nil,false, function(Value)
 	Window:SetBackgroundTransparency(Value)
 end)
 Slider3:SetValue(0)
 
-local Slider4 = Section6:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
+local Slider4 = UI_2:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
 	Window:SetTileScale(Value)
 end)
 Slider4:SetValue(0.5)
