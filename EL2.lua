@@ -34,6 +34,13 @@ Section4:CreateDropdown("Talk NPC",NPC,function(x)
         end
 end)
 
+local Button2 = Section2:CreateButton("Remove KillBricks", function()
+    for i,v in ipairs(game:GetService("Workspace").Map.KillBricks:GetDescendants()) do
+        if v.Name == "TouchInterest" then
+            v:Destroy()
+        end
+    end
+end)
 
 local Button1 = Section2:CreateButton("Eyeball Door", function()
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye1.ClickDetector)
@@ -63,6 +70,7 @@ while _G.AutoPickup do wait()
             for _,ckd in pairs(v:GetDescendants()) do
                 if ckd:IsA("ClickDetector") then
                     fireclickdetector(ckd)
+                     -- game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = ckd.Parent.Parent.CFrame
                 end
             end
         end
