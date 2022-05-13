@@ -13,9 +13,27 @@ local Tab2 = Window:CreateTab("UI Settings")
 local Section1 = Tab1:CreateSection("Farms")
 local Section2 = Tab1:CreateSection("Misc.")
 local Section3 = Tab1:CreateSection("Trinket")
--- local Section4 = Tab1:CreateSection("NPC")
+local Section4 = Tab1:CreateSection("NPC")
 local Section5 = Tab2:CreateSection("Menu")
 local Section6 = Tab2:CreateSection("Background")
+
+
+local NPC = {}
+for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
+    if v:FindFirstChild("HumanoidRootPart") and not table.find(NPC,v.Name) then
+        table.sort(NPC)
+        table.insert(NPC,v.Name)
+        end
+end
+
+Section4:CreateDropdown("Talk NPC",NPC,function(x)
+    for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
+        if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
+            fireclickdetector(v.ClickDetector)
+            end
+        end
+end)
+
 
 local Button1 = Section2:CreateButton("Eyeball Door", function()
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye1.ClickDetector)
@@ -45,7 +63,6 @@ while _G.AutoPickup do wait()
             for _,ckd in pairs(v:GetDescendants()) do
                 if ckd:IsA("ClickDetector") then
                     fireclickdetector(ckd)
-                     -- game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = ckd.Parent.Parent.CFrame
                 end
             end
         end
