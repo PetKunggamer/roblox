@@ -7,6 +7,13 @@ elseif placeId == 9136292138 then
     GP = true
 elseif placeId == 6969185078 then
     EA = true
+elseif placeId == 9530846958 then
+    EL2 = true
+end
+
+if EL2 then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/EL2.lua"))()
 end
 
 if EA then
