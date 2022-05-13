@@ -12,10 +12,24 @@ local Tab2 = Window:CreateTab("UI Settings")
 
 local Section1 = Tab1:CreateSection("Farms")
 local Section2 = Tab1:CreateSection("Misc.")
+local Section3 = Tab1:CreateSection("Trinket")
+-- local Section4 = Tab1:CreateSection("NPC")
 local Section5 = Tab2:CreateSection("Menu")
 local Section6 = Tab2:CreateSection("Background")
 
-local Toggle1 = Section2:CreateToggle("Auto PickUp", nil, function(x)
+local Button1 = Section2:CreateButton("Eyeball Door", function()
+    fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye1.ClickDetector)
+    fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye2.ClickDetector)
+    fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye3.ClickDetector)
+end)
+
+
+
+local Button1 = Section3:CreateButton("Sell Trinket", function()
+    game:GetService("ReplicatedStorage").BulkSell:FireServer()
+end)
+
+local Toggle1 = Section3:CreateToggle("Auto PickUp", nil, function(x)
 	_G.AutoPickup = x
 function getrealtick()
     for _,v in pairs(game:GetService("Workspace"):GetChildren())do
@@ -40,7 +54,7 @@ end
 
 end)
 
-local Toggle2 = Section2:CreateToggle("Auto PickUp (TP Version)", nil, function(x)
+local Toggle2 = Section3:CreateToggle("Auto PickUp (TP Version)", nil, function(x)
 	_G.AutoPickup = x
 function getrealtick()
     for _,v in pairs(game:GetService("Workspace"):GetChildren())do
