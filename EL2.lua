@@ -13,21 +13,22 @@ local Tab2 = Window:CreateTab("UI Settings")
 local Section1 = Tab1:CreateSection("Farms")
 local Section2 = Tab1:CreateSection("Misc.")
 local Section3 = Tab1:CreateSection("Trinket")
-local Section4 = Tab1:CreateSection("NPC")
+local Section4 = Tab1:CreateSection("Quick Join Dungeon")
 local Section5 = Tab1:CreateSection("TweenService")
-local Section6 = Tab1:CreateSection("Quick Join Dungeon")
+local Section6 = Tab1:CreateSection("NPC")
+
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
-local Button1 = Section6:CreateButton("Castle Rock", function()
+local Button1 = Section4:CreateButton("Castle Rock", function()
     fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
 end)
 
-local Button2 = Section6:CreateButton("Eeris", function()
+local Button2 = Section4:CreateButton("Eeris", function()
     fireclickdetector(game:GetService("Workspace").EerisOpen.HumanoidRootPart.ClickDetector)
 end)
 
-local Button3 = Section6:CreateButton("Catacomb", function()
+local Button3 = Section4:CreateButton("Catacomb", function()
     fireclickdetector(game:GetService("Workspace").Map.dungeonThingIdk.trapdoor.ClickDetector)
 end)
 
@@ -41,7 +42,7 @@ for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) d
         end
 end
 
-Section4:CreateDropdown("Talk NPC",NPC,function(x)
+Section6:CreateDropdown("Talk NPC",NPC,function(x)
     for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
         if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
             fireclickdetector(v.ClickDetector)
@@ -49,7 +50,7 @@ Section4:CreateDropdown("Talk NPC",NPC,function(x)
         end
 end)
 
-Section4:CreateDropdown("Teleport to NPC",NPC,function(x)
+Section6:CreateDropdown("Teleport to NPC",NPC,function(x)
     for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
         if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Teleports.Teleport1.CFrame
