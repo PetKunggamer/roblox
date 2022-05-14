@@ -49,6 +49,17 @@ Section4:CreateDropdown("Talk NPC",NPC,function(x)
         end
 end)
 
+Section4:CreateDropdown("Teleport to NPC",NPC,function(x)
+    for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
+        if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Teleports.Teleport1.CFrame
+            wait(.35)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChild("HumanoidRootPart").CFrame
+            end
+        end
+end)
+
+
 
 local Button1 = Section5:CreateButton("CR Purple Pad", function()
 function TP(Object)
@@ -61,7 +72,7 @@ function TP(Object)
             Noclipping:Disconnect()
 end
 
-TP(Vector3.new(5786, 419, 641)) -- Cr Purple Pad
+TP(game:GetService("Workspace").TeleportIn.Position + Vector3.new(0,3,0)) -- Cr Purple Pad
 end)
 Button1:AddToolTip("Make Sure ก่อนว่าเปิด Noclip แล่ว")
 
@@ -82,7 +93,14 @@ end)
 local Button3 = Section2:CreateButton("Scroll Roulette", function()
     fireclickdetector(game.Workspace.Map.Groundcastle.Xenyari.ClickDetector)
 end)
+Button3:AddToolTip("250 Silver")
 
+local Button4 = Section2:CreateButton("Race Reroll", function()
+    fireclickdetector(game:GetService("Workspace").NPCs.Misc.Reroller.ClickDetector)
+end)
+
+Button4:AddToolTip("6000 Silver")
+    
 local Button1 = Section3:CreateButton("Sell Trinket", function()
     game:GetService("ReplicatedStorage").BulkSell:FireServer()
 end)
