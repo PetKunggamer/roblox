@@ -20,6 +20,19 @@ local Section6 = Tab1:CreateSection("NPC")
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
+local Dropdown1 = Section4:CreateDropdown("Seleted Dungeon", {"Castle Rock","Eeris","Catacomb"}, function(Name)
+	if Name == "Castle Rock" then
+	    fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
+	elseif Name == "Eeris" then
+	    fireclickdetector(game:GetService("Workspace").EerisOpen.HumanoidRootPart.ClickDetector)
+	elseif Name == "Catacomb" then
+	    fireclickdetector(game:GetService("Workspace").Map.dungeonThingIdk.trapdoor.ClickDetector)
+	end
+end)
+
+Dropdown1:SetOption("Default")
+
+--[[
 local Button1 = Section4:CreateButton("Castle Rock", function()
     fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
 end)
@@ -31,7 +44,7 @@ end)
 local Button3 = Section4:CreateButton("Catacomb", function()
     fireclickdetector(game:GetService("Workspace").Map.dungeonThingIdk.trapdoor.ClickDetector)
 end)
-
+]]
 
 
 local NPC = {}
@@ -249,6 +262,7 @@ local Dropdown3 = UI_2:CreateDropdown("Image", {"Default","Hearts","Abstract","H
 		Window:SetBackground("5553946656")
 	end
 end)
+
 Dropdown3:SetOption("Default")
 
 local Colorpicker4 = UI_2:CreateColorpicker("Color", function(Color)
