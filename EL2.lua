@@ -15,8 +15,22 @@ local Section2 = Tab1:CreateSection("Misc.")
 local Section3 = Tab1:CreateSection("Trinket")
 local Section4 = Tab1:CreateSection("NPC")
 local Section5 = Tab1:CreateSection("TweenService")
+local Section6 = Tab1:CreateSection("Quick Join Dungeon")
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
+
+local Button1 = Section6:CreateButton("Castle Rock", function()
+    fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
+end)
+
+local Button2 = Section6:CreateButton("Eeris", function()
+    fireclickdetector(game:GetService("Workspace").EerisOpen.HumanoidRootPart.ClickDetector)
+end)
+
+local Button3 = Section6:CreateButton("Catacomb", function()
+    fireclickdetector(game:GetService("Workspace").Map.dungeonThingIdk.trapdoor.ClickDetector)
+end)
+
 
 
 local NPC = {}
@@ -65,7 +79,9 @@ local Button1 = Section2:CreateButton("Eyeball Door", function()
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye3.ClickDetector)
 end)
 
-
+local Button3 = Section2:CreateButton("Scroll Roulette", function()
+    fireclickdetector(game.Workspace.Map.Groundcastle.Xenyari.ClickDetector)
+end)
 
 local Button1 = Section3:CreateButton("Sell Trinket", function()
     game:GetService("ReplicatedStorage").BulkSell:FireServer()
@@ -119,6 +135,39 @@ while _G.AutoPickup do wait()
     end
 end
 
+end)
+local Toggle3 = Section3:CreateToggle("Auto Castket", nil, function(x)
+    function getdistantfrompart(p)
+    return (p.Position - game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame().p).Magnitude
+end
+function getcaskets(stud)
+    local nearcaskets={}
+    local counter = 0
+    for _,casket in pairs(game:GetService("Workspace").Map.dungeonThingIdk.Caskets:GetChildren()) do
+        if getdistantfrompart(casket.casketTOP.Union) <= stud then
+            counter = counter + 1
+            nearcaskets[counter] = casket
+        end
+    end
+    return nearcaskets
+end
+function fireproximityprompts(stud)
+    local nearcaskets = getcaskets(stud)
+    for _,casket in pairs(nearcaskets) do
+        for _,proximityprompt in pairs(casket:GetDescendants())do
+            if proximityprompt:IsA("ProximityPrompt") then
+                fireproximityprompt(proximityprompt,stud)
+            end
+        end
+    end
+end
+
+
+_G.AutiCastket = x
+while _G.AutiCastket do wait(.5) 
+    
+    fireproximityprompts(100)
+end
 end)
 
 local Toggle1 = Section1:CreateToggle("WalkSpeed", nil, function(x)
