@@ -18,7 +18,7 @@ local Section6 = Tab2:CreateSection("Background")
 
 
 local Button1 = Section2:CreateButton("Safe Place", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7175, 1450, 2799)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(300000, 50020, 300000)
 end)
 Button1:AddToolTip("ห้องแม่เซ็น")
 
@@ -44,9 +44,26 @@ end)
 
 
 
+local Button1 = Section3:CreateButton("Spawn SafePlace", function()
+function SpawnPart()
+  local Part = Instance.new("Part")
+  Part.Name = "SafePlace"
+  Part.Material = "Grass"
+  Part.Color = Color3.fromRGB(31, 128, 29)
+  Part.Position = Vector3.new(300000, 50000, 300000)
+  Part.Size = Vector3.new(1000, 10, 1000)
+  Part.Anchored = true
+  Part.Parent = workspace
+end
 
+if game:GetService("Workspace"):FindFirstChild("SafePlace") then
+    game:GetService("Workspace").SafePlace:Destroy()
+end
+SpawnPart();
+end)
+Button1:AddToolTip("Spawn ห้องแม่เซ็น")
 
-local Button1 = Section3:CreateButton("Remove Killbricks", function()
+local Button2 = Section3:CreateButton("Remove Killbricks", function()
 	local Kb = game:GetService("Workspace").Killbricks
     for i,v in ipairs(Kb:GetDescendants()) do
         if v.Name == "TouchInterest" then
@@ -54,9 +71,9 @@ local Button1 = Section3:CreateButton("Remove Killbricks", function()
         end
     end
 end)
-Button1:AddToolTip("No more Killbricks")
+Button2:AddToolTip("No more Killbricks")
 
-local Button2 = Section3:CreateButton("Mod Magic", function()
+local Button3 = Section3:CreateButton("Mod Magic", function()
 	local mod = require(game:GetService("ReplicatedStorage").SpellLibrary)
 	for i,v in ipairs(game.Players.LocalPlayer.Backpack:GetDescendants()) do
 	    mod[v.Name].CastTime = 0
@@ -65,7 +82,7 @@ local Button2 = Section3:CreateButton("Mod Magic", function()
 	    
 	end
 end)
-Button2:AddToolTip("Make ยู ร่ายMagic แบบ Coolๆ นะ")
+Button3:AddToolTip("Make ยู ร่ายMagic แบบ Coolๆ นะ")
 
 
 Section1:CreateToggle("Auto Skill",nil,function(x)
@@ -137,7 +154,7 @@ while getgenv().AutoFarm do wait()
         
     end)
         if game.Players.LocalPlayer.Character then
-           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-7175, 1450, 2799)
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(300000, 50020, 300000)
         end
         
         if GUI:FindFirstChild("StatsGUI") then
@@ -238,4 +255,3 @@ local Slider4 = Section6:CreateSlider("Tile Scale",0,1,nil,false, function(Value
 	Window:SetTileScale(Value)
 end)
 Slider4:SetValue(0.5)
-
