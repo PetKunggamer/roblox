@@ -13,11 +13,22 @@ local Tab2 = Window:CreateTab("UI Settings")
 local Section1 = Tab1:CreateSection("Farms")
 local Section2 = Tab1:CreateSection("Teleport")
 local Section3 = Tab1:CreateSection("Misc.")
-local Section5 = Tab2:CreateSection("Menu")
-local Section6 = Tab2:CreateSection("Background")
+local Section4 = Tab1:CreateSection("Gamepass")
+local UI_1 = Tab2:CreateSection("Menu")
+local UI_2 = Tab2:CreateSection("Background")
 
 
-local Button1 = Section2:CreateButton("Safe Place", function()
+local Button1 = Section4:CreateButton("Instant Spin", function()
+	for i,v in ipairs(game:GetService("ReplicatedStorage").Data:GetDescendants()) do
+    if v.Name == "InstantSpin" then
+        v.Value = true
+    end
+end
+end)
+Button1:AddToolTip("กด ON/OFF เอง")
+
+
+local Button0 = Section2:CreateButton("Safe Place", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(300000, 50020, 300000)
 end)
 Button1:AddToolTip("ห้องแม่เซ็น")
@@ -25,6 +36,7 @@ Button1:AddToolTip("ห้องแม่เซ็น")
 local Button1 = Section2:CreateButton("The Plains", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1385, 410, 1501)
 end)
+Button1:AddToolTip("ห้องแม่เซ็น")
 
 local Button2 = Section2:CreateButton("The Monolith", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1699, 261, -479)
@@ -208,7 +220,7 @@ local Slider1 = Section1:CreateSlider("Mana น้อยกว่าจะ Reset
 end)
 
 
-local Toggle3 = Section5:CreateToggle("UI Toggle", nil, function(State)
+local Toggle3 = UI_1:CreateToggle("UI Toggle", nil, function(State)
 	Window:Toggle(State)
 end)
 Toggle3:CreateKeybind(tostring(Config.Keybind):gsub("Enum.KeyCode.", ""), function(Key)
@@ -216,13 +228,13 @@ Toggle3:CreateKeybind(tostring(Config.Keybind):gsub("Enum.KeyCode.", ""), functi
 end)
 Toggle3:SetState(true)
 
-local Colorpicker3 = Section5:CreateColorpicker("UI Color", function(Color)
+local Colorpicker3 = UI_1:CreateColorpicker("UI Color", function(Color)
 	Window:ChangeColor(Color)
 end)
 Colorpicker3:UpdateColor(Config.Color)
 
 -- credits to jan for patterns
-local Dropdown3 = Section6:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
+local Dropdown3 = UI_2:CreateDropdown("Image", {"Default","Hearts","Abstract","Hexagon","Circles","Lace With Flowers","Floral"}, function(Name)
 	if Name == "Default" then
 		Window:SetBackground("2151741365")
 	elseif Name == "Hearts" then
@@ -241,17 +253,17 @@ local Dropdown3 = Section6:CreateDropdown("Image", {"Default","Hearts","Abstract
 end)
 Dropdown3:SetOption("Default")
 
-local Colorpicker4 = Section6:CreateColorpicker("Color", function(Color)
+local Colorpicker4 = UI_2:CreateColorpicker("Color", function(Color)
 	Window:SetBackgroundColor(Color)
 end)
 Colorpicker4:UpdateColor(Color3.new(1,1,1))
 
-local Slider3 = Section6:CreateSlider("Transparency",0,1,nil,false, function(Value)
+local Slider3 = UI_2:CreateSlider("Transparency",0,1,nil,false, function(Value)
 	Window:SetBackgroundTransparency(Value)
 end)
 Slider3:SetValue(0)
 
-local Slider4 = Section6:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
+local Slider4 = UI_2:CreateSlider("Tile Scale",0,1,nil,false, function(Value)
 	Window:SetTileScale(Value)
 end)
 Slider4:SetValue(0.5)
