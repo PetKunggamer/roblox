@@ -20,7 +20,7 @@ local Section6 = Tab1:CreateSection("NPC")
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
-local Dropdown1 = Section4:CreateDropdown("Seleted Dungeon", {"Castle Rock","Eeris","Catacomb"}, function(Name)
+local Dropdown1 = Section4:CreateDropdown("เลือกดันเจี้ยน", {"Castle Rock","Eeris","Catacomb"}, function(Name)
 	if Name == "Castle Rock" then
 	    fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
 	elseif Name == "Eeris" then
@@ -32,21 +32,6 @@ end)
 
 Dropdown1:SetOption("Default")
 
---[[
-local Button1 = Section4:CreateButton("Castle Rock", function()
-    fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
-end)
-
-local Button2 = Section4:CreateButton("Eeris", function()
-    fireclickdetector(game:GetService("Workspace").EerisOpen.HumanoidRootPart.ClickDetector)
-end)
-
-local Button3 = Section4:CreateButton("Catacomb", function()
-    fireclickdetector(game:GetService("Workspace").Map.dungeonThingIdk.trapdoor.ClickDetector)
-end)
-]]
-
-
 local NPC = {}
 for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
     if v:FindFirstChild("HumanoidRootPart") and not table.find(NPC,v.Name) then
@@ -55,7 +40,7 @@ for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) d
         end
 end
 
-Section6:CreateDropdown("Talk NPC",NPC,function(x)
+Section6:CreateDropdown("พูดคุย NPC",NPC,function(x)
     for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
         if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
             fireclickdetector(v.ClickDetector)
@@ -63,7 +48,7 @@ Section6:CreateDropdown("Talk NPC",NPC,function(x)
         end
 end)
 
-Section6:CreateDropdown("Teleport to NPC",NPC,function(x)
+Section6:CreateDropdown("เทเลพอร์ตไปที่ NPC",NPC,function(x)
     for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
         if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Teleports.Teleport1.CFrame
@@ -75,7 +60,7 @@ end)
 
 
 
-local Button1 = Section5:CreateButton("CR Purple Pad", function()
+local Button1 = Section5:CreateButton("CR แผ่นรองสีม่วง", function()
 function TP(Object)
             local tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Object).magnitude/200,Enum.EasingStyle.Linear,Enum.EasingDirection.In,0,false,0)
             local tween = tweenService:Create(game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart, tweenInfo, {CFrame = CFrame.new(Object)})
@@ -90,7 +75,7 @@ TP(game:GetService("Workspace").TeleportIn.Position + Vector3.new(0,3,0)) -- Cr 
 end)
 Button1:AddToolTip("Make Sure ก่อนว่าเปิด Noclip แล่ว")
 
-local Button2 = Section2:CreateButton("Remove KillBricks", function()
+local Button2 = Section2:CreateButton("ลบฆ่าอิฐ", function()
     for i,v in ipairs(game:GetService("Workspace").Map.KillBricks:GetDescendants()) do
         if v.Name == "TouchInterest" then
             v:Destroy()
@@ -98,28 +83,32 @@ local Button2 = Section2:CreateButton("Remove KillBricks", function()
     end
 end)
 
-local Button1 = Section2:CreateButton("Eyeball Door", function()
+local Button1 = Section2:CreateButton("ประตูลูกตา", function()
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye1.ClickDetector)
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye2.ClickDetector)
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye3.ClickDetector)
 end)
 
-local Button3 = Section2:CreateButton("Scroll Roulette", function()
+local Button3 = Section2:CreateButton("เลื่อนรูเล็ต", function()
     fireclickdetector(game.Workspace.Map.Groundcastle.Xenyari.ClickDetector)
 end)
 Button3:AddToolTip("250 Silver")
 
-local Button4 = Section2:CreateButton("Race Reroll", function()
+local Button4 = Section2:CreateButton("รีโรลการแข่งขัน", function()
     fireclickdetector(game:GetService("Workspace").NPCs.Misc.Reroller.ClickDetector)
+end)
+
+local Button5 = Section2:CreateButton("เร่งด่วนล้ม", function()
+game:GetService("Players").LocalPlayer.Character.FallDamage.RemoteEvent:FireServer(9999)
 end)
 
 Button4:AddToolTip("6000 Silver")
     
-local Button1 = Section3:CreateButton("Sell Trinket", function()
+local Button1 = Section3:CreateButton("ขาย Trinket", function()
     game:GetService("ReplicatedStorage").BulkSell:FireServer()
 end)
 
-local Toggle1 = Section3:CreateToggle("Auto PickUp", nil, function(x)
+local Toggle1 = Section3:CreateToggle("รับอัตโนมัติ", nil, function(x)
 	_G.AutoPickup = x
 function getrealtick()
     for _,v in pairs(game:GetService("Workspace"):GetChildren())do
@@ -144,7 +133,7 @@ end
 
 end)
 
-local Toggle2 = Section3:CreateToggle("Auto PickUp (TP Version)", nil, function(x)
+local Toggle2 = Section3:CreateToggle("รับอัตโนมัติ (เวอร์ชั่น TP)", nil, function(x)
 	_G.AutoPickup = x
 function getrealtick()
     for _,v in pairs(game:GetService("Workspace"):GetChildren())do
@@ -168,7 +157,7 @@ while _G.AutoPickup do wait()
 end
 
 end)
-local Toggle3 = Section3:CreateToggle("Auto Castket", nil, function(x)
+local Toggle3 = Section3:CreateToggle("โลงศพอัตโนมัติ", nil, function(x)
     function getdistantfrompart(p)
     return (p.Position - game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame().p).Magnitude
 end
@@ -202,7 +191,7 @@ while _G.AutiCastket do wait(.5)
 end
 end)
 
-local Toggle1 = Section1:CreateToggle("WalkSpeed", nil, function(x)
+local Toggle1 = Section1:CreateToggle("ความเร็วในการเดิน", nil, function(x)
 	getgenv().Speed_Hack = x
 	while getgenv().Speed_Hack do wait()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WS
@@ -212,7 +201,7 @@ end)
 --[[Toggle1:CreateKeybind("F1", function(Key)
 end)
 ]]
-local Toggle2 = Section1:CreateToggle("JumpPower", nil, function(x)
+local Toggle2 = Section1:CreateToggle("กระโดดพลังงาน", nil, function(x)
 	getgenv().JP_Hack = x
 	while getgenv().JP_Hack do wait()
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = JP
@@ -223,11 +212,11 @@ Toggle2:CreateKeybind("F2", function(Key)
 end)
 ]]
 
-local Slider1 = Section1:CreateSlider("Speed", 0,200,nil,false, function(x)
+local Slider1 = Section1:CreateSlider("ความเร็ว", 0,200,nil,false, function(x)
 	WS = x
 end)
 
-local Slider1 = Section1:CreateSlider("JumpPower", 0,200,nil,false, function(x)
+local Slider1 = Section1:CreateSlider("กระโดดพลังงาน", 0,200,nil,false, function(x)
 	JP = x
 end)
 
