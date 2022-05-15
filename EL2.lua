@@ -97,12 +97,12 @@ Button3:AddToolTip("250 Silver")
 local Button4 = Section2:CreateButton("รีโรลการแข่งขัน", function()
     fireclickdetector(game:GetService("Workspace").NPCs.Misc.Reroller.ClickDetector)
 end)
+Button4:AddToolTip("6000 Silver")
 
 local Button5 = Section2:CreateButton("เร่งด่วนล้ม", function()
 game:GetService("Players").LocalPlayer.Character.FallDamage.RemoteEvent:FireServer(9999)
 end)
-
-Button4:AddToolTip("6000 Silver")
+Button5:AddToolTip("ปิด Nofall ก่อน")
     
 local Button1 = Section3:CreateButton("ขาย Trinket", function()
     game:GetService("ReplicatedStorage").BulkSell:FireServer()
