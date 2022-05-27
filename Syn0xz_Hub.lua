@@ -9,6 +9,13 @@ elseif placeId == 6969185078 then
     EA = true
 elseif placeId == 9530846958 then
     EL2 = true
+elseif placeId == 9516847915 then
+    FPirate = true
+end
+
+if FPirate then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FPirate.lua"))()
 end
 
 if EL2 then
