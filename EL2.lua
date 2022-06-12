@@ -20,7 +20,7 @@ local Section6 = Tab1:CreateSection("NPC")
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
-local Dropdown1 = Section4:CreateDropdown("Seleted Dungeon", {"Castle Rock","Eeris","Catacomb"}, function(Name)
+local Dropdown1 = Section4:CreateDropdown("เลือกดันเจี้ยน", {"Castle Rock","Eeris","Catacomb"}, function(Name)
 	if Name == "Castle Rock" then
 	    fireclickdetector(game:GetService("Workspace")["The Eagle"].ClickDetector)
 	elseif Name == "Eeris" then
@@ -37,10 +37,10 @@ for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) d
     if v:FindFirstChild("HumanoidRootPart") and not table.find(NPC,v.Name) then
         table.sort(NPC)
         table.insert(NPC,v.Name)
-        end
+    end
 end
 
-Section6:CreateDropdown("Talk NPC",NPC,function(x)
+Section6:CreateDropdown("พูดคุย NPC",NPC,function(x)
     for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
         if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
             fireclickdetector(v.ClickDetector)
@@ -48,7 +48,7 @@ Section6:CreateDropdown("Talk NPC",NPC,function(x)
         end
 end)
 
-Section6:CreateDropdown("Teleport to NPC",NPC,function(x)
+Section6:CreateDropdown("เทเลพอร์ตไปที่ NPC",NPC,function(x)
     for i,v in ipairs(game:GetService("Workspace").NPCs.Trainers:GetDescendants()) do
         if v.Name == x and v:FindFirstChild("HumanoidRootPart") then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Teleports.Teleport1.CFrame
@@ -57,32 +57,94 @@ Section6:CreateDropdown("Teleport to NPC",NPC,function(x)
             end
         end
 end)
-
-
-TP(game:GetService("Workspace").TeleportIn.Position + Vector3.new(0,3,0)) -- Cr Purple Pad
-end)
-Button1:AddToolTip("Make Sure ก่อนว่าเปิด Noclip แล่ว")
-
-local Button2 = Section2:CreateButton("Remove KillBricks", function()
-    for i,v in ipairs(game:GetService("Workspace").Map.KillBricks:GetDescendants()) do
-        if v.Name == "TouchInterest" then
-            v:Destroy()
+local Button2
+if getconnections and typeof(getconnections) == "function" then
+    Button2 = Section2:CreateButton("ปิดฆ่าอิฐ", function()
+        for _, part in pairs(workspace.Map.KillBricks:GetChildren()) do
+            if part:IsA("BasePart") then
+                for _, connection in pairs(getconnections(part.Touched)) do
+                    connection:Disable()
+                end
+                for _, connection in pairs(getconnections(part.TouchEnded)) do
+                    connection:Disable()
+                end
+                wait()
+            end
         end
-    end
-end)
-
-local Button1 = Section2:CreateButton("Eyeball Door", function()
+    end)
+end
+local Button1 = Section2:CreateButton("ประตูลูกตา", function()
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye1.ClickDetector)
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye2.ClickDetector)
     fireclickdetector(game:GetService("Workspace").EYEBALLS.ClickEyes.Eye3.ClickDetector)
 end)
 
-local Button5 = Section2:CreateButton("Instant Knockdown", function()
+local Button5 = Section2:CreateButton("เร่งด่วนล้ม", function()
 game:GetService("Players").LocalPlayer.Character.FallDamage.RemoteEvent:FireServer(9999)
 end)
+Button5:AddToolTip("ปิด Nofall ก่อน")
+    
+local Toggle1 = Section3:CreateToggle("รับอัตโนมัติ", nil, function(x)
 
+function getrealfolder()
+    for _, fd in pairs(workspace:GetChildren()) do
+        if #fd:GetChildren() > 1 and fd.Name == "MouseIgnore" then
+            for _, p in pairs(fd:GetChildren()) do
+                if p.Name:find("{") and p.Name:find("}") then
+                    return fd
+                end
+            end
+        end
+    end
+end
+_G.AutoPick = x
+while _G.AutoPick do
+    local realfd = getrealfolder()
+    if realfd then
+        for _,p in pairs(realfd:GetChildren()) do
+            if p:IsA("Model") and #p:GetChildren() > 0 then
+                if (p:GetChildren()[1].Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).magnitude <= 50 then
+                    local string_1 = "Trinket";
+                    local string_2 = p.Name
+                    if string_2:find("{") and string_2:find("}") then
+                        --game:GetService("ReplicatedStorage").Remotes.RequestPickup
+                        local Target = game:GetService("ReplicatedStorage").Remotes.RequestPickup;
+                        --printconsole(string.format("%s, %s", string_1, string_2))
+                        Target:FireServer(string_1, string_2);
+                    end
+                end
+            end
+            game:GetService("RunService").Stepped:Wait()
+        end
+    else
+        for i=1,30 do
+            game:GetService("RunService").Stepped:Wait()
+        end
+    end
+end
+--function getrealtick()
+--    for _,v in pairs(game:GetService("Workspace"):GetChildren())do
+--        if v.Name == "MouseIgnore" and #v:GetChildren() > 0 then
+--            return v
+--        end
+--    end
+--end
+--while _G.AutoPickup do wait()
+--    local fd = getrealtick()
+--    if fd then
+--        for _,v in pairs(fd:GetChildren()) do
+--            for _,ckd in pairs(v:GetDescendants()) do
+--                if ckd:IsA("ClickDetector") then
+--                    fireclickdetector(ckd)
+--                end
+--            end
+--        end
+--    end
+--end
 
-local Toggle1 = Section3:CreateToggle("Auto PickUp", nil, function(x)
+end)
+
+local Toggle2 = Section3:CreateToggle("รับอัตโนมัติ (เวอร์ชั่น TP)", nil, function(x)
 	_G.AutoPickup = x
 function getrealtick()
     for _,v in pairs(game:GetService("Workspace"):GetChildren())do
@@ -98,7 +160,7 @@ while _G.AutoPickup do wait()
             for _,ckd in pairs(v:GetDescendants()) do
                 if ckd:IsA("ClickDetector") then
                     fireclickdetector(ckd)
-                     -- game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = ckd.Parent.Parent.CFrame
+                      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = ckd.Parent.Parent.CFrame
                 end
             end
         end
@@ -106,9 +168,7 @@ while _G.AutoPickup do wait()
 end
 
 end)
-
-end)
-local Toggle3 = Section3:CreateToggle("Auto Castket", nil, function(x)
+local Toggle3 = Section3:CreateToggle("โลงศพอัตโนมัติ", nil, function(x)
     function getdistantfrompart(p)
     return (p.Position - game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame().p).Magnitude
 end
@@ -142,7 +202,7 @@ while _G.AutiCastket do wait(.5)
 end
 end)
 
-local Toggle1 = Section1:CreateToggle("WalkSpeed", nil, function(x)
+local Toggle1 = Section1:CreateToggle("ความเร็วในการเดิน", nil, function(x)
 	getgenv().Speed_Hack = x
 	while getgenv().Speed_Hack do wait()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WS
@@ -152,7 +212,7 @@ end)
 --[[Toggle1:CreateKeybind("F1", function(Key)
 end)
 ]]
-local Toggle2 = Section1:CreateToggle("JumpPower", nil, function(x)
+local Toggle2 = Section1:CreateToggle("กระโดดพลังงาน", nil, function(x)
 	getgenv().JP_Hack = x
 	while getgenv().JP_Hack do wait()
 	game.Players.LocalPlayer.Character.Humanoid.JumpPower = JP
@@ -163,11 +223,11 @@ Toggle2:CreateKeybind("F2", function(Key)
 end)
 ]]
 
-local Slider1 = Section1:CreateSlider("Speed", 0,200,nil,false, function(x)
+local Slider1 = Section1:CreateSlider("ความเร็ว", 0,200,nil,false, function(x)
 	WS = x
 end)
 
-local Slider1 = Section1:CreateSlider("JumpPower", 0,200,nil,false, function(x)
+local Slider1 = Section1:CreateSlider("กระโดดพลังงาน", 0,200,nil,false, function(x)
 	JP = x
 end)
 
