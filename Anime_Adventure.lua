@@ -1,5 +1,5 @@
 --[[
-Created by Jaff
+Created by Jaff Edit by [Syn0xz] โดนกุบิดไอหรั่ง
 Hi there this requires at least 5 braincells to use
 Feel Free to use the functions for your own use
 I already Listed the functions usage so edit it if you want
@@ -19,10 +19,10 @@ end)
 
 local function WatermarkForIdiotYter() -- If the yter is stupid they cant remove this
     game.StarterGui:SetCore("SendNotification", {
-Title = "Made by Jaff"; 
+Title = "Made by Chaiwat ครองโลก"; 
 Text = getgenv().id.." Is your petid"; 
 Icon = ""; 
-Duration = 5; 
+Duration = 2.5; 
 })
 end
 
