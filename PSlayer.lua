@@ -30,7 +30,19 @@ local TextBox1 = Section3:CreateTextBox("หายตัวแบบเท่ๆ
         }
         
         game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
-    end
+        end
+        wait(1.5)
+        local args = {
+            [1] = "Change_Transparency",
+            [2] = {
+                [1] = {
+                    [1] = game.Players.LocalPlayer.Character.HumanoidRootPart,
+                    [2] = 1
+                },
+            }
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
 end)
 
 TextBox1:AddToolTip("ใส่ได้แค่ระหว่าง 0 - 1")
