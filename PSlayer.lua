@@ -52,7 +52,7 @@ Label1:UpdateText("ไม่ทำโว้ย Hehe bob วางไว้ปร
 
 
 local Label2 = Section2:CreateLabel("Label 2")
-Label2:UpdateText("โดนแบนสูงนะน้อง แบบ Instant Banned")
+Label2:UpdateText("โดนแบนสูงนะน้อง แบบ Instant Banned\nเพาะฉะนู้น อย่ากดถี่นะน้อง")
 local Dropdown1 = Section2:CreateDropdown("Select Place to Teleport (High Risk)", {"Kiribating Village","Zapiwara Cave","Butterfly Mansion","Zapiwara Mountain","Ushumaru Village","Waroru Cave","Kabiwaru Village","Abubu Cave","Final Selection","Ouwbayashi Home","Dangerous Woods","Slasher Demon"},function(Name)
 	function In()
         local args = {
