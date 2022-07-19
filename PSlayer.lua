@@ -17,7 +17,7 @@ local Section3 = Tab1:CreateSection("Mics.")
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
-local TextBox1 = Section3:CreateTextBox("หายตัวแบบเท่ๆ มอนไม่ตีโคตรตึง\nใส่เลข -1 = ไม่หายตัวมอนไม่ตี\nใส่เลข 1 = หายตัวมอนไม่ตีเหมือนกัน", "ใส่เลข (only)", true, function(Value)
+local TextBox1 = Section3:CreateTextBox("หายตัวแบบเท่ๆ มอนไม่ตีโคตรตึง\nใส่เลข -1 = ไม่หายตัวมอนไม่ตี\nใส่เลข 1 = หายตัวมอนไม่ตีเหมือนกัน\nใส่เลข 0 = กลับเป็นปกติ", "ใส่เลข", true, function(Value)
     for i,v in ipairs(game.Players.LocalPlayer.Character:GetDescendants()) do
         local args = {
             [1] = "Change_Transparency",
@@ -45,7 +45,7 @@ local TextBox1 = Section3:CreateTextBox("หายตัวแบบเท่ๆ
         game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
 end)
 
-TextBox1:AddToolTip("ใส่ได้แค่ระหว่าง 0 - 1")
+TextBox1:AddToolTip("แม่เซ็นน่ายักอ่าา")
 
 local Label1 = Section1:CreateLabel("Label 1")
 Label1:UpdateText("ไม่ทำโว้ย Hehe bob วางไว้ประดับ")
