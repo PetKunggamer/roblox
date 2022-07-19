@@ -11,6 +11,13 @@ elseif placeId == 9530846958 then
     EL2 = true
 elseif placeId == 9516847915 then
     FPirate = true
+elseif placeId == 6152116144 then
+    PSlayer = true
+end
+
+if PSlayer then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PSlayer.lua"))()
 end
 
 if FPirate then
@@ -28,8 +35,6 @@ if EA then
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Elemental_Awakening.lua"))()
 end
 
-    
-    
 if SUR then
 	repeat wait() until game:IsLoaded()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/StandUpRight_Gui.lua"))() -- ขี้เกียจทำละ hehe boi
