@@ -51,10 +51,35 @@ if GP then
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/PetKunggamer/roblox/main/Grand_Pirates.lua'))() -- ขี้เกียจทำล้า hehe boi
 end
     
-    
-    
-    
---// Variables
+
+function create_notification(Title,Text,Duration,Callback,Button1,Button2)
+    local bindablefunc = Instance.new("BindableFunction")
+    bindablefunc.OnInvoke = function(button)
+        if button == Button1 then 
+            Callback()
+        else
+            print(button)
+        end
+    end
+    game.StarterGui:SetCore(
+        "SendNotification",
+        {
+            Title = Title,
+            Text = Text,
+            Duration = Duration or math.huge,
+            Callback = bindablefunc,
+            Button1 = Button1,
+            Button2 = Button2
+        }
+    )
+end
+
+create_notification(
+    "Syn0xz Hub",
+    "Anti-Kick",
+    nil,
+    function()
+        --// Variables
 
 local Players = game:GetService("Players")
 local OldNameCall = nil
@@ -91,8 +116,17 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
         Duration = 2,
     })
 
-
-local GC = getconnections or get_signal_cons
+    end,
+    "Execute",
+    "No"
+)
+    
+create_notification(
+    "Syn0xz Hub",
+    "Anti-Afk",
+    nil,
+    function()
+        local GC = getconnections or get_signal_cons
 local Players = game.Players
 	if GC then
 		for i,v in pairs(GC(Players.LocalPlayer.Idled)) do
@@ -116,4 +150,8 @@ local Players = game.Players
                 Duration = 1.5
             })
 	end
+    end,
+    "Execute",
+    "No"
+)
 
