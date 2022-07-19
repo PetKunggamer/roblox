@@ -82,51 +82,51 @@ local Dropdown1 = Section2:CreateDropdown("Select Place to Teleport (High Risk)"
 
 	if Name == "Kiribating Village" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124, 295, -1625)On()wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(124, 295, -1625)On()wait(.75)
 	    Out()Off()
 	elseif Name == "Zapiwara Cave" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(31, 291, -2419)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(31, 291, -2419)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Butterfly Mansion" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2990, 331, -3867)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2990, 331, -3867)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Zapiwara Mountain" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-343, 437, -2383)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-343, 437, -2383)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Ushumaru Village" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-469, 289, -3331)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-469, 289, -3331)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Waroru Cave" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(614, 277, -2464)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(614, 277, -2464)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Kabiwaru Village" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1995, 331, -2974)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1995, 331, -2974)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Abubu Cave" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1074, 291, -3553)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1074, 291, -3553)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Final Selection" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5158, 381, -2426)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(5158, 381, -2426)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Ouwbayashi Home" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1337, 331, -4578)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1337, 331, -4578)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Dangerous Woods" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4018, 358, -3955)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4018, 358, -3955)On() wait(.75)
 	    Out()Off()
 	elseif Name == "Slasher Demon" then
 	    In() wait(1) In() wait(4)
-	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4337, 358, -4236)On() wait(.35)
+	        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4337, 358, -4236)On() wait(.75)
 	    Out()Off()
 	end
 end)
