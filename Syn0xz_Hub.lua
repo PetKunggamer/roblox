@@ -13,6 +13,13 @@ elseif placeId == 9516847915 then
     FPirate = true
 elseif placeId == 6152116144 then
     PSlayer = true
+elseif placeId == 6147702473 then
+    LBA = true
+end
+
+if LBA then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/LBA.lua"))()
 end
 
 if PSlayer then
