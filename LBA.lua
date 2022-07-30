@@ -18,8 +18,46 @@ local Section4 = Tab1:CreateSection("Mics.")
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
-local Label1 = Section2:CreateLabel("UpdateText")
-Label1:UpdateText("เดียวทำ ใช้ได้ก็ใช้")
+local Dropdown3 = Section2:CreateDropdown("Select to teleports", {
+    "Old Wind",
+    "Oreo City",
+    "Kai Island",
+    "Ruffy Island",
+    "Demon Slayer Island",
+    "Mystery Island",
+    "Wolf Kingdom",
+    "Captain Roger Island",
+    "Beerus Island",
+    "Boros Spaceship",
+    "Flying Island [PVP ZONE]"
+    
+},
+function(Name)
+    local Character = game.Players.LocalPlayer.Character
+	if Name == "Old Wind" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-10373, 1879, 2436)
+	elseif Name == "Oreo City" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-11571, 1878, 846)
+	elseif Name == "Kai Island" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-2799, 2192, -1198)
+	elseif Name == "Ruffy Island" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-3258, 1903, 2494)
+	elseif Name == "Demon Slayer Island" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-5209, 1880, 4707)
+	elseif Name == "Mystery Island" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-7206, 1918, -357)
+	elseif Name == "Wolf Kingdom" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-6425, 1878, -5211)
+	elseif Name == "Captain Roger Island" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-10637, 1881, -3218)
+	elseif Name == "Beerus Island" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-17923, 1912, 6523)
+	elseif Name == "Boros Spaceship" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-13456, 2307, 7353)
+	elseif Name == "Flying Island [PVP ZONE]" then
+		Character.HumanoidRootPart.CFrame = CFrame.new(-7847, 2518, 4886)
+	end
+end)
 
 Section4:CreateToggle("God Mode",nil,function(x)
     local Character = game.Players.LocalPlayer.Character
@@ -28,7 +66,7 @@ Section4:CreateToggle("God Mode",nil,function(x)
         if Character.Humanoid.Health < 1100 then
             local args = {
                 [1] = Character.Humanoid,
-                [2] = Character.HumanoidRootPart.CFrame,
+                [2] = nil,
                 [3] = -1e9999999,
             }
             
@@ -73,7 +111,7 @@ for i,v in ipairs(game.workspace:GetDescendants()) do
                 
                 local args = {
                     [1] = Target.Humanoid,
-                    [2] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+                    [2] = nil,
                     [3] = 1e9,
                 }
                 
