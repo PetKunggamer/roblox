@@ -11,15 +11,23 @@ local Tab1 = Window:CreateTab("Main")
 local Tab2 = Window:CreateTab("UI Settings")
 
 local Section1 = Tab1:CreateSection("Farms")
-local Section2 = Tab1:CreateSection("Misc.")
+local Section2 = Tab1:CreateSection("Use Item")
+local Section3 = Tab1:CreateSection("Misc.")
 
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
 
+local Toggle1 = Section2:CreateToggle("Magic Gem", nil, function(x)
+    getgenv().Use_Magic_Gem = x
+    while getgenv().Use_Magic_Gem do wait(.05)
+    game:GetService("ReplicatedStorage").Remotes.UseItem:FireServer("Magic Gem")
+    end
+end)
+
 
 local Toggle1 = Section1:CreateToggle("Ore Farm", nil, function(x)
     
-    getgenv().ProximityPrompt_Farm = x
+getgenv().ProximityPrompt_Farm = x
     while getgenv().ProximityPrompt_Farm do wait(.05)
         for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
             if v:FindFirstChild("ProximityPrompt") then
@@ -32,7 +40,13 @@ end)
 Toggle1:AddToolTip("ไปใกล้ๆ Ores แล้วเปิด")
 
 
-local Button1 = Section2:CreateButton("Inf Jump", function()
+
+
+
+
+
+
+local Button1 = Section3:CreateButton("Inf Jump", function()
     
     game:GetService("UserInputService").JumpRequest:connect(function()
     game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
@@ -40,7 +54,7 @@ end)
 
 end)
 
-local Toggle1 = Section2:CreateToggle("Speed", nil, function(x)
+local Toggle1 = Section3:CreateToggle("Speed", nil, function(x)
 	getgenv().Speed_Hack = x
 	while getgenv().Speed_Hack do wait()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WS
@@ -48,7 +62,7 @@ local Toggle1 = Section2:CreateToggle("Speed", nil, function(x)
 end)
 
 
-local Slider1 = Section2:CreateSlider("Speed", 0,100,nil,false, function(x)
+local Slider1 = Section3:CreateSlider("Speed", 0,100,nil,false, function(x)
 	WS = x
 end)
 
