@@ -13,9 +13,71 @@ local Tab2 = Window:CreateTab("UI Settings")
 local Section1 = Tab1:CreateSection("Farms")
 local Section2 = Tab1:CreateSection("Use Item")
 local Section3 = Tab1:CreateSection("Misc.")
+local Section4 = Tab1:CreateSection("Sell Item")
 
 local UI_1 = Tab2:CreateSection("Menu")
 local UI_2 = Tab2:CreateSection("Background")
+
+local Toggle1 = Section4:CreateToggle("Blessed Gem | 100 Gem", nil, function(x)
+    getgenv().Blessed_Gem = x
+    while getgenv().Blessed_Gem do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Blessed Gem")
+    end
+end)
+
+local Toggle2 = Section4:CreateToggle("Flame Gem | 100 Gem", nil, function(x)
+    getgenv().Flame_Gem = x
+    while getgenv().Flame_Gem do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Flame Gem")
+    end
+end)
+
+local Toggle3 = Section4:CreateToggle("Frost Gem | 100 Gem", nil, function(x)
+    getgenv().Frost_Gem = x
+    while getgenv().Frost_Gem do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Frost Gem")
+    end
+end)
+
+local Toggle4 = Section4:CreateToggle("Thunder Gem | 100 Gem", nil, function(x)
+    getgenv().Thunder_Gem = x
+    while getgenv().Thunder_Gem do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Thunder Gem")
+    end
+end)
+
+local Toggle5 = Section4:CreateToggle("Emerald | 25 Gem", nil, function(x)
+    getgenv().Emerald = x
+    while getgenv().Emerald do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Emerald")
+    end
+end)
+
+local Toggle6 = Section4:CreateToggle("Diamond | 25 Gem", nil, function(x)
+    getgenv().Diamond = x
+    while getgenv().Diamond do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Diamond")
+    end
+end)
+
+local Toggle7 = Section4:CreateToggle("Gold | 100 Coin", nil, function(x)
+    getgenv().Gold = x
+    while getgenv().Gold do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Gold")
+    end
+end)
+
+local Toggle8 = Section4:CreateToggle("Iron | 100 Coin", nil, function(x)
+    getgenv().Iron = x
+    while getgenv().Iron do wait(.15)
+        game:GetService("ReplicatedStorage").Remotes.Sell:FireServer("Iron")
+    end
+end)
+
+
+
+
+
 
 local Toggle1 = Section2:CreateToggle("Magic Gem", nil, function(x)
     getgenv().Use_Magic_Gem = x
@@ -65,20 +127,6 @@ end)
 local Slider1 = Section3:CreateSlider("Speed", 0,100,nil,false, function(x)
 	WS = x
 end)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 local Toggle3 = UI_1:CreateToggle("UI Toggle", nil, function(State)
 	Window:Toggle(State)
