@@ -1,6 +1,8 @@
 repeat
-    wait()
+    wait(3)
 until game:IsLoaded()
+
+getgenv().JobId = "91f0a1f3-4c46-4448-b7e5-bd1ad0c8df74"
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local placeId = game.PlaceId
@@ -94,11 +96,7 @@ function Character_Create()
                     )
                     FinishCreation:InvokeServer()
                     wait(2.5)
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(
-                        10495850838,
-                        JobId_,
-                        game.Players.LocalPlayer
-                    )
+                    game:GetService("TeleportService"):Teleport(10495850838, LocalPlayer)
                 else
                     local Stat = {"Strength", "Fortitude", "Agility", "Intelligence", "Willpower", "Charisma"}
                     for i, v in pairs(Stat) do
@@ -123,10 +121,8 @@ function The_End()
             if Self_hrp then
                 local Dist = (Self.HumanoidRootPart.Position - hrp.Position).magnitude
                 if Dist < 400 then
-                    hrp.CFrame = Self.HumanoidRootPart.CFrame * CFrame.new(0, 3, 0)
-                    wait(.25)
                     while true do
-                        wait(.25)
+                        hrp.CFrame = Self.HumanoidRootPart.CFrame * CFrame.new(0, 3, 0)
                         fireproximityprompt(game:GetService("Workspace").NPCs.Self.InteractPrompt)
                         VirtualInputManager:SendKeyEvent(true, "One", false, game)
                     end
@@ -162,31 +158,40 @@ elseif placeId == 10495850838 then
     print("CheckLoading is done..")
     wait(1)
     print("The_End is running...")
+    if game.JobId == JobId then
+        print("Match JobId")
+        create_notification(
+            "Server Notification",
+            "Copy JobId from Discord",
+            nil,
+            function()
+                GetJobId()
+            end,
+            "Get JobId",
+            "No"
+        )
 
-    create_notification(
-        "Server Notification",
-        "Copy JobId from Discord",
-        nil,
-        function()
-            GetJobId()
-        end,
-        "Get JobId",
-        "No"
-    )
-
-    create_notification(
-        "Depth Farm",
-        "Stop or continue",
-        nil,
-        function()
-            _G.The_End = false
-        end,
-        "Stop",
-        "Continue"
-    )
-    _G.The_End = not _G.The_End
-    while _G.The_End do
-        wait(.25)
-        The_End()
+        create_notification(
+            "Depth Farm",
+            "Stop or continue",
+            nil,
+            function()
+                _G.The_End = false
+            end,
+            "Stop",
+            "Continue"
+        )
+        _G.The_End = not _G.The_End
+        while _G.The_End do
+            pcall(
+                function()
+                    wait(.25)
+                    The_End()
+                end
+            )
+        end
+    else
+        print("Changer Server")
+        game:GetService("TeleportService"):TeleportToPlaceInstance(10495850838, JobId, game.Players.LocalPlayer)
     end
 end
