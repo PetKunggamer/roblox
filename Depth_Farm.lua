@@ -158,8 +158,8 @@ elseif placeId == 10495850838 then
     print("CheckLoading is done..")
     wait(1)
     print("The_End is running...")
-    if game.JobId == JobId then
-        print("Match JobId")
+    wait(1)
+    print("Match JobId")
         create_notification(
             "Server Notification",
             "Copy JobId from Discord",
@@ -170,7 +170,7 @@ elseif placeId == 10495850838 then
             "Get JobId",
             "No"
         )
-
+    if game.JobId == JobId then
         create_notification(
             "Depth Farm",
             "Stop or continue",
