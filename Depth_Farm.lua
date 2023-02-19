@@ -183,7 +183,7 @@ elseif placeId == 10495850838 then
         while _G.The_End do
             pcall(
                 function()
-                    wait(.25)
+                    wait(.75)
                     The_End()
                 end
             )
