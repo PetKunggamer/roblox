@@ -180,10 +180,9 @@ elseif placeId == 10495850838 then
             "Continue"
         )
         _G.The_End = not _G.The_End
-        while _G.The_End do
+        while _G.The_End do wait(.75)
             pcall(
                 function()
-                    wait(.75)
                     The_End()
                 end
             )
