@@ -119,7 +119,7 @@ function The_End()
             if Self_hrp then
                 local Dist = (Self.HumanoidRootPart.Position - hrp.Position).magnitude
                 if Dist < 400 then
-                    while true do
+                    while true do wait(.25)
                         hrp.CFrame = Self.HumanoidRootPart.CFrame * CFrame.new(0, 3, 0)
                         fireproximityprompt(game:GetService("Workspace").NPCs.Self.InteractPrompt)
                         VirtualInputManager:SendKeyEvent(true, "One", false, game)
@@ -180,7 +180,7 @@ elseif placeId == 10495850838 then
             "Continue"
         )
         _G.The_End = not _G.The_End
-        while _G.The_End do wait(.75)
+        while _G.The_End do wait(.25)
             pcall(
                 function()
                     The_End()
