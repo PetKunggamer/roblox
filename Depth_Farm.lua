@@ -2,8 +2,6 @@ repeat
     wait(3)
 until game:IsLoaded()
 
-getgenv().JobId = ""
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local placeId = game.PlaceId
 function GetJobId()
