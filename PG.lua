@@ -91,9 +91,58 @@ local MyButton3 = Main_box:AddButton('Check Bank', function()
     
 end)
 
-
-
 local Main_box = Tabs.Main:AddLeftGroupbox('Farming')
+
+
+Main_box:AddToggle('ATK', {
+    Text = 'Auto attack',
+    Default = false, -- Default value (true / false)
+})
+
+
+Toggles.ATK:OnChanged(function()
+    
+    function atk_mob()
+    local Char = game.Players.LocalPlayer.Character
+    local hrp = Char:FindFirstChild("HumanoidRootPart")
+    local mob = game:GetService("Workspace").Mobs
+    for i, v in ipairs(mob:GetDescendants()) do
+        if v:IsA("Model") then
+            local target_humanoid = v:FindFirstChildOfClass("Humanoid")
+            if target_humanoid then
+                if target_humanoid.Health > 0 then
+                    if hrp then
+                        local target = v:FindFirstChild("HumanoidRootPart")
+                        if target then
+                            if (v.HumanoidRootPart.Position - hrp.Position).magnitude < 50 then
+                                local Ch = game:GetService("Players").LocalPlayer.Character
+                                for i,v in ipairs(Ch:GetDescendants()) do
+                                    if v:IsA("Tool") then
+                                        local Slash = v:FindFirstChild("Slash")
+                                        if Slash then
+                                            Slash:FireServer(1)
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+    _G.attack = Toggles.ATK.Value
+    
+    while _G.attack do wait()
+        atk_mob()
+    end
+end)
+
+Toggles.ATK:SetValue(false)
+
+
 Main_box:AddToggle('MyToggle', {
     Text = 'Semi God',
     Default = false, -- Default value (true / false)
