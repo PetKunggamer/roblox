@@ -17,6 +17,13 @@ elseif placeId == 6147702473 then
     LBA = true
 elseif placeId == 9417197334 then
     Anime_story = true
+elseif placeId == 6735572261 then
+    PG = true
+end
+
+if PG then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PG.lua"))()
 end
 
 if Anime_story then
