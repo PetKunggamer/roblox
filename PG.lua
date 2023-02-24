@@ -124,58 +124,100 @@ end)
 
 local Main_box = Tabs.Main:AddLeftGroupbox('The Bank')
 
+Main_box:AddToggle('Deposit', {
+    Text = 'Auto Deposit',
+    Default = false,
+})
+
+
+Toggles.Deposit:OnChanged(function()
+    _G.Deposit = Toggles.Deposit.Value
+    
+    while _G.Deposit do wait()
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(true,1)
+    end
+end)
+
+Toggles.Deposit:SetValue(false)
+
+
 local MyButton = Main_box:AddButton('Deposit All', function()
-        local args = {
-        [1] = true,
-        [2] = 1
-    }
-    
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(unpack(args))
-    
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(true,1)
 end)
 
 local MyButton2 = MyButton:AddButton('Withdraw All', function()
-        local args = {
-        [1] = false,
-        [2] = 1
-    }
-    
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(unpack(args))
-    
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(false,1)
 end)
 
-local MyButton3 = Main_box:AddButton('Check Bank', function()
-    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
-    local Gold_check = PlayerGui.ScreenGui.Gold.Gold
-    local Gold = string.match(Gold_check.Text, "%d+")
-
-        game:GetService("StarterGui"):SetCore(
-        "SendNotification",
-        {
-            Title = "The Bank",
-            Text = tostring(game:GetService("Players").LocalPlayer.PlayerStats.Bank.Value),
-            Duration = 5
-        }
-    )
-    
-    
+local MyButton3 = Main_box:AddButton('Bank', function()
+        game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Bank.Visible = true
 end)
 
 
-
-Options.KeyPicker:SetValue({ 'G', 'Toggle' }) -- Sets keybind to MB2, mode to Hold
+Options.KeyPicker:SetValue({ 'Y', 'Toggle' }) -- Sets keybind to MB2, mode to Hold
 
 
 local Main_box = Tabs.Main:AddRightGroupbox('Misc')
+
 local MyButton2 = Main_box:AddButton('Equipment', function()
-    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Equipment.Visible = true
+    for i,v in ipairs(game:GetService("Workspace").Map.CloudCity:GetDescendants()) do
+        if v:IsA("ProximityPrompt") then
+            fireproximityprompt(v)
+        end
+    end
 end)
 
-local MyButton3 = MyButton2:AddButton('Bank', function()
-    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Bank.Visible = true
+local MyButton3 = MyButton2:AddButton('Reforge', function()
+    fireproximityprompt(game:GetService("Workspace").NPCs["Tilly"].HumanoidRootPart.DialogClick)
+end)
+
+local MyButton = Main_box:AddButton('Mirror', function()
+
+local Mirror = game:GetService("Workspace").Mirrors
+for i,v in ipairs(Mirror:GetDescendants()) do
+    if v:IsA("ProximityPrompt") then
+        fireproximityprompt(v)
+    end
+end
+    
+local X = game:GetService("Workspace").Mirrors.Prairie:GetChildren()[3].ProximityPrompt
+fireproximityprompt(X)
 end)
 
 
+local Race = Tabs.Main:AddRightGroupbox('Race')
+
+local MyButton = Race:AddButton('Ice Imp', function()
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill"):FireServer("Reaper")
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill"):FireServer("Ice")
+end)
+
+local MyButton1 = MyButton:AddButton('Vampire', function()
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill"):FireServer("Reaper")
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill"):FireServer("Vampire")
+end)
+
+local Gem_Quest = Tabs.Main:AddRightGroupbox('Farming Gem')
+
+local NPC = Gem_Quest:AddButton('Get Quest', function()
+    fireproximityprompt(game:GetService("Workspace").NPCs["Scampi"].HumanoidRootPart.DialogClick)
+end)
+
+local MyButton1 = Gem_Quest:AddButton('The Patris', function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3179, 35, -4474)
+end)
+
+local MyButton2 = MyButton1:AddButton('King Sandpod', function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(158, -20, -2250)
+end)
+
+local MyButton3 = Gem_Quest:AddButton('Granny', function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1357, 25, -3522)
+end)
+
+local MyButton4 = MyButton3:AddButton('Big Fish', function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-374, -27, -2585)
+end)
 
 Library:SetWatermarkVisibility(false)
 
