@@ -27,120 +27,9 @@ local Tabs = {
 
 -- Groupbox and Tabbox inherit the same functions
 -- except Tabboxes you have to call the functions on a tab (Tabbox:AddTab(name))
-local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
-local Gold_check = PlayerGui.ScreenGui.Gold.Gold
-local Gold = string.match(Gold_check.Text, "%d+")
-print(Gold)
 
-local Main_box = Tabs.Main:AddLeftGroupbox('The Bank')
-
--- Tabboxes are a tiny bit different, but here's a basic example:
---[[
-local TabBox = Tabs.Main:AddLeftTabbox() -- Add Tabbox on left side
-local Tab1 = TabBox:AddTab('Tab 1')
-local Tab2 = TabBox:AddTab('Tab 2')
--- You can now call AddToggle, etc on the tabs you added to the Tabbox
-]]
-
--- Groupbox:AddToggle
--- Arguments: Index, Options
-
--- This should print to the console: "My toggle state changed! New value: false"
-
--- Groupbox:AddButton
--- Arguments: Text, Callback
-
-local MyButton = Main_box:AddButton('Deposit All', function()
-        local args = {
-        [1] = true,
-        [2] = 1
-    }
-    
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(unpack(args))
-    
-end)
-
--- Button:AddButton
--- Arguments: Text, Callback
--- Adds a sub button to the side of the main button
-
-local MyButton2 = MyButton:AddButton('Withdraw All', function()
-        local args = {
-        [1] = false,
-        [2] = 1
-    }
-    
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(unpack(args))
-    
-end)
-
-local MyButton3 = Main_box:AddButton('Check Bank', function()
-    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
-    local Gold_check = PlayerGui.ScreenGui.Gold.Gold
-    local Gold = string.match(Gold_check.Text, "%d+")
-
-        game:GetService("StarterGui"):SetCore(
-        "SendNotification",
-        {
-            Title = "The Bank",
-            Text = tostring(game:GetService("Players").LocalPlayer.PlayerStats.Bank.Value),
-            Duration = 5
-        }
-    )
-    
-    
-end)
 
 local Main_box = Tabs.Main:AddLeftGroupbox('Farming')
-
-
-Main_box:AddToggle('ATK', {
-    Text = 'Auto attack',
-    Default = false, -- Default value (true / false)
-})
-
-
-Toggles.ATK:OnChanged(function()
-    
-    function atk_mob()
-    local Char = game.Players.LocalPlayer.Character
-    local hrp = Char:FindFirstChild("HumanoidRootPart")
-    local mob = game:GetService("Workspace").Mobs
-    for i, v in ipairs(mob:GetDescendants()) do
-        if v:IsA("Model") then
-            local target_humanoid = v:FindFirstChildOfClass("Humanoid")
-            if target_humanoid then
-                if target_humanoid.Health > 0 then
-                    if hrp then
-                        local target = v:FindFirstChild("HumanoidRootPart")
-                        if target then
-                            if (v.HumanoidRootPart.Position - hrp.Position).magnitude < 50 then
-                                local Ch = game:GetService("Players").LocalPlayer.Character
-                                for i,v in ipairs(Ch:GetDescendants()) do
-                                    if v:IsA("Tool") then
-                                        local Slash = v:FindFirstChild("Slash")
-                                        if Slash then
-                                            Slash:FireServer(1)
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-    _G.attack = Toggles.ATK.Value
-    
-    while _G.attack do wait()
-        atk_mob()
-    end
-end)
-
-Toggles.ATK:SetValue(false)
 
 
 Main_box:AddToggle('MyToggle', {
@@ -188,9 +77,6 @@ Main_box:AddLabel('TP Mob (ฺBack)'):AddKeyPicker('KeyPicker', {
     NoUI = false, -- Set to true if you want to hide from the Keybind menu,
 })
 
-Options.KeyPicker:OnClick(function()
-    print('Keybind clicked!', Options.KeyPicker.Value)
-end)
 
 function back_mob()
     local Char = game.Players.LocalPlayer.Character
@@ -207,6 +93,15 @@ function back_mob()
                             if (v.HumanoidRootPart.Position - hrp.Position).magnitude < 50 then
                                 hrp.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, Distance)
                                 hrp.Velocity = Vector3.new(0, 0, 0)
+                                local Ch = game:GetService("Players").LocalPlayer.Character
+                                for i,v in ipairs(Ch:GetDescendants()) do
+                                    if v:IsA("Tool") then
+                                        local Slash = v:FindFirstChild("Slash")
+                                        if Slash then
+                                            Slash:FireServer(1)
+                                        end
+                                    end
+                                end
                             end
                         end
                     end
@@ -217,26 +112,69 @@ function back_mob()
 end
 
 
-
-
-
-
-
-
-
 task.spawn(function()
     while true do wait()
-        -- example for checking if a keybind is being pressed
         local state = Options.KeyPicker:GetState()
         if state then
             back_mob()
         end
-
         if Library.Unloaded then break end
     end
 end)
 
+local Main_box = Tabs.Main:AddLeftGroupbox('The Bank')
+
+local MyButton = Main_box:AddButton('Deposit All', function()
+        local args = {
+        [1] = true,
+        [2] = 1
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(unpack(args))
+    
+end)
+
+local MyButton2 = MyButton:AddButton('Withdraw All', function()
+        local args = {
+        [1] = false,
+        [2] = 1
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bank"):InvokeServer(unpack(args))
+    
+end)
+
+local MyButton3 = Main_box:AddButton('Check Bank', function()
+    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
+    local Gold_check = PlayerGui.ScreenGui.Gold.Gold
+    local Gold = string.match(Gold_check.Text, "%d+")
+
+        game:GetService("StarterGui"):SetCore(
+        "SendNotification",
+        {
+            Title = "The Bank",
+            Text = tostring(game:GetService("Players").LocalPlayer.PlayerStats.Bank.Value),
+            Duration = 5
+        }
+    )
+    
+    
+end)
+
+
+
 Options.KeyPicker:SetValue({ 'G', 'Toggle' }) -- Sets keybind to MB2, mode to Hold
+
+
+local Main_box = Tabs.Main:AddRightGroupbox('Misc')
+local MyButton2 = Main_box:AddButton('Equipment', function()
+    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Equipment.Visible = true
+end)
+
+local MyButton3 = MyButton2:AddButton('Bank', function()
+    game:GetService("Players").LocalPlayer.PlayerGui.ScreenGui.Bank.Visible = true
+end)
+
 
 
 Library:SetWatermarkVisibility(false)
