@@ -89,7 +89,7 @@ function back_mob()
                 if target_humanoid.Health > 0 then
                     if hrp then
                         local target = v:FindFirstChild("HumanoidRootPart")
-                        if target then
+                        if target and v.Name ~= "Test Dummy" and v.Name ~= "Mech Dummy" and v.Name ~= "Mini Thief"  and v.Name ~= "Elite Defender" then
                             if (v.HumanoidRootPart.Position - hrp.Position).magnitude < 50 then
                                 hrp.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, Distance)
                                 hrp.Velocity = Vector3.new(0, 0, 0)
@@ -156,6 +156,31 @@ end)
 
 Options.KeyPicker:SetValue({ 'Y', 'Toggle' }) -- Sets keybind to MB2, mode to Hold
 
+local Mining = Tabs.Main:AddLeftGroupbox('Ore TP')
+
+Mining:AddDropdown('MyDropdown', {
+    Values = {nil, 'Tin', 'Zinc', 'Copper', 'Sulfur', 'Iron', 'Demetal', 'Mithril', 'Sapphire', 'Ruby', 'Emerald', 'Diamond'},
+    Default = 1, -- number index of the value / string
+    Multi = false, -- true / false, allows multiple choices to be selected
+
+    Text = '',
+})
+
+Options.MyDropdown:OnChanged(function()
+    function Ore_TP(Ore)
+        local Ores = game:GetService("Workspace").Ores
+        for i,v in ipairs(Ores:GetDescendants()) do
+            if v.Name == Ore then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+            end
+        end
+    end
+    Ore_TP(Options.MyDropdown.Value)
+end)
+
+
+
+
 
 local Main_box = Tabs.Main:AddRightGroupbox('Misc')
 
@@ -179,9 +204,35 @@ for i,v in ipairs(Mirror:GetDescendants()) do
         fireproximityprompt(v)
     end
 end
-    
-local X = game:GetService("Workspace").Mirrors.Prairie:GetChildren()[3].ProximityPrompt
-fireproximityprompt(X)
+    fireproximityprompt(game:GetService("Workspace").Mirrors.Prairie:GetChildren()[3].ProximityPrompt)
+end)
+
+local Camera = MyButton:AddButton('Camera', function()
+    function Camera()
+    local sc = (debug and debug.setconstant) or setconstant
+    local gc = (debug and debug.getconstants) or getconstants
+    if not sc or not getgc or not gc then
+        return notify(
+            "Incompatible Exploit",
+            "Your exploit does not support this command (missing setconstant or getconstants or getgc)"
+        )
+    end
+    local pop = game.Players.LocalPlayer.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper
+    for _, v in pairs(getgc()) do
+        if type(v) == "function" and getfenv(v).script == pop then
+            for i, v1 in pairs(gc(v)) do
+                if tonumber(v1) == .25 then
+                    sc(v, i, 0)
+                elseif tonumber(v1) == 0 then
+                end
+            end
+        end
+    end
+    game.Players.LocalPlayer.CameraMaxZoomDistance = 1e9
+end
+
+Camera()
+
 end)
 
 
