@@ -13,7 +13,7 @@ local Window = Library:CreateWindow({
     -- Position and Size are also valid options here
     -- but you do not need to define them unless you are changing them :)
 
-    Title = 'Digimon Digital Monsters',
+    Title = 'Syn0xz hub [Digimon Digital Monsters]',
     Center = true, 
     AutoShow = true,
 })
@@ -41,7 +41,7 @@ Toggles.MyToggle:OnChanged(function()
 _G.Auto_Skill = Toggles.MyToggle.Value
 
 
-while _G.Auto_Skill do wait()
+while _G.Auto_Skill do wait(.25)
     for i,v in ipairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
         if v:IsA("Tool") then
             v:Activate()
@@ -71,7 +71,7 @@ Toggles.MyToggle2:OnChanged(function()
 
 _G.BreakAnim = Toggles.MyToggle2.Value
 
-while _G.BreakAnim do wait(.25)
+while _G.BreakAnim do wait()
     for i,v in ipairs(game:GetService("Players").LocalPlayer.Backpack:GetDescendants()) do
         if v.Name == "Attacking" then
             v:Destroy()
