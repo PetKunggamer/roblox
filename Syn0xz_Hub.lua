@@ -19,6 +19,13 @@ elseif placeId == 9417197334 then
     Anime_story = true
 elseif placeId == 6735572261 then
     PG = true
+elseif placeId == 14069122388 then
+    Type_Soul = true
+end
+
+if Type_Soul then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Type_Soul.lua"))()
 end
 
 if PG then
