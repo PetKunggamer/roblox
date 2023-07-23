@@ -29,6 +29,7 @@ tgls:Toggle(
             if v:FindFirstChild("ESP_Jackal") then
             else
             Notify("Jackal Has Spawned!")
+            game:GetService("ReplicatedStorage").Assets.Sounds["za water"]:Play()
             local BillboardGui = Instance.new("BillboardGui",v)
             BillboardGui.Name = "ESP_Jackal"
             BillboardGui.Size = UDim2.new(10,0, 10,0)
@@ -74,6 +75,7 @@ tgls:Toggle(
             if v:FindFirstChild("ESP_Fishbone") then
             else
             Notify("Fishbone Has Spawned!")
+            game:GetService("ReplicatedStorage").Assets.Sounds["za water"]:Play()
             local BillboardGui = Instance.new("BillboardGui",v)
             BillboardGui.Name = "ESP_Fishbone"
             BillboardGui.Size = UDim2.new(10,0, 10,0)
