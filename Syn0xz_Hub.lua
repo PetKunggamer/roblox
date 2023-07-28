@@ -19,7 +19,7 @@ elseif placeId == 9417197334 then
     Anime_story = true
 elseif placeId == 6735572261 then
     PG = true
-elseif placeId == 14069122388 then
+elseif placeId == 14069122388 or placeId == 14069678431 then
     Type_Soul = true
 end
 
