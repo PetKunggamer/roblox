@@ -1,6 +1,6 @@
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
-    Title = "Hueco Mundo";
+    Title = "Fire Force";
     Text = Text;
     Duration = "300";
     Button1 = "Done!";
@@ -87,6 +87,42 @@ tgls:Toggle("Notify ShoNPC", false, function(bool)
         else
             DestroyESPMob("ShoNPC")
         end
+    end
+end)
+
+tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
+    _G.Instant = bool
+    while _G.Instant do wait()
+        for i,v in ipairs(workspace.Alive:GetChildren()) do
+    local target = v:FindFirstChild("HumanoidRootPart")
+    if target then
+        local dist = game.Players.LocalPlayer:DistanceFromCharacter(target.Position)
+        if dist < 40 and v.Name ~= game.Players.LocalPlayer.Character.Name then
+            local CombatFolder = v:FindFirstChild("CombatFolder")
+            if CombatFolder then
+                local playerDmg = CombatFolder:FindFirstChild(game.Players.LocalPlayer.Character.Name)
+                if playerDmg then
+                    local Hum = v:FindFirstChild("Humanoid")
+                    local Hum_Percent = Hum.Health / Hum.MaxHealth * 100
+                    if Hum then
+                        if v.Name == "ShoNPC" then
+                            if playerDmg.Value >= 200 then
+                                print(Hum_Percent)
+                                Hum.Health = 0
+                            end
+                        else
+                            if not v.Name == "ShoNPC" then
+                                if Hum_Percent < 80 then
+                                    Hum.Health = 0
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    end
     end
 end)
 
