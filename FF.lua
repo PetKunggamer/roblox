@@ -1,6 +1,6 @@
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
-    Title = "Fire Force";
+    Title = "Hueco Mundo";
     Text = Text;
     Duration = "300";
     Button1 = "Done!";
@@ -65,9 +65,10 @@ end
 local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord"))()
 local win = DiscordLib:Window("discord library")
 local serv = win:Server("Preview", "")
-local tgls = serv:Channel("ESP and Notify")
+local tgls = serv:Channel("Main")
+local stat = serv:Channel("Stat")
 
-tgls:Toggle("Notify Infernal Demon", true, function(bool)
+tgls:Toggle("Notify Infernal Demon", false, function(bool)
     _G.Infernal = bool
     while _G.Infernal do wait()
         if _G.Infernal then
@@ -78,7 +79,7 @@ tgls:Toggle("Notify Infernal Demon", true, function(bool)
     end
 end)
 
-tgls:Toggle("Notify ShoNPC", true, function(bool)
+tgls:Toggle("Notify ShoNPC", false, function(bool)
     _G.ShoNPC = bool
     while _G.ShoNPC do wait()
         if _G.ShoNPC then
@@ -131,6 +132,17 @@ tgls:Button(
     until Server
 
     TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+end)
+
+stat:Toggle("Strenght Button Yhai Ned Noi", false, function(bool)
+    _G.B = bool
+    while _G.B do task.wait()
+    local CB = game:GetService("Players").LocalPlayer.PlayerGui.TrainingGui.KeyArea:FindFirstChild("ClickButton")
+        if CB then
+            CB.Size = UDim2.new(4,5,6,7)
+            CB.Position = UDim2.new{-1,-1,-1,-1}
+        end
+    end
 end)
 
 serv:Channel("by Śʏɴ0xž")
