@@ -1,6 +1,6 @@
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
-    Title = "Hueco Mundo";
+    Title = "Fire Force";
     Text = Text;
     Duration = "300";
     Button1 = "Done!";
@@ -93,6 +93,7 @@ end)
 tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
     _G.Instant = bool
     while _G.Instant do wait()
+    pcall(function()
     for i,v in ipairs(workspace.Alive:GetChildren()) do
     local target = v:FindFirstChild("HumanoidRootPart")
     if target then
@@ -111,10 +112,8 @@ tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
                                 Hum.Health = 0
                             end
                         else
-                            if not v.Name == "ShoNPC" then
-                                if Hum_Percent < 80 then
-                                    Hum.Health = 0
-                                end
+                            if Hum_Percent < 80 then
+                                Hum.Health = 0
                             end
                         end
                     end
@@ -123,6 +122,7 @@ tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
         end
     end
     end
+    end)
     end
 end)
 
