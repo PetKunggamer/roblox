@@ -1,3 +1,12 @@
+function Notify(Text)
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Hueco Mundo";
+    Text = Text;
+    Duration = "300";
+    Button1 = "Done!";
+})
+end
+
 -- Function to create ESP for a specific mob
 function CreateESP(Mob_Name)
     for __, v in pairs(workspace.Alive:GetChildren()) do
@@ -32,6 +41,7 @@ function CreateESP(Mob_Name)
                 end
 
                 v.Humanoid.Changed:Connect(UpdateHealth)
+                Notify(Mob_Name .. " ESP has been added.")
 
                 -- Store the ESP elements in separate tables based on the mob name
                 _G.ESPElements = _G.ESPElements or {}
