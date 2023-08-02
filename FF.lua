@@ -1,6 +1,6 @@
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
-    Title = "Fire Force";
+    Title = "Hueco Mundo";
     Text = Text;
     Duration = "300";
     Button1 = "Done!";
@@ -93,7 +93,7 @@ end)
 tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
     _G.Instant = bool
     while _G.Instant do wait()
-        for i,v in ipairs(workspace.Alive:GetChildren()) do
+    for i,v in ipairs(workspace.Alive:GetChildren()) do
     local target = v:FindFirstChild("HumanoidRootPart")
     if target then
         local dist = game.Players.LocalPlayer:DistanceFromCharacter(target.Position)
@@ -102,7 +102,7 @@ tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
             if CombatFolder then
                 local playerDmg = CombatFolder:FindFirstChild(game.Players.LocalPlayer.Character.Name)
                 if playerDmg then
-                    local Hum = v:FindFirstChild("Humanoid")
+                    local Hum = v:FindFirstChildOfClass("Humanoid")
                     local Hum_Percent = Hum.Health / Hum.MaxHealth * 100
                     if Hum then
                         if v.Name == "ShoNPC" then
