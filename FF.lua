@@ -1,6 +1,6 @@
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
-    Title = "Fire Force";
+    Title = "Syn0xz Hub";
     Text = Text;
     Duration = "300";
     Button1 = "Done!";
@@ -66,7 +66,8 @@ local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bl
 local win = DiscordLib:Window("discord library")
 local serv = win:Server("Preview", "")
 local tgls = serv:Channel("Main")
-local stat = serv:Channel("Stat")
+local stat = serv:Channel("Helpful Stat")
+local tp = serv:Channel("Teleport")
 
 tgls:Toggle("Notify Infernal Demon", false, function(bool)
     _G.Infernal = bool
@@ -178,6 +179,17 @@ stat:Toggle("Strenght Button Yhai Ned Noi", false, function(bool)
             CB.Size = UDim2.new(4,5,6,7)
             CB.Position = UDim2.new{-1,-1,-1,-1}
         end
+    end
+end)
+
+
+tp:Button(
+    "Business Man",
+    function()
+    if workspace.LiveNPCS:FindFirstChild("Business Man") then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.LiveNPCS["Business Man"].CFrame
+    else
+        Notify("Not Spawn Yet")
     end
 end)
 
