@@ -1,112 +1,96 @@
+-- Function to show notifications
 function Notify(Text)
-game.StarterGui:SetCore("SendNotification", {
-    Title = "Hueco Mundo";
-    Text = Text;
-    Duration = "300";
-    Button1 = "Done!";
-})
+    game:GetService("ReplicatedStorage").Assets.Sounds["za water"]:Play()
+    game.StarterGui:SetCore("SendNotification", {
+        
+        Title = "Hueco Mundo",
+        Text = Text,
+        Duration = 3,
+        Button1 = "Done!",
+    })
 end
 
-local DiscordLib =
-    loadstring(game:HttpGet "https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord")()
+-- Function to create ESP for a specific mob
+function CreateESP(Mob_Name)
+    for __, v in pairs(game.workspace.Entities:GetChildren()) do
+        if v.Name:find(Mob_Name) then
+            local ESP_DETECTED = v:FindFirstChild(Mob_Name.."_ESP")
+            if ESP_DETECTED then
+                print("Already added ESP to mob")
+            else
+                local BillboardGui = Instance.new("BillboardGui", v)
+                BillboardGui.Name = Mob_Name.."_ESP"
+                BillboardGui.Size = UDim2.new(10, 0, 10, 0)
+                BillboardGui.AlwaysOnTop = true
 
+                local Frame = Instance.new("Frame", BillboardGui)
+                Frame.Size = UDim2.new(1, 0, 1, 0)
+                Frame.BackgroundTransparency = 0.5
+                Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+
+                local TextLabel = Instance.new("TextLabel", Frame)
+                TextLabel.Size = UDim2.new(1, 0, 0.5, 0)
+                TextLabel.Position = UDim2.new(0, 0, 0.5, 0)
+                TextLabel.BackgroundTransparency = 1
+                TextLabel.Font = Enum.Font.SourceSansBold
+                TextLabel.TextSize = 18
+                TextLabel.Text = Mob_Name .. "\nHealth: " .. tostring(v.Humanoid.Health)
+                TextLabel.TextColor3 = Color3.new(1, 1, 1)
+                TextLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
+                TextLabel.TextStrokeTransparency = 0.5
+
+                local function UpdateHealth()
+                    TextLabel.Text = Mob_Name .. "\nHealth: " .. tostring(v.Humanoid.Health)
+                end
+
+                v.Humanoid.Changed:Connect(UpdateHealth)
+                Notify(Mob_Name .. " ESP has been added.")
+
+                -- Store the ESP elements in separate tables based on the mob name
+                _G.ESPElements = _G.ESPElements or {}
+                _G.ESPElements[Mob_Name] = _G.ESPElements[Mob_Name] or {}
+                table.insert(_G.ESPElements[Mob_Name], BillboardGui)
+            end
+        end
+    end
+end
+
+-- Function to destroy ESP elements for a specific mob
+function DestroyESPMob(Mob_Name)
+    if _G.ESPElements and _G.ESPElements[Mob_Name] then
+        for _, esp in ipairs(_G.ESPElements[Mob_Name]) do
+            esp:Destroy()
+        end
+        _G.ESPElements[Mob_Name] = nil
+    end
+end
+
+local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord"))()
 local win = DiscordLib:Window("discord library")
-
 local serv = win:Server("Preview", "")
-
 local tgls = serv:Channel("ESP and Notify")
 
-
-tgls:Toggle(
-    "Notify Jackal",
-    false,
-    function(bool)
-    print(bool)
-    _G.ESP_Jackal = bool
-    while _G.ESP_Jackal do wait(.25)
-    for __,v in pairs(game.workspace.Entities:GetChildren()) do 
-        if v.Name:find("Jackal") then
-            if v:FindFirstChild("ESP_Jackal") then
-            else
-            Notify("Jackal Has Spawned!")
-            game:GetService("ReplicatedStorage").Assets.Sounds["za water"]:Play()
-            local BillboardGui = Instance.new("BillboardGui",v)
-            BillboardGui.Name = "ESP_Jackal"
-            BillboardGui.Size = UDim2.new(10,0, 10,0)
-            BillboardGui.AlwaysOnTop = true
-
-            local Frame = Instance.new("Frame",BillboardGui)
-            Frame.Size = UDim2.new(1,0, 1,0)
-            Frame.BackgroundTransparency = 1
-            Frame.BorderSizePixel = 0
-            Frame.BackgroundColor3 = Color3.new(0, 255, 0)
-
-            local TextLabel = Instance.new("TextLabel",Frame)
-            TextLabel.Size = UDim2.new(2,0,2,0)
-            TextLabel.BorderSizePixel = 0
-            TextLabel.TextSize = 20
-            TextLabel.Text = "Jackal"
-            TextLabel.TextColor3 = Color3.new(0, 255, 0)
-            TextLabel.BackgroundTransparency = 1
-            end
+tgls:Toggle("Notify Jackal", false, function(bool)
+    _G.Jackal = bool
+    while _G.Jackal do wait()
+        if _G.Jackal then
+            CreateESP("Jackal")
+        else
+            DestroyESPMob("Jackal")
         end
     end
-
-    if not _G.ESP_Jackal then
-        for __,v in pairs(game.workspace.Entities:GetDescendants()) do
-            if v.Name == "ESP_Jackal" then
-                v:Destroy()
-            end
-        end
-    end
-end
 end)
 
-
-tgls:Toggle(
-    "Notify Fishbone",
-    false,
-    function(bool)
-    print(bool)
-    _G.ESP_Fishbone = bool
-    while _G.ESP_Fishbone do wait(.25)
-    for __,v in pairs(game.workspace.Entities:GetChildren()) do 
-        if v.Name:find("Fishbone") then
-            if v:FindFirstChild("ESP_Fishbone") then
-            else
-            Notify("Fishbone Has Spawned!")
-            game:GetService("ReplicatedStorage").Assets.Sounds["za water"]:Play()
-            local BillboardGui = Instance.new("BillboardGui",v)
-            BillboardGui.Name = "ESP_Fishbone"
-            BillboardGui.Size = UDim2.new(10,0, 10,0)
-            BillboardGui.AlwaysOnTop = true
-
-            local Frame = Instance.new("Frame",BillboardGui)
-            Frame.Size = UDim2.new(1,0, 1,0)
-            Frame.BackgroundTransparency = 1
-            Frame.BorderSizePixel = 0
-            Frame.BackgroundColor3 = Color3.new(0, 255, 0)
-
-            local TextLabel = Instance.new("TextLabel",Frame)
-            TextLabel.Size = UDim2.new(2,0,2,0)
-            TextLabel.BorderSizePixel = 0
-            TextLabel.TextSize = 20
-            TextLabel.Text = "Fishbone"
-            TextLabel.TextColor3 = Color3.new(0, 255, 0)
-            TextLabel.BackgroundTransparency = 1
-            end
+tgls:Toggle("Notify Fishbone", false, function(bool)
+    _G.Fishbone = bool
+    while _G.Fishbone do wait()
+        if _G.Fishbone then
+            CreateESP("Fishbone")
+        else
+            DestroyESPMob("Fishbone")
         end
     end
-    if not _G.ESP_Fishbone then
-        for __,v in pairs(game.workspace.Entities:GetDescendants()) do
-            if v.Name == "ESP_Fishbone" then
-                v:Destroy()
-            end
-        end
-    end
-end
 end)
 
 serv:Channel("by Śʏɴ0xž")
-
 win:Server("Main", "http://www.roblox.com/asset/?id=6031075938")
