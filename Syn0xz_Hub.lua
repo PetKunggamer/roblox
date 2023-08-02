@@ -21,6 +21,13 @@ elseif placeId == 6735572261 then
     PG = true
 elseif placeId == 14069122388 or placeId == 14069678431 then
     Type_Soul = true
+elseif placeId == 7390824960 then
+    FF = true
+end
+
+if FF then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FF.lua"))()
 end
 
 if Type_Soul then
