@@ -1,6 +1,6 @@
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
-    Title = "Hueco Mundo";
+    Title = "Fire Force";
     Text = Text;
     Duration = "300";
     Button1 = "Done!";
