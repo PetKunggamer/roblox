@@ -185,10 +185,11 @@ end)
 tp:Button(
     "Business Man",
     function()
-    if workspace.LiveNPCS:FindFirstChild("Business Man") then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.LiveNPCS["Business Man"].CFrame
+    local businessMan = workspace.LiveNPCS:FindFirstChild("Business Man")
+    if businessMan then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = businessMan.HumanoidRootPart.CFrame
     else
-        Notify("Not Spawn Yet")
+        Notify("Business Man not found.")
     end
 end)
 
