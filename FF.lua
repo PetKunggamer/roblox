@@ -1,3 +1,16 @@
+local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord"))()
+local win = DiscordLib:Window("discord library")
+local serv = win:Server("Preview", "")
+local tgls = serv:Channel("Main")
+local fact = serv:Channel("Factions")
+local stat = serv:Channel("Helpful Stat")
+local tp = serv:Channel("Teleport")
+
+function clickUiButton(v, state)
+local virtualInputManager = game:GetService('VirtualInputManager')
+	virtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
+end
+
 function Notify(Text)
 game.StarterGui:SetCore("SendNotification", {
     Title = "Syn0xz Hub";
@@ -5,11 +18,6 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = "300";
     Button1 = "Done!";
 })
-end
-
-function clickUiButton(v, state)
-local virtualInputManager = game:GetService('VirtualInputManager')
-	virtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
 end
 
 -- Function to create ESP for a specific mob
@@ -56,6 +64,33 @@ function CreateESP(Mob_Name)
     end
 end
 
+
+function Quest_Thief()
+    local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
+    if not Quest then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.LiveNPCS.Crook.ClickPart.CFrame * CFrame.new(0,0,5)
+        fireclickdetector(workspace.LiveNPCS.Crook.ClickPart.ClickDetector)
+        else
+
+        local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
+        if Quest.Visible == true and Quest.Text.Text:match("car") then
+            for i,v in ipairs(workspace.MissionItems:GetChildren()) do
+                if v.Name:find("CarModel") then
+                    fireclickdetector(v.ClickDetector)
+                end
+            end
+        end
+
+        if Quest.Visible == true and Quest.Text.Text:match("graffiti") then
+            for i,v in ipairs(workspace.MissionItems.Graffiti:GetChildren()) do
+                if v.Name:find("Part") then
+                    fireclickdetector(v.ClickDetector)
+                end
+            end
+        end
+    end
+end
+
 -- Function to destroy ESP elements for a specific mob
 function DestroyESPMob(Mob_Name)
     if _G.ESPElements and _G.ESPElements[Mob_Name] then
@@ -65,13 +100,6 @@ function DestroyESPMob(Mob_Name)
         _G.ESPElements[Mob_Name] = nil
     end
 end
-
-local DiscordLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord"))()
-local win = DiscordLib:Window("discord library")
-local serv = win:Server("Preview", "")
-local tgls = serv:Channel("Main")
-local stat = serv:Channel("Helpful Stat")
-local tp = serv:Channel("Teleport")
 
 tgls:Toggle("Notify Infernal Demon", false, function(bool)
     _G.Infernal = bool
@@ -195,26 +223,61 @@ tgls:Button("Hop Server [Low Player]",function()
     TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
 end)
 
-stat:Toggle("Strenght Button Yhai Ned Noi", false, function(bool)
-    _G.B = bool
-    while _G.B do task.wait()
-    local ClickButton = game:GetService("Players").LocalPlayer.PlayerGui.TrainingGui.KeyArea:FindFirstChild("ClickButton")
-        if ClickButton then
-            ClickButton.Size = UDim2.new(4,5,6,7)
-            ClickButton.Position = UDim2.new{-1,-1,-1,-1}
+stat:Toggle("Auto Strenghth", false, function(bool)
+
+_G.Auto_Strength = bool
+while _G.Auto_Strength do task.wait()
+    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
+        if PlayerGui then
+            local TrainingGui = PlayerGui:FindFirstChild("TrainingGui")
+            if TrainingGui then
+                local KeyArea = TrainingGui:FindFirstChild("KeyArea")
+                if KeyArea then
+                    local ClickButton = KeyArea:FindFirstChild("ClickButton")
+                    if ClickButton then
+                        clickUiButton(ClickButton, true)
+                        clickUiButton(ClickButton, false)
+                        else
+                        local TextGUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TextGUI")
+                        if TextGUI then
+                            clickUiButton(TextGUI.Frame.Accept, true)
+                            else
+                            for i,v in ipairs(workspace.Trainings.Strength:GetChildren()) do
+                                if v.Name == "StrengthTraining" then
+                                    local ClickPart = v:FindFirstChild("ClickPart")
+                                    if ClickPart then
+                                    if game.Players.LocalPlayer:DistanceFromCharacter(ClickPart.Position) < 10 then
+                                        fireclickdetector(ClickPart.ClickDetector)
+                                    end
+                                end
+                            end
+                        end
+                        end
+                    end
+                end
+            end
         end
     end
 end)
 
 
-tp:Button(
-    "Business Man",
-    function()
+tp:Button("Business Man",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Business_Man.HumanoidRootPart.CFrame
     else
         Notify("Not Spawn Yet")
+    end
+end)
+
+fact:Toggle("Theif", false, function(bool)
+    _G.Theif = bool
+    while _G.Theif do task.wait()
+    local TextGUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TextGUI")
+        if TextGUI then
+            clickUiButton(TextGUI.Frame.Accept, true)
+        end
+        Quest()
     end
 end)
 
