@@ -18,7 +18,6 @@ function CreateESP(Mob_Name)
         if v.Name:find(Mob_Name) then
             local ESP_DETECTED = v:FindFirstChild(Mob_Name.."_ESP")
             if ESP_DETECTED then
-                print("Already added ESP to mob")
             else
                 local BillboardGui = Instance.new("BillboardGui", v)
                 BillboardGui.Name = Mob_Name.."_ESP"
