@@ -7,12 +7,18 @@ game.StarterGui:SetCore("SendNotification", {
 })
 end
 
+function clickUiButton(v, state)
+local virtualInputManager = game:GetService('VirtualInputManager')
+	virtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
+end
+
 -- Function to create ESP for a specific mob
 function CreateESP(Mob_Name)
     for __, v in pairs(workspace.Alive:GetChildren()) do
         if v.Name:find(Mob_Name) then
             local ESP_DETECTED = v:FindFirstChild(Mob_Name.."_ESP")
             if ESP_DETECTED then
+                print("Already added ESP to mob")
             else
                 local BillboardGui = Instance.new("BillboardGui", v)
                 BillboardGui.Name = Mob_Name.."_ESP"
@@ -127,10 +133,7 @@ tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
 end)
 
 
-tgls:Button(
-    "Instant Kill",
-    function()
-    function Kill()
+tgls:Button("Instant Kill",function()
     for i,v in ipairs(workspace.Alive:GetChildren()) do
         local hrp_target = v:FindFirstChild("HumanoidRootPart")
         if hrp_target then
@@ -143,13 +146,36 @@ tgls:Button(
             end
         end
     end
-end
-Kill()
 end)
 
-tgls:Button(
-    "Hop Server",
-    function()
+tgls:Button("Reset Character [Escape From InCombat]",function()
+    game.Players.LocalPlayer.Character:BreakJoints()
+end)
+
+tgls:Button("Hop Server",function()
+    httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+if httprequest then
+		local servers = {}
+		local req = httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100", game.PlaceId)})
+		local body = HttpService:JSONDecode(req.Body)
+		if body and body.data then
+			for i, v in next, body.data do
+				if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= JobId then
+					table.insert(servers, 1, v.id)
+				end
+			end
+		end
+		if #servers > 0 then
+			TeleportService:TeleportToPlaceInstance(game.PlaceId, servers[math.random(1, #servers)], game.Players.LocalPlayer)
+		else
+			return notify("Serverhop", "Couldn't find a server.")
+		end
+	end
+end)
+
+tgls:Button("Hop Server [Low Player]",function()
     local Http = game:GetService("HttpService")
     local TPS = game:GetService("TeleportService")
     local Api = "https://games.roblox.com/v1/games/"
@@ -173,10 +199,10 @@ end)
 stat:Toggle("Strenght Button Yhai Ned Noi", false, function(bool)
     _G.B = bool
     while _G.B do task.wait()
-    local CB = game:GetService("Players").LocalPlayer.PlayerGui.TrainingGui.KeyArea:FindFirstChild("ClickButton")
-        if CB then
-            CB.Size = UDim2.new(4,5,6,7)
-            CB.Position = UDim2.new{-1,-1,-1,-1}
+    local ClickButton = game:GetService("Players").LocalPlayer.PlayerGui.TrainingGui.KeyArea:FindFirstChild("ClickButton")
+        if ClickButton then
+            ClickButton.Size = UDim2.new(4,5,6,7)
+            ClickButton.Position = UDim2.new{-1,-1,-1,-1}
         end
     end
 end)
@@ -185,11 +211,11 @@ end)
 tp:Button(
     "Business Man",
     function()
-    local businessMan = workspace.LiveNPCS:FindFirstChild("Business Man")
-    if businessMan then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = businessMan.HumanoidRootPart.CFrame
+    local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
+    if Business_Man then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Business_Man.HumanoidRootPart.CFrame
     else
-        Notify("Business Man not found.")
+        Notify("Not Spawn Yet")
     end
 end)
 
