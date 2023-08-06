@@ -159,6 +159,21 @@ tgls:Toggle("Auto Instant Kill [BETA]", false, function(bool)
     end
 end)
 
+tgls:Toggle("Auto Hit [BETA]", false, function(bool)
+_G.Aura_hit = bool
+    while _G.Aura_hit do wait()
+    for i = 1, 4 do
+        local args = {
+        [1] = i,
+        [2] = game:GetService("Players").LocalPlayer.Character.FistCombat,
+        [3] = CFrame.new(2970.147705078125, 838.2996215820312, 3388.07568359375, -0.9999902248382568, 1.9033340237228913e-08, -0.004418162629008293, 1.9110876436911894e-08, 1, -1.7507286287354873e-08, 0.004418162629008293, -1.7591549550388663e-08, -0.9999902248382568),
+        [4] = true
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("CombatEvent"):FireServer(unpack(args))
+    end
+    end
+end)
 
 tgls:Button("Instant Kill",function()
     for i,v in ipairs(workspace.Alive:GetChildren()) do
