@@ -261,6 +261,32 @@ while _G.Auto_Strength do task.wait()
 end)
 
 
+stat:Toggle("Auto Defense", false, function(bool)
+    _G.Defense = bool
+    while _G.Defense do wait()
+    local TextGUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TextGUI")
+    if TextGUI then
+        clickUiButton(TextGUI.Frame.Accept, true)
+        else
+            for i,v in ipairs(workspace.Trainings.Defense:GetChildren()) do
+                if v.Name == "DefenseTraining" then
+                    local ClickPart = v:FindFirstChild("ClickPart")
+                    if ClickPart then
+                    if game.Players.LocalPlayer:DistanceFromCharacter(ClickPart.Position) < 10 then
+                        fireclickdetector(ClickPart.ClickDetector)
+                    end
+                end
+            end
+        end
+    end
+        for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.TrainingGui.KeyOrder:GetChildren()) do
+           if v:IsA("Frame") then
+               game:GetService("ReplicatedStorage").Events.TrainingEvent:FireServer("Defense", v.Key.Text)
+           end
+        end
+    end
+end)
+
 tp:Button("Business Man",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
