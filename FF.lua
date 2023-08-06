@@ -3,7 +3,7 @@ local win = DiscordLib:Window("discord library")
 local serv = win:Server("Preview", "")
 local tgls = serv:Channel("Main")
 local fact = serv:Channel("Factions")
-local stat = serv:Channel("Helpful Stat")
+local helpful = serv:Channel("Helpful")
 local tp = serv:Channel("Teleport")
 
 function clickUiButton(v, state)
@@ -238,7 +238,7 @@ tgls:Button("Hop Server [Low Player]",function()
     TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
 end)
 
-stat:Toggle("Auto Strenghth", false, function(bool)
+helpful:Toggle("Auto Strenghth", false, function(bool)
 
 _G.Auto_Strength = bool
 while _G.Auto_Strength do task.wait()
@@ -276,7 +276,7 @@ while _G.Auto_Strength do task.wait()
 end)
 
 
-stat:Toggle("Auto Defense", false, function(bool)
+helpful:Toggle("Auto Defense", false, function(bool)
     _G.Defense = bool
     while _G.Defense do wait()
     local TextGUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TextGUI")
@@ -302,6 +302,13 @@ stat:Toggle("Auto Defense", false, function(bool)
     end
 end)
 
+helpful:Toggle("Auto Press G", false, function(bool)
+    _G.Auto_Key_G = bool
+    while _G.Auto_Key_G do wait(1)
+        game:GetService("VirtualInputManager"):SendKeyEvent(true,"G",false,game)
+    end
+end)
+
 tp:Button("Business Man",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
@@ -322,4 +329,4 @@ fact:Toggle("Theif", false, function(bool)
     end
 end)
 
-serv:Channel("by Śʏɴ0xž")
+serv:Channel("by Syn0xz")
