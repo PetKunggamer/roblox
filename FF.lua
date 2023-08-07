@@ -6,6 +6,44 @@ local fact = serv:Channel("Factions")
 local helpful = serv:Channel("Helpful")
 local tp = serv:Channel("Teleport")
 
+function noclip()
+    for _,noclip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if noclip:IsA("MeshPart") or noclip:IsA("Part") then
+            noclip.CanCollide = false
+        end
+    end
+end
+
+function clip()
+    for _,clip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if clip:IsA("MeshPart") or clip:IsA("Part") then
+            clip.CanCollide = false
+        end
+    end
+end
+
+local function customtwn(input, studspersecond, offset)
+   local char = game:GetService("Players").LocalPlayer.Character;
+   local input = input or error("input is nil");
+   local studspersecond = studspersecond or 1000;
+   local offset = offset or CFrame.new(0,0,0);
+   local vec3, cframe;
+
+   if typeof(input) == "table" then
+       vec3 = Vector3.new(unpack(input)); cframe = CFrame.new(unpack(input));
+   elseif typeof(input) ~= "Instance" then
+       return error("wrong format used");
+   end;
+   
+   Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/studspersecond;
+   local twn = game.TweenService:Create(char.HumanoidRootPart, TweenInfo.new(Time,Enum.EasingStyle.Linear), {CFrame = (cframe or input.CFrame) * offset});
+   twn:Play();
+   noclip()
+   twn.Completed:Wait();
+   clip()
+   game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+end;
+
 function clickUiButton(v, state)
 local virtualInputManager = game:GetService('VirtualInputManager')
 	virtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
@@ -68,7 +106,6 @@ end
 function Quest_Thief()
     local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
     if not Quest then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.LiveNPCS.Crook.ClickPart.CFrame * CFrame.new(0,0,5)
         fireclickdetector(workspace.LiveNPCS.Crook.ClickPart.ClickDetector)
         else
 
@@ -238,7 +275,7 @@ tgls:Button("Hop Server [Low Player]",function()
     TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
 end)
 
-helpful:Toggle("Auto Strenghth", false, function(bool)
+helpful:Toggle("Auto Strength", false, function(bool)
 
 _G.Auto_Strength = bool
 while _G.Auto_Strength do task.wait()
@@ -312,7 +349,7 @@ end)
 tp:Button("Business Man Teleport",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Business_Man.HumanoidRootPart.CFrame
+        customtwn(Business_Man.HumanoidRootPart, 185, CFrame.new(0,0,0));
     else
         Notify("Not Spawn Yet")
     end
@@ -321,7 +358,7 @@ end)
 tp:Button("Noru Teleport",function()
     local Noru = workspace.LiveNPCS:FindFirstChild("Noru")
     if Noru then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Noru.HumanoidRootPart.CFrame
+        customtwn(Noru.HumanoidRootPart, 185, CFrame.new(0,0,0));
     else
         Notify("Not Spawn Yet")
     end
