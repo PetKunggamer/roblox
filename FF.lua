@@ -309,10 +309,19 @@ helpful:Toggle("Auto Press G", false, function(bool)
     end
 end)
 
-tp:Button("Business Man",function()
+tp:Button("Business Man Teleport",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Business_Man.HumanoidRootPart.CFrame
+    else
+        Notify("Not Spawn Yet")
+    end
+end)
+
+tp:Button("Noru Teleport",function()
+    local Noru = workspace.LiveNPCS:FindFirstChild("Noru")
+    if Noru then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Noru.HumanoidRootPart.CFrame
     else
         Notify("Not Spawn Yet")
     end
