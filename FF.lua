@@ -6,20 +6,21 @@ local fact = serv:Channel("Factions")
 local helpful = serv:Channel("Helpful")
 local tp = serv:Channel("Teleport")
 
-function noclip()
-    for _,noclip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
-        if noclip:IsA("MeshPart") or noclip:IsA("Part") then
-            noclip.CanCollide = false
-        end
-    end
+local function noclip()
+    _G.clip = true
+    while _G.clip do task.wait()
+		if game.Players.LocalPlayer.Character ~= nil then
+			for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if child:IsA("BasePart") and child.CanCollide == true then
+					child.CanCollide = false
+				end
+			end
+		end
+	end
 end
 
 function clip()
-    for _,clip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
-        if clip:IsA("MeshPart") or clip:IsA("Part") then
-            clip.CanCollide = false
-        end
-    end
+    _G.clip = false
 end
 
 local function customtwn(input, studspersecond, offset)
