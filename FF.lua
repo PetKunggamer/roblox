@@ -6,44 +6,42 @@ local fact = serv:Channel("Factions")
 local helpful = serv:Channel("Helpful")
 local tp = serv:Channel("Teleport")
 
-local function noclip()
-    _G.clip = true
-    while _G.clip do task.wait()
-		if game.Players.LocalPlayer.Character ~= nil then
-			for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-				if child:IsA("BasePart") and child.CanCollide == true then
-					child.CanCollide = false
-				end
-			end
-		end
-	end
+function noclip()
+    for _,noclip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if noclip:IsA("MeshPart") or noclip:IsA("Part") then
+            noclip.CanCollide = false
+        end
+    end
 end
 
 function clip()
-    _G.clip = false
+    for _,clip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
+        if clip:IsA("MeshPart") or clip:IsA("Part") then
+            clip.CanCollide = false
+        end
+    end
 end
 
-local function customtwn(input, studspersecond, offset)
-   local char = game:GetService("Players").LocalPlayer.Character;
-   local input = input or error("input is nil");
-   local studspersecond = studspersecond or 1000;
-   local offset = offset or CFrame.new(0,0,0);
-   local vec3, cframe;
+local TweenService = game:GetService("TweenService")
+local Player = game:GetService("Players").LocalPlayer
+local Humanoid = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
 
-   if typeof(input) == "table" then
-       vec3 = Vector3.new(unpack(input)); cframe = CFrame.new(unpack(input));
-   elseif typeof(input) ~= "Instance" then
-       return error("wrong format used");
-   end;
-   
-   Time = (char.HumanoidRootPart.Position - (vec3 or input.Position)).magnitude/studspersecond;
-   local twn = game.TweenService:Create(char.HumanoidRootPart, TweenInfo.new(Time,Enum.EasingStyle.Linear), {CFrame = (cframe or input.CFrame) * offset});
-   twn:Play();
-   noclip()
-   twn.Completed:Wait();
-   clip()
-   game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-end;
+function tp(CF)
+    if Player.Character then
+        local HumanoidRootPart = Player.Character:FindFirstChild("HumanoidRootPart")
+        if HumanoidRootPart then
+            local tween =
+                TweenService:Create(
+                HumanoidRootPart,
+                TweenInfo.new((CF.Position - HumanoidRootPart.Position).magnitude / 100),
+                {CFrame = CF}
+            )
+            tween:Play()
+            tween.Completed:wait()
+            HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+        end
+    end
+end
 
 function clickUiButton(v, state)
 local virtualInputManager = game:GetService('VirtualInputManager')
