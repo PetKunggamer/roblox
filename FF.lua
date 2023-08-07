@@ -107,7 +107,9 @@ end
 function Quest_Thief()
     local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
     if not Quest then
-        fireclickdetector(workspace.LiveNPCS.Crook.ClickPart.ClickDetector)
+        local Crook = workspace.LiveNPCS.Crook
+        customtwn(Crook.HumanoidRootPart, 180, CFrame.new(0,0,0));
+        fireclickdetector(Crook.ClickPart.ClickDetector)
         else
 
         local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
@@ -350,7 +352,7 @@ end)
 tp:Button("Business Man Teleport",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
-        customtwn(Business_Man.HumanoidRootPart, 185, CFrame.new(0,0,0));
+        customtwn(Business_Man.HumanoidRootPart, 180, CFrame.new(0,0,0));
     else
         Notify("Not Spawn Yet")
     end
@@ -359,7 +361,7 @@ end)
 tp:Button("Noru Teleport",function()
     local Noru = workspace.LiveNPCS:FindFirstChild("Noru")
     if Noru then
-        customtwn(Noru.HumanoidRootPart, 185, CFrame.new(0,0,0));
+        customtwn(Noru.HumanoidRootPart, 180, CFrame.new(0,0,0));
     else
         Notify("Not Spawn Yet")
     end
