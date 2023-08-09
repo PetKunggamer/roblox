@@ -24,7 +24,6 @@ end
 
 local TweenService = game:GetService("TweenService")
 local Player = game:GetService("Players").LocalPlayer
-local Humanoid = game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid")
 
 function tp(CF)
     if Player.Character then
