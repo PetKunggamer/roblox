@@ -4,7 +4,7 @@ local serv = win:Server("Preview", "")
 local tgls = serv:Channel("Main")
 local fact = serv:Channel("Factions")
 local helpful = serv:Channel("Helpful")
-local tp = serv:Channel("Teleport")
+local tele = serv:Channel("Teleport")
 
 function noclip()
     for _,noclip in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
@@ -347,7 +347,7 @@ helpful:Toggle("Auto Press G", false, function(bool)
     end
 end)
 
-tp:Button("Business Man Teleport",function()
+tele:Button("Business Man Teleport",function()
     local Business_Man = workspace.LiveNPCS:FindFirstChild("Business Man")
     if Business_Man then
         tp((Business_Man.HumanoidRootPart.CFrame))
@@ -356,7 +356,7 @@ tp:Button("Business Man Teleport",function()
     end
 end)
 
-tp:Button("Noru Teleport",function()
+tele:Button("Noru Teleport",function()
     local Noru = workspace.LiveNPCS:FindFirstChild("Noru")
     if Noru then
         tp((Noru.HumanoidRootPart.CFrame));
