@@ -28,7 +28,7 @@ end
 local function NoclipLoop()
 	if game.Players.LocalPlayer.Character ~= nil then
 		for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-			if child:IsA("BasePart") and child.CanCollide == true and child.Name ~= floatName then
+			if child:IsA("BasePart") and child.CanCollide == true then
 				child.CanCollide = false
 			end
 		end
