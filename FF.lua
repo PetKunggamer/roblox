@@ -100,32 +100,70 @@ function CreateESP(Mob_Name)
     end
 end
 
-
 function Quest_Thief()
-    local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
-    if not Quest then
-        local Crook = workspace.LiveNPCS.Crook
-        tp((Crook.HumanoidRootPart))
-        fireclickdetector(Crook.ClickPart.ClickDetector)
-        else
-
+    pcall(function()
         local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
-        if Quest.Visible == true and Quest.Text.Text:match("car") then
-            for i,v in ipairs(workspace.MissionItems:GetChildren()) do
-                if v.Name:find("CarModel") then
-                    fireclickdetector(v.ClickDetector)
-                end
+        if not Quest then
+            local Crook = workspace.LiveNPCS:FindFirstChild("Crook")
+            if Crook and game.Players.LocalPlayer:DistanceFromCharacter(Crook.HumanoidRootPart.Position) > 15 then
+                tp((Crook.HumanoidRootPart.CFrame))
             end
-        end
+            fireclickdetector(Crook.ClickPart.ClickDetector)
+            local TextGUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TextGUI")
+            if TextGUI then
+                clickUiButton(TextGUI.Frame.Accept, true)
+            end
+            else
 
-        if Quest.Visible == true and Quest.Text.Text:match("graffiti") then
-            for i,v in ipairs(workspace.MissionItems.Graffiti:GetChildren()) do
-                if v.Name:find("Part") then
-                    fireclickdetector(v.ClickDetector)
+            if Quest.Visible == true and Quest.Text.Text:match("bring the wallet") then
+                    local Crook = workspace.LiveNPCS:FindFirstChild("Crook")
+                if Crook and game.Players.LocalPlayer:DistanceFromCharacter(Crook.HumanoidRootPart.Position) > 15 then
+                    tp((Crook.HumanoidRootPart.CFrame))
+                end
+            end
+
+            local Quest = game:GetService("Players").LocalPlayer.PlayerGui.Status:FindFirstChild("NotoficationTimer")
+            if Quest.Visible == true and Quest.Text.Text:match("car") then
+                for i,v in ipairs(workspace.MissionItems:GetChildren()) do
+                    if v.Name:find("CarModel") then
+                        fireclickdetector(v.ClickDetector)
+                    end
+                end
+            end
+
+            if Quest.Visible == true and Quest.Text.Text:match("graffiti") then
+                for i,v in ipairs(workspace.MissionItems.Graffiti:GetChildren()) do
+                    if v.Name:find("Part") then
+                        fireclickdetector(v.ClickDetector)
+                        task.wait()
+                    end
+                end
+            end
+
+            if Quest.Visible == true and Quest.Text.Text:match("fountain") then
+                local Fountain = workspace.Fountain
+                for i,v in ipairs(Fountain:GetChildren()) do
+                    if v.Name == "ClickDetector" then
+                        fireclickdetector(v)
+                    end
+                end
+            end
+
+            if Quest.Visible == true and Quest.Text.Text:match("wallet") then
+                for i,v in ipairs(workspace.Alive:GetDescendants()) do
+                    if v:IsA("ProximityPrompt") and v.Parent then
+                        local target = v.Parent.Parent
+                        if target and game.Players.LocalPlayer:DistanceFromCharacter(target.Position) > 10 then
+                            tp((target.CFrame))
+                            fireproximityprompt(v)
+                            else
+                            fireproximityprompt(v)
+                        end
+                    end
                 end
             end
         end
-    end
+    end)
 end
 
 -- Function to destroy ESP elements for a specific mob
@@ -366,13 +404,10 @@ end)
 
 fact:Toggle("Theif", false, function(bool)
     _G.Theif = bool
-    while _G.Theif do task.wait()
-    local TextGUI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("TextGUI")
-        if TextGUI then
-            clickUiButton(TextGUI.Frame.Accept, true)
-        end
-        Quest()
+    while _G.Theif do wait(.25)
+        Quest_Thief()
     end
 end)
 
 serv:Channel("by Syn0xz")
+
