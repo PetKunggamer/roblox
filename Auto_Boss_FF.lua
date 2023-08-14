@@ -1,12 +1,3 @@
- repeat wait() until game:IsLoaded()
-
-for i = 1,5 do
-    print(i)
-    wait(1)
-end
-
- repeat wait() until game:IsLoaded()
-
 function Notify(Text)
     game.StarterGui:SetCore("SendNotification", {
     Title = "Syn0xz Hub";
@@ -195,7 +186,12 @@ for i,v in ipairs(workspace.Alive:GetChildren()) do
     end
 end
 
+repeat wait() until game:IsLoaded()
 
+for i = 1,3 do
+    print(i)
+    wait(1)
+end
 
 while true do task.wait()
 AntiFall()
