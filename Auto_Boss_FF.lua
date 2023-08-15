@@ -36,7 +36,7 @@ function tp(CF)
             local tween =
                 TweenService:Create(
                 HumanoidRootPart,
-                TweenInfo.new((CF.Position - HumanoidRootPart.Position).magnitude / 110),
+                TweenInfo.new((CF.Position - HumanoidRootPart.Position).magnitude / 100),
                 {CFrame = CF}
             )
             tween:Play()
