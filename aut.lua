@@ -1,6 +1,10 @@
 function Chest()
     for i,v in ipairs(Workspace:GetChildren()) do
-        if v.Name == "Common" or v.Name == "Rare" or v.Name == "Epic" or v.Name == "Legendary" and v.Parent then
+        local Common = v:FindFirstChild("Common")
+        local Rare = v:FindFirstChild("Rare")
+        local Epic = v:FindFirstChild("Epic")
+        local Legendary = v:FindFirstChild("Legendary")
+        if Common or Rare or Epic or Legendary and v.Parent then
             print(v)
         end
     end   
