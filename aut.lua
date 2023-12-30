@@ -1,5 +1,5 @@
-local args = {
-    [1] = "Q"
-}
+local Mob = game:GetService("Workspace").Living
 
-game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("MoveInputService"):WaitForChild("RF"):WaitForChild("FireInput"):InvokeServer(unpack(args))
+for i,v in pairs(Mob:GetChildren()) do
+    print(v)
+end
