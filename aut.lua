@@ -5,7 +5,10 @@ function Chest()
             if RP then
                 local Proximity = RP:FindFirstChild("ProximityAttachment")
                 if Proximity then
-                    print(v)
+                    local Interact = Proximity:FindFirstChild("Interact")
+                    if Interact then
+                        fireproximityprompt(Interact)
+                    end
                 end
             end
         end
