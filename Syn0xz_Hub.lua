@@ -1,3 +1,4 @@
+print("Lastest Version is Update Project XL script 3/3/2024")
 local placeId = game.PlaceId
 
 if placeId == 8540168650 then
