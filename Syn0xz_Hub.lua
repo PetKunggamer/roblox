@@ -1,28 +1,48 @@
 local placeId = game.PlaceId
+
 if placeId == 8540168650 then
     SUR = true
-elseif placeId == 6667701234 then
+end
+if placeId == 6667701234 then
     FX = true
-elseif placeId == 9136292138 then
+end
+if placeId == 9136292138 then
     GP = true
-elseif placeId == 6969185078 then
+end
+if placeId == 6969185078 then
     EA = true
-elseif placeId == 9530846958 then
+end
+if placeId == 9530846958 then
     EL2 = true
-elseif placeId == 9516847915 then
+end
+if placeId == 9516847915 then
     FPirate = true
-elseif placeId == 6152116144 then
+end
+if placeId == 6152116144 then
     PSlayer = true
-elseif placeId == 6147702473 then
+end
+if placeId == 6147702473 then
     LBA = true
-elseif placeId == 9417197334 then
+end
+if placeId == 9417197334 then
     Anime_story = true
-elseif placeId == 6735572261 then
+end
+if placeId == 6735572261 then
     PG = true
-elseif placeId == 14069122388 or placeId == 14069678431 then
+end
+if placeId == 14069122388 or placeId == 14069678431 then
     Type_Soul = true
-elseif placeId == 7390824960 then
+end
+if placeId == 7390824960 then
     FF = true
+end
+if placeId == 7390824960 then
+    Project_xl = true
+end
+
+if Project_xl then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/project_xl_.lua"))()
 end
 
 if FF then
