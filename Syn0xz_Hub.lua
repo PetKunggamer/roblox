@@ -43,52 +43,52 @@ end
 
 if Project_xl then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/project_xl_.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/project_xl_.lua"))()  -- 3/3/2024
 end
 
 if FF then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FF.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FF.lua"))() -- Outdate
 end
 
 if Type_Soul then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Type_Soul.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Type_Soul.lua"))() -- Outdate
 end
 
 if PG then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PG.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PG.lua"))() -- Outdate
 end
 
 if Anime_story then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Anime_Story.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Anime_Story.lua"))() -- Outdate
 end
 
 if LBA then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/LBA.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/LBA.lua"))() -- Outdate
 end
 
 if PSlayer then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PSlayer.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PSlayer.lua"))() -- Outdate
 end
 
 if FPirate then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FPirate.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FPirate.lua"))() -- Outdate
 end
 
 if EL2 then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/EL2.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/EL2.lua"))() -- Outdate
 end
 
 if EA then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Elemental_Awakening.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Elemental_Awakening.lua"))() -- Outdate
 end
 
 if SUR then
@@ -98,7 +98,7 @@ end
 
 if FX then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Fate_Xero.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Fate_Xero.lua"))() -- Outdate
 end
     
 
