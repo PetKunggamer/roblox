@@ -23,6 +23,8 @@ local section = tab.new_section('Main')
 local sector = section.new_sector('- Farming -', 'Left')
 local sector1 = section.new_sector('- Misc -', 'Right')
 local AutoF = section.new_sector('- Auto Find -', 'Right')
+local Clear = section.new_sector('- Button Clear -', 'Right')
+local AutoBuy = section.new_sector('- Auto Buy -', 'Left')
 
 -- // Elements \\ -- (Type, Name, State, Callback)
 
@@ -247,65 +249,32 @@ end)
 
 local Auto_Accessory = AutoF.element('Toggle', 'Auto Accessory', false, function(v)
     _G.Accessory = v.Toggle
-    while _G.Accessory do wait(.125)
-        if _G.Accessory == true then
-        RemoteEvents:WaitForChild("BuyItemRemote"):FireServer("Random Accessory")
-            local Backpack = game.Players.LocalPlayer.Backpack
-            if Backpack then
-                for i, tool in ipairs(Backpack:GetChildren()) do
-                    if tool:IsA("Tool") then
-                        local BP = tool:FindFirstChild("BagPart")
-                        if BP then
-                            local OH = BP:FindFirstChild("Overhead")
-                            if OH then
-                                local Rarity = OH:FindFirstChild("Rarity")
-                                if Rarity then
-                                    for i2,val in ipairs(_G.WL) do
-                                        if Rarity.Text == val then
-                                            print("Founded")
-                                            _G.Accessory = false
-                                        else
-                                            print(Rarity.Text)
-                                            RemoteEvents:WaitForChild("ClearBagsRemote"):FireServer()
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
+    while _G.Accessory do task.wait()
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Accessory")
     end
 end)
 
 
 local Auto_Armor = AutoF.element('Toggle', 'Auto Armor', false, function(v)
     _G.Armor = v.Toggle
-    while _G.Armor do wait(.125)
-        if _G.Armor == true then
-        RemoteEvents:WaitForChild("BuyItemRemote"):FireServer("Random Armor")
-            local Backpack = game.Players.LocalPlayer.Backpack
-            if Backpack then
-                for i, tool in ipairs(Backpack:GetChildren()) do
-                    if tool:IsA("Tool") then
-                        local BP = tool:FindFirstChild("BagPart")
-                        if BP then
-                            local OH = BP:FindFirstChild("Overhead")
-                            if OH then
-                                local Rarity = OH:FindFirstChild("Rarity")
-                                if Rarity then
-                                    for i2,val in ipairs(_G.WL) do
-                                        if Rarity.Text == val then
-                                            print("Founded")
-                                            _G.Accessory = false
-                                        else
-                                            print(Rarity.Text)
-                                            RemoteEvents:WaitForChild("ClearBagsRemote"):FireServer()
-                                        end
-                                    end
-                                end
-                            end
+    while _G.Armor do task.wait()
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Armor")
+    end
+end)
+
+local Wl_Item = AutoF.element('Button', 'Whitelist Delete', nil, function()
+    local Backpack = LocalPlayer:FindFirstChild("Backpack")
+    local Character = game:GetService("Players").LocalPlayer.Character
+    if Character and Backpack then
+        for i,v in ipairs(Character:GetChildren()) do
+            if v:IsA("Tool") then
+                local BP = v:FindFirstChild("BagPart")
+                if BP then
+                    local Overhead = BP:FindFirstChild("Overhead")
+                    if Overhead then
+                        local ItemName = Overhead:FindFirstChild("ItemName")
+                        if ItemName then
+                            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("AutoDeleteWhitelistRemote"):FireServer(tostring(ItemName.Text))
                         end
                     end
                 end
@@ -314,7 +283,27 @@ local Auto_Armor = AutoF.element('Toggle', 'Auto Armor', false, function(v)
     end
 end)
 
-
-local Wl_Accessory = AutoF.element('Combo', 'Selected', {options = {'Common', 'Uncommon', 'Rare', 'Legendary'}}, function(v)
-    _G.WL = v.Combo
+local button_Bag = Clear.element('Button', 'Clear Bag', nil, function()
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ClearBagsRemote"):FireServer()
 end)
+
+local button_Bag = Clear.element('Button', 'Clear All', nil, function()
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ClearInventoryRemote"):FireServer()
+end)
+
+
+local Auto_Specialization = AutoBuy.element('Toggle', 'Auto Buy Specialization', false, function(v)
+    _G.Specialization = v.Toggle
+    while _G.Specialization do wait(.125)
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Specialization")
+    end
+end)
+
+local Auto_Mentor = AutoBuy.element('Toggle', 'Auto Buy Mentor', false, function(v)
+    _G.Mentor = v.Toggle
+    while _G.Mentor do wait(.125)
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Mentor")
+    end
+end)
+
+
