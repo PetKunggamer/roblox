@@ -20,17 +20,15 @@ local tab = window.new_tab('rbxassetid://4483345998')
 local section = tab.new_section('Main')
 
 -- // Sector \\ --
-local sector = section.new_sector('- Farming -', 'Left')
-local sector1 = section.new_sector('- Misc -', 'Right')
+local Farming = section.new_sector('- Farming -', 'Left')
+local Misc = section.new_sector('- Misc -', 'Right')
 local AutoF = section.new_sector('- Auto Find -', 'Right')
 local Clear = section.new_sector('- Button Clear -', 'Right')
 local AutoBuy = section.new_sector('- Auto Buy -', 'Left')
 
 -- // Elements \\ -- (Type, Name, State, Callback)
 
-
-
-local toggle = sector.element('Toggle', 'Auto Farm', false, function(v)
+local toggle = Farming.element('Toggle', 'Auto Farm', false, function(v)
     _G.Auto = v.Toggle
     while _G.Auto do task.wait()
         RemoteEvents:WaitForChild("BladeCombatRemote"):FireServer()
@@ -52,7 +50,7 @@ local toggle = sector.element('Toggle', 'Auto Farm', false, function(v)
     end
 end)
 
-local toggle_quest = sector.element('Toggle', 'Auto Quest', false, function(v)
+local toggle_quest = Farming.element('Toggle', 'Auto Quest', false, function(v)
     _G.Quest = v.Toggle
     print(_G.Quest)
     while _G.Quest do wait(.25)
@@ -128,12 +126,12 @@ local toggle_quest = sector.element('Toggle', 'Auto Quest', false, function(v)
     end
 end)
 
-local dropdown = sector.element('Dropdown', 'Mob Select', {options = {'Demon', 'Akatsuki Grunt', "Rahgan's Overseer", "Agni's Overseer", "Lars' Minion", "Agni's Minion", "Bandit"}}, function(v)
+local dropdown = Farming.element('Dropdown', 'Mob Select', {options = {'Demon', 'Akatsuki Grunt', "Rahgan's Overseer", "Agni's Overseer", "Lars' Minion", "Agni's Minion", "Bandit"}}, function(v)
    print(v.Dropdown)
    _G.Mob = tostring(v.Dropdown)
 end)
 
-local toggle = sector.element('Toggle', 'Auto Farm (Boss)', false, function(v)
+local toggle = Farming.element('Toggle', 'Auto Farm (Boss)', false, function(v)
     _G.Auto = v.Toggle
     while _G.Auto do task.wait()
         RemoteEvents:WaitForChild("BladeCombatRemote"):FireServer()
@@ -155,15 +153,12 @@ local toggle = sector.element('Toggle', 'Auto Farm (Boss)', false, function(v)
     end
 end)
 
-local dropdown = sector.element('Dropdown', 'Boss Select', {options = {'Gojo', 'Shinra'}}, function(v)
+local dropdown = Farming.element('Dropdown', 'Boss Select', {options = {'Gojo', 'Shinra'}}, function(v)
    print(v.Dropdown)
    _G.Boss = tostring(v.Dropdown)
 end)
 
-
-
-
-local toggle = sector.element('Toggle', 'Auto Farm Zoro', false, function(v)
+local toggle = Farming.element('Toggle', 'Auto Farm Zoro', false, function(v)
     _G.Auto_Zoro = v.Toggle
     while _G.Auto_Zoro do task.wait()
         RemoteEvents:WaitForChild("BladeCombatRemote"):FireServer()
@@ -185,23 +180,7 @@ local toggle = sector.element('Toggle', 'Auto Farm Zoro', false, function(v)
     end
 end)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-local Insatant = sector1.element('Toggle', 'Instant Kill', false, function(v)
+local Insatant = Misc.element('Toggle', 'Instant Kill', false, function(v)
    _G.insatant = v.Toggle
     while _G.insatant do task.wait(.125)
         for i,v in ipairs(game:GetService("Workspace").Live:GetChildren()) do
@@ -218,7 +197,7 @@ local Insatant = sector1.element('Toggle', 'Instant Kill', false, function(v)
     end
 end)
 
-local Effect = sector1.element('Toggle', 'Disable Effect', false, function(v)
+local Effect = Misc.element('Toggle', 'Disable Effect', false, function(v)
    _G.Effect = v.Toggle
     while _G.Effect do task.wait()
         for i,v in ipairs(game:GetService("Workspace").Effects:GetChildren()) do
@@ -227,7 +206,7 @@ local Effect = sector1.element('Toggle', 'Disable Effect', false, function(v)
     end
 end)
 
-local EquipTool = sector1.element('Toggle', 'Equip Tool', false, function(v)
+local EquipTool = Misc.element('Toggle', 'Equip Tool', false, function(v)
     _G.Tool = v.Toggle
     while _G.Tool do task.wait(3)
         local Backpack = LocalPlayer:FindFirstChild("Backpack")
@@ -246,41 +225,48 @@ local EquipTool = sector1.element('Toggle', 'Equip Tool', false, function(v)
     end
 end)
 
+local Afk_button = Misc.element('Button', 'Anti-AFK', nil, function()
+    local bb = game:GetService("VirtualUser")
+    game:service("Players").LocalPlayer.Idled:connect(
+        function()
+            bb:CaptureController()
+            bb:ClickButton2(Vector2.new())
+        end
+    )
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+    	Title = "Anti Afk", -- Required
+    	Text = "Status : enabled"
+    })
+end)
 
 local Auto_Accessory = AutoF.element('Toggle', 'Auto Accessory', false, function(v)
     _G.Accessory = v.Toggle
-    while _G.Accessory do task.wait()
+    while _G.Accessory do wait(.125)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Accessory")
     end
 end)
 
-
 local Auto_Armor = AutoF.element('Toggle', 'Auto Armor', false, function(v)
     _G.Armor = v.Toggle
-    while _G.Armor do task.wait()
+    while _G.Armor do wait(.125)
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Armor")
     end
 end)
 
-local Wl_Item = AutoF.element('Button', 'Whitelist Delete', nil, function()
+local button_Bag = Clear.element('Button', 'Clear All', nil, function()
     local Backpack = LocalPlayer:FindFirstChild("Backpack")
     local Character = game:GetService("Players").LocalPlayer.Character
     if Character and Backpack then
         for i,v in ipairs(Character:GetChildren()) do
             if v:IsA("Tool") then
-                local BP = v:FindFirstChild("BagPart")
-                if BP then
-                    local Overhead = BP:FindFirstChild("Overhead")
-                    if Overhead then
-                        local ItemName = Overhead:FindFirstChild("ItemName")
-                        if ItemName then
-                            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("AutoDeleteWhitelistRemote"):FireServer(tostring(ItemName.Text))
-                        end
-                    end
-                end
+                print(v)
             end
         end
     end
+end)
+
+local Wl_Accessory = AutoF.element('Combo', 'Selected', {options = {'Common', 'Uncommon', 'Rare', 'Legendary'}}, function(v)
+    _G.WL = v.Combo
 end)
 
 local button_Bag = Clear.element('Button', 'Clear Bag', nil, function()
@@ -290,7 +276,6 @@ end)
 local button_Bag = Clear.element('Button', 'Clear All', nil, function()
     game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("ClearInventoryRemote"):FireServer()
 end)
-
 
 local Auto_Specialization = AutoBuy.element('Toggle', 'Auto Buy Specialization', false, function(v)
     _G.Specialization = v.Toggle
@@ -305,5 +290,3 @@ local Auto_Mentor = AutoBuy.element('Toggle', 'Auto Buy Mentor', false, function
         game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("BuyItemRemote"):FireServer("Random Mentor")
     end
 end)
-
-
