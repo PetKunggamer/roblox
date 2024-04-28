@@ -1,4 +1,3 @@
-print("Lastest Version is Update Project XL script 3/3/2024")
 local placeId = game.PlaceId
 
 if placeId == 8540168650 then
@@ -39,6 +38,15 @@ if placeId == 7390824960 then
 end
 if placeId == 16139895491 then
     Project_xl = true
+end
+if placeId == 6897167394 then
+    Demon_Piece = true
+end
+
+
+if Demon_Piece then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Demon_piece_hub.lua"))()  -- 28/4/2024
 end
 
 if Project_xl then
