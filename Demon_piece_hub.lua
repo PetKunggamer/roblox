@@ -9,6 +9,14 @@ local plr = game.Players.LocalPlayer
 local chr = plr.Character
 local root = chr.HumanoidRootPart
 
+local function notify(Titles,message)
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+    	Title = tostring(Titles), -- Required
+    	Text = tostring(message), -- Required
+    	Icon = "rbxassetid://1234567890" -- Optional
+    })
+end
+
 local function Combat()
     local args = {
         [1] = "Combat",
@@ -194,19 +202,19 @@ local function GetBoat()
     end
 end
 
-local function FreezeBoat()
+local function FreezeBoat(state1, state2)
     if GetBoat() then
         for i,v in ipairs(GetBoat():GetChildren()) do
             if v:IsA("MeshPart") then
-                v.Anchored = true
-                v.CanCollide = false
+                v.Anchored = state1
+                v.CanCollide = state2
             end
         end
     end
 end
 
 local function Safe_Mode(percentage)
-    local plr_health = (chr.Humanoid.Health / chr.Humanoid.MaxHealth) * 100
+    local plr_health = (game.Players.LocalPlayer.Character.Humanoid.Health / game.Players.LocalPlayer.Character.Humanoid.MaxHealth) * 100
     if plr_health < percentage then
         _G.Safe_Mode = true
         local oldpos = root.CFrame
@@ -221,7 +229,11 @@ local function Safe_Mode(percentage)
         safe.Parent = game.Workspace
         safe.CFrame = root.CFrame * CFrame.new(0,-50,0)
         root.Anchored = false
-        wait(12.5)
+        for i = 10, 1, -1 do
+            local scaleFactor = i / 10 -- Scale factor (0.1 to 1)
+            safe.Size = Vector3.new(20 * scaleFactor, 1, 20 * scaleFactor)
+            wait(1) -- Optional: Add a delay between each count
+        end
         _G.Safe_Mode = false
         safe:Destroy()
         root.CFrame = oldpos
@@ -260,15 +272,36 @@ local function Disabled_Effect()
     end
 end
 
-local function Spectre()
+local function PawBarrage()
     local args = {
-        [1] = "Spectre",
+        [1] = "PawBarrage",
         [3] = true,
-        [4] = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+        [4] = Vector3.new(0,0,0)
     }
     
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
 end
+
+local function Delete_Stand_Ship()
+    if game.Workspace:FindFirstChild("Stand_Ship") then
+        game.Workspace:FindFirstChild("Stand_Ship"):Destroy()
+    end
+end
+
+local function Stand_Ship()
+
+    if game.Workspace:FindFirstChild("Stand_Ship") then
+        game.Workspace:FindFirstChild("Stand_Ship"):Destroy()
+    end
+    
+    local base = Instance.new("Part")
+    base.Size = Vector3.new(2048, 50, 2048)
+    base.Anchored = true
+    base.Name = "Stand_Ship"
+    base.Parent = game.Workspace
+    base.CFrame = GetBoat().Vehicle_Seat.CFrame * CFrame.new(0,-53.5,0)
+end
+
 -- // Loadstring \\ --
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
 
@@ -336,7 +369,11 @@ end)
 local FreezeBoat = Misc.element('Toggle', 'Freeze Boat', false, function(v)
     _G.FreezeBoat = v.Toggle
     while _G.FreezeBoat do task.wait()
-        FreezeBoat()
+        if _G.FreezeBoat then
+            FreezeBoat(true,false)
+        else
+            FreezeBoat(false,true)
+        end
     end
 end) 
 
@@ -347,10 +384,10 @@ local Auto_Chest = Farm.element('Toggle', 'Auto Chest Farm', false, function(v)
     end
 end) 
 
-local Spectre = Farm.element('Toggle', 'Auto Spectre', false, function(v)
-    _G.Spectre = v.Toggle
-    while _G.Spectre do task.wait()
-        Spectre()
+local Paw_Barrage = Farm.element('Toggle', 'Spam Paw Barrage (Paw Fruit)', false, function(v)
+    _G.PawBarrage = v.Toggle
+    while _G.PawBarrage do task.wait()
+        PawBarrage()
     end
 end) 
 
@@ -397,10 +434,18 @@ local SafeMode = Seabeast.element('Toggle', 'Safe Mode', false, function(v)
     end
 end) 
 
-local EquipAllAccessory = Seabeast.element('Button', 'Set Seabeast Ship', false, function()
-    _G.Seabeast_Ship = root.CFrame
+local UnSet = Seabeast.element('Button', 'Delete Seabeast Ship', false, function()
+    Delete_Stand_Ship()
 end) 
 
-local EquipAllAccessory = Seabeast.element('Button', 'Check Seabeast Ship', false, function()
-    root.CFrame = _G.Seabeast_Ship
+local Set = Seabeast.element('Button', 'Set Seabeast Ship', false, function()
+    Stand_Ship()
+end) 
+
+local Load = Seabeast.element('Button', 'Check Seabeast Ship', false, function()
+    if game.Workspace:FindFirstChild("Stand_Ship") then
+        root.CFrame = game.Workspace:FindFirstChild("Stand_Ship").CFrame * CFrame.new(0,40,0)
+    else
+        notify("Seabeast Ship","Not Found")
+    end
 end) 
