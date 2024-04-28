@@ -339,6 +339,11 @@ local function Spawn_Kuma()
         wait(.5)
         fireproximityprompt(button.ProximityPrompt)
         root.CFrame = oldpos
+    else
+        root.CFrame = CFrame.new(-11252, 2069, 17398)
+        root.Anchored = true
+        wait(2)
+        root.Anchored = false
     end
 end
 
@@ -391,6 +396,17 @@ local function Farm_Boss()
         end
     end
 end
+
+local function Auto_Haki()
+    local vim = game:GetService('VirtualInputManager')
+    if not game.Players.LocalPlayer.Character:FindFirstChild("Armament") then
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer("Armament",0,true)
+    end
+    if not game.Players.LocalPlayer.Character:FindFirstChild("KenHaki") then
+        vim:SendKeyEvent(false, Enum.KeyCode.T, false, nil)
+    end
+end
+
 
 -- // Loadstring \\ --
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
@@ -446,6 +462,13 @@ local AutoBuff = Misc.element('Toggle', 'Auto Buff', false, function(v)
     while _G.AutoBuff do task.wait()
         AutoBuff()
         wait(30)
+    end
+end) 
+
+local AutoHaki = Misc.element('Toggle', 'Auto Haki', false, function(v)
+    _G.AutoHaki = v.Toggle
+    while _G.AutoHaki do task.wait()
+        Auto_Haki()
     end
 end) 
 
