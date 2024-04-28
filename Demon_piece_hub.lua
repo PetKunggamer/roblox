@@ -9,11 +9,27 @@ local plr = game.Players.LocalPlayer
 local chr = plr.Character
 local root = chr.HumanoidRootPart
 
+local function Farm(Mob)
+    pcall(function()
+        local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if root and _G.PawBarrage and _G.Farming then
+            root.CFrame = Mob.CFrame * CFrame.new(0, 45, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+        elseif root and Mob then
+            root.CFrame = Mob.CFrame * CFrame.new(0, 0, 5)
+        else
+            if not Mob then 
+                _G.Farming = false
+            end
+        end
+    end)
+end
+
+
 local function notify(Titles,message)
     game:GetService("StarterGui"):SetCore("SendNotification",{
-    	Title = tostring(Titles), -- Required
-    	Text = tostring(message), -- Required
-    	Icon = "rbxassetid://1234567890" -- Optional
+    	Title = tostring(Titles),
+    	Text = tostring(message),
+    	Icon = "rbxassetid://1234567890"
     })
 end
 
@@ -41,18 +57,6 @@ local function Sword()
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
 end
 
-local function HolyBook()
-    local args = {
-        [1] = "SwordCombat",
-        [2] = 0.283,
-        [3] = "two",
-        [4] = 0.283,
-        [5] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Holy BookM")
-    }
-    
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))    
-end
-
 local function Chest()
     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
     for _, v in ipairs(workspace.ChestSpawns:GetDescendants()) do
@@ -73,7 +77,40 @@ local function Chest()
     end
 end
 
+local function Kuma()
+    pcall(function()
+    local plr = game.Players.LocalPlayer
+    local chr = plr.Character
+    local root = chr:FindFirstChild("HumanoidRootPart")
+        if root then
+            for i,v in ipairs(workspace.NPC.Fight:GetChildren()) do
+                if v:IsA("Folder") then
+                    local Kuma = v:FindFirstChild("Kuma The Tyrant")
+                    if Kuma then
+                        local target = Kuma:FindFirstChild("HumanoidRootPart")
+                        if Kuma and not target then
+                            root.CFrame = CFrame.new(-11343, 2266, 16595)
+                        end
+                        if target and root then
+                            if _G.PawBarrage then
+                                root.CFrame = target.CFrame * CFrame.new(0,60,0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                                root.Velocity = Vector3.new(0,0,0)
+                            else
+                                root.CFrame = target.CFrame * CFrame.new(0,5,5)
+                                root.Velocity = Vector3.new(0,0,0)        
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+
 local function teleport(Spot)
+
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer("SpearheadRush")
+    
     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
     if Spot == "Shell Town (1 - 25 levels)" then
         root.CFrame = CFrame.new(-4651, 139, 669)
@@ -157,14 +194,6 @@ local function EquipAllAccessory()
     end
 end
 
-local function Rm_Accessory()
-    for i,v in ipairs(game.Players.LocalPlayer.Character:GetChildren()) do
-        if v:IsA("Model") and v.Name:find("M") then
-            v:Destroy()
-        end
-    end
-end
-
 local function Kuma_Idiot()
     for i,v in ipairs(workspace.NPC.Fight.Kuma:GetChildren()) do
         if v:IsA("Model") then
@@ -230,9 +259,9 @@ local function Safe_Mode(percentage)
         safe.CFrame = root.CFrame * CFrame.new(0,-50,0)
         root.Anchored = false
         for i = 10, 1, -1 do
-            local scaleFactor = i / 10 -- Scale factor (0.1 to 1)
+            local scaleFactor = i / 10
             safe.Size = Vector3.new(20 * scaleFactor, 1, 20 * scaleFactor)
-            wait(1) -- Optional: Add a delay between each count
+            wait(1)
         end
         _G.Safe_Mode = false
         safe:Destroy()
@@ -302,6 +331,67 @@ local function Stand_Ship()
     base.CFrame = GetBoat().Vehicle_Seat.CFrame * CFrame.new(0,-53.5,0)
 end
 
+local function Spawn_Kuma()
+    local button = workspace.Map["S.A.D Laboratory #127"]["S.A.D Laboratory #127"].MicroChipComputer["Meshes/pc_Cube.037"]
+    if button then
+        local oldpos = root.CFrame
+        root.CFrame = button.CFrame
+        wait(.5)
+        fireproximityprompt(button.ProximityPrompt)
+        root.CFrame = oldpos
+    end
+end
+
+local function Kill_Kuma()
+    local mob = workspace.NPC.Fight.Kuma:FindFirstChild("Kuma The Tyrant")
+    if mob then
+        local hum = mob:FindFirstChild("Humanoid") 
+        if hum then
+            hum.Health = nil
+            hum.RigType = "R15"
+            wait(1)
+            hum.RigType = "R6" 
+        end
+    end
+end
+
+local function Farm_Boss()
+    local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local mobs = {
+        
+        {"Morgan", workspace.NPC.Fight.Shells, CFrame.new(-4904, 250, 756)}, -- Morgan - Shelltown
+        {"Reiner", workspace.NPC.Fight.Reiner, CFrame.new(194, 270, -676)}, -- Bandit Leader - Windwill
+        {"Buggy", workspace.NPC.Fight.Buggy, CFrame.new(-2194, 70, -2629)}, -- Buggy - Orange Town
+        {"King Abu", workspace.NPC.Fight.Gorillas, CFrame.new(-1815, 53, 2332)}, -- King Abu - Jungle
+        {"Sand Dragon", workspace.NPC.Fight.Dragon, CFrame.new(-7338, 342, -4530)}, -- Sand Dragon - Sandora
+        {"Desert King", workspace.NPC.Fight.Croc, CFrame.new(-7338, 342, -4530)}, -- Desert King - Sandora
+        {"Arlong", workspace.NPC.Fight.Fishmen, CFrame.new(-2268, 84, -6161)}, -- Arlong - Arlong Park
+        {"Guard Captain", workspace.NPC.Fight.SkyNpcs, CFrame.new(6130, 1947, -8593)}, -- Guard Captain - Skypiea Island
+        {"Thunder God", workspace.NPC.Fight.Enel, CFrame.new(3488, 2065, -11348)} -- Thunder God - Golden City
+    }
+    
+    for _, mobData in ipairs(mobs) do
+        local mobName, mobLocation, position = mobData[1], mobData[2], mobData[3]
+        local mob = mobLocation:FindFirstChild(mobName)
+        if mob and root then
+            local target = mob:FindFirstChild("HumanoidRootPart")
+            if target then
+                _G.Farming = true
+                local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if root and _G.PawBarrage and _G.Farming then
+                    root.CFrame = target.CFrame * CFrame.new(0, 45, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                else
+                    root.CFrame = target.CFrame * CFrame.new(0, 0, 5)
+                end
+                else
+                    root.CFrame = position
+            end
+            else
+            _G.Farming = false
+        end
+    end
+end
+
 -- // Loadstring \\ --
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
 
@@ -318,10 +408,11 @@ local section = tab.new_section('- Main -')
 -- // Sector \\ --
 
 local Farm = section.new_sector('= Farm =', 'Left')
+local Raid = section.new_sector('= Raid Boss =', 'Right')
+local Seabeast = section.new_sector('= Sea beast =', 'Left')
 local TP = section.new_sector('= Teleport =', 'Right')
 local Misc = section.new_sector('= Misc =', 'Right')
 local Accessory = section.new_sector('= Accessory =', 'Right')
-local Seabeast = section.new_sector('= Sea beast =', 'Left')
 
 
 local Combat = Farm.element('Toggle', 'Combat Hit', false, function(v)
@@ -337,14 +428,6 @@ local Sword = Farm.element('Toggle', 'Sword Hit', false, function(v)
         Sword()
     end
 end) 
-
-local HolyBook = Farm.element('Toggle', 'HolyBook Hit', false, function(v)
-    _G.HolyBook = v.Toggle
-    while _G.HolyBook do task.wait()
-        HolyBook()
-    end
-end) 
-
 
 local dropdown = TP.element('Dropdown', 'Select to teleport', {options = {'Shell Town (1 - 25 levels)','Windmill Village (1 - 35 levels)', 'Orange Town (35 - 60 levels)', 'Jungle (60 - 100 levels)', 'Baratie (100 - 150 levels)','Sandora (150 - 240 levels)','Arlong Park (240 - 315 levels)','Skypiea (315 - 600 levels)','Colosseum','Louge Town','Abandoned Territory'}}, function(v)
     teleport(v.Dropdown)
@@ -366,7 +449,7 @@ local AutoBuff = Misc.element('Toggle', 'Auto Buff', false, function(v)
     end
 end) 
 
-local FreezeBoat = Misc.element('Toggle', 'Freeze Boat', false, function(v)
+local FreezeBoat = Seabeast.element('Toggle', 'Freeze Boat', false, function(v)
     _G.FreezeBoat = v.Toggle
     while _G.FreezeBoat do task.wait()
         if _G.FreezeBoat then
@@ -384,14 +467,28 @@ local Auto_Chest = Farm.element('Toggle', 'Auto Chest Farm', false, function(v)
     end
 end) 
 
-local Paw_Barrage = Farm.element('Toggle', 'Spam Paw Barrage (Paw Fruit)', false, function(v)
+local Boss_Farm = Farm.element('Toggle', 'Auto Boss Farm', false, function(v)
+    _G.Boss_Farm = v.Toggle
+    while _G.Boss_Farm do task.wait()
+        Farm_Boss()
+    end
+end) 
+
+local Paw_Barrage = Misc.element('Toggle', 'Spam Paw Barrage (Paw Fruit)', false, function(v)
     _G.PawBarrage = v.Toggle
     while _G.PawBarrage do task.wait()
         PawBarrage()
     end
 end) 
 
-local Kuma_Idiot = Misc.element('Toggle', 'Kuma Idiot', false, function(v)
+local Kuma_Farm = Raid.element('Toggle', 'Kuma Farm', false, function(v)
+    _G.Kuma_Farm = v.Toggle
+    while _G.Kuma_Farm do task.wait()
+        Kuma()
+    end
+end) 
+
+local Kuma_Idiot = Raid.element('Toggle', 'Kuma Idiot', false, function(v)
     _G.Kuma_Idiot = v.Toggle
     while _G.Kuma_Idiot do task.wait()
         Kuma_Idiot()
@@ -402,13 +499,6 @@ local Disabled_Effect = Misc.element('Toggle', 'Disabled Effect', false, functio
     _G.Disabled_Effect = v.Toggle
     while _G.Disabled_Effect do task.wait()
         Disabled_Effect()
-    end
-end) 
-
-local Rm_Accessory = Accessory.element('Toggle', 'Remove Accessory', false, function(v)
-    _G.Rm_Accessory = v.Toggle
-    while _G.Rm_Accessory do task.wait()
-        Rm_Accessory()
     end
 end) 
 
@@ -449,3 +539,11 @@ local Load = Seabeast.element('Button', 'Check Seabeast Ship', false, function()
         notify("Seabeast Ship","Not Found")
     end
 end) 
+
+local Spawn_Kuma = Raid.element('Button', 'Spawn Kuma', false, function()
+    Spawn_Kuma()
+end) 
+
+local Kill_Kuma = Raid.element('Button', 'Kill Kuma', false, function()
+    Kill_Kuma()
+end)
