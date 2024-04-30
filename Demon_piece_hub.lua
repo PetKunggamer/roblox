@@ -5,24 +5,13 @@ if A then
     A:Destroy()
 end
     
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
 local root = chr.HumanoidRootPart
-
-local function Farm(Mob)
-    pcall(function()
-        local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-        if root and _G.PawBarrage and _G.Farming then
-            root.CFrame = Mob.CFrame * CFrame.new(0, 45, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
-        elseif root and Mob then
-            root.CFrame = Mob.CFrame * CFrame.new(0, 0, 5)
-        else
-            if not Mob then 
-                _G.Farming = false
-            end
-        end
-    end)
-end
 
 
 local function notify(Titles,message)
@@ -39,7 +28,7 @@ local function Combat()
         [2] = 0.275,
         [3] = "left",
         [4] = 0.275,
-        [5] = "Electro"
+        [5] = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool").Name
     }
     
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
@@ -51,7 +40,7 @@ local function Sword()
         [2] = 0.4,
         [3] = "three",
         [4] = 0.4,
-        [5] = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool")
+        [5] = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool").Name
     }
     
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
@@ -407,6 +396,167 @@ local function Auto_Haki()
     end
 end
 
+local function Check_Level()
+    return game:GetService("ReplicatedStorage").PlayerData[game.Players.LocalPlayer.UserId].Level.Value
+end
+
+local function CheckQuest()
+    local playerGui = game.Players.LocalPlayer.PlayerGui
+    if playerGui:FindFirstChild("Quests") then
+        return playerGui.Quests.Enabled
+    end
+    return false
+end
+
+local function GetQuest(NPC)
+    local args = {
+        [1] = NPC
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ToServer"):WaitForChild("Quest"):FireServer(unpack(args))
+end
+
+local function Attack()
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local character = game.Players.LocalPlayer.Character
+    if character then
+        local backpack = game.Players.LocalPlayer.Backpack
+        if not character:FindFirstChildOfClass("Tool") and backpack then
+            for _, tool in ipairs(backpack:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == "Combat" or tool.Name == "Black Leg" then
+                    tool.Parent = character
+                    break
+                end
+            end
+        end
+    end
+
+    local currentTool = character:FindFirstChildOfClass("Tool")
+    if currentTool then
+        local args = {
+            [1] = "Combat",
+            [2] = 0.275,
+            [3] = "left",
+            [4] = 0.275,
+            [5] = currentTool.Name
+        }
+
+        ReplicatedStorage.Remotes.ServerMove:FireServer(unpack(args))
+    end
+end
+
+local function Level_Farm()
+    local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if not root then
+        return
+    end
+
+    local mobs = {
+        {"Bandit", workspace.NPC.Fight:FindFirstChild("Bandits"), CFrame.new(232, 100, -1110), workspace.NPC.Talk.Woppa, 1, 14}, -- Level 15
+        {"Reiner's Subordinate", workspace.NPC.Fight:FindFirstChild("Reiner"), CFrame.new(80, 210, -760), workspace.NPC.Talk.Boss, 15, 34}, -- Level 30
+        {"Orange Pirate", workspace.NPC.Fight:FindFirstChild("Buggy"), CFrame.new(-2071, 58, -2485), workspace.NPC.Talk.Unrio, 35, 59}, 
+        {"Monkey", workspace.NPC.Fight:FindFirstChild("Gorillas"), CFrame.new(-1210, 90, 2037), workspace.NPC.Talk.Zet, 60, 99}, -- Level 60
+        {"Angry Chef", workspace.NPC.Fight:FindFirstChild("Baratie"), CFrame.new(2018, 64, 1619), workspace.NPC.Talk.Dyna, 100, 124}, -- Level 100
+        {"Krieg Pirate", workspace.NPC.Fight:FindFirstChild("Baratie"), CFrame.new(2022, 64, 1626), workspace.NPC.Talk.Viz, 125, 149}, -- Level 125
+        {"Sand Pirate", workspace.NPC.Fight:FindFirstChild("Sandora"), CFrame.new(-6531, 116, -4571), workspace.NPC.Talk.Cellierin, 150, 174}, -- Level 150
+        {"Desert Brigand", workspace.NPC.Fight:FindFirstChild("Sandora"), CFrame.new(-6531, 116, -4571), workspace.NPC.Talk.Wise, 175, 249}, -- Level 175
+        {"Fishman", workspace.NPC.Fight:FindFirstChild("Fishmen"), CFrame.new(-1674, 73, -6263), workspace.NPC.Talk.Bope, 250, 264}, -- Level 250
+        {"Graverobber", workspace.NPC.Fight:FindFirstChild("Fishmen"), CFrame.new(-1674, 73, -6263), workspace.NPC.Talk.Zeno, 265, 314}, -- Level 265
+        {"Sky Soldier", workspace.NPC.Fight:FindFirstChild("SkyNpcs"), CFrame.new(4464, 762, -8351), workspace.NPC.Talk.Ima, 315, 364}, -- Level 315
+        {"Divine Guardian", workspace.NPC.Fight:FindFirstChild("SkyNpcs"), CFrame.new(5132, 1235, -9164), workspace.NPC.Talk.Sofen, 365, 9999} -- Level 315
+
+    }
+
+    for _, mobData in ipairs(mobs) do
+        local mobName, mobLocation, position, NPC_Quest, level_quest, next_quest_level = unpack(mobData)
+        if Check_Level() >= level_quest and Check_Level() <= next_quest_level then
+            if mobLocation then
+                local mob = mobLocation:FindFirstChild(tostring(mobName))
+                if mob then
+                    Auto_Haki()
+                    local target = mob:FindFirstChild("HumanoidRootPart")
+                    if target then
+                        if CheckQuest() then
+                            if _G.PawBarrage then
+                                root.CFrame = target.CFrame * CFrame.new(0, 45, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                            else
+                                Attack()
+                                root.CFrame = target.CFrame * CFrame.new(0, 0, 5)
+                            end
+                        else
+                            if not NPC_Quest:FindFirstChild("HumanoidRootPart") then
+                                root.CFrame = position
+                            else
+                                root.CFrame = NPC_Quest:FindFirstChild("HumanoidRootPart").CFrame
+                                GetQuest(NPC_Quest:FindFirstChild("Info"))
+                            end
+                        end
+                    else
+                        root.CFrame = position
+                    end
+                else
+                    root.CFrame = position
+                end
+            else
+                root.CFrame = position
+            end
+        end
+    end
+end
+
+local function Check_Boss()
+    local Boss_List = {"Morgan", "Reiner", "Buggy", "King Abu", "Sand Dragon", "Desert King", "Arlong", "Guard Captain", "Thunder God"}
+    for _,v in ipairs(Workspace.NPC.Fight:GetDescendants()) do
+        if v:IsA("Model") and v:FindFirstChild("Humanoid") then
+            for _,bossName in ipairs(Boss_List) do
+                if v.Name == bossName then
+                    return v
+                end
+            end
+        end
+    end
+end
+
+local function HandleBoss(boss)
+local boss = Check_Boss()
+    if boss then
+        _G.Found = true
+        local root = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if root then
+            Attack()
+            root.CFrame = boss.HumanoidRootPart.CFrame * CFrame.new(0, 0.25, 5)
+        end
+    else
+        _G.Found = false
+    end
+end
+
+local function MovePlayer()
+    local positions = {
+        CFrame.new(-4698, 91, 979),
+        CFrame.new(194, 270, -676),
+        CFrame.new(-1815, 53, 2332),
+        CFrame.new(-7338, 342, -4530),
+        CFrame.new(-7338, 342, -4530),
+        CFrame.new(-2268, 84, -6161),
+        CFrame.new(6130, 1947, -8593),
+        CFrame.new(3488, 2065, -11348)
+    }
+
+    for _, position in ipairs(positions) do
+        if _G.Boss_Farm then
+            local boss = Check_Boss()
+            if boss then
+                HandleBoss(boss)
+            else
+                local root = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if root then
+                    wait(15)
+                    root.CFrame = position
+                end
+            end
+        end
+    end
+end
 
 -- // Loadstring \\ --
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
@@ -419,17 +569,99 @@ local tab = window.new_tab('rbxassetid://4483345998')
 
 -- // Sections \\ --
 local section = tab.new_section('- Main -')
+local section2 = tab.new_section('- Misc -')
+local section3 = tab.new_section('- Kaitan -')
 
 
--- // Sector \\ --
+-- // Sector 1 \\ --
 
 local Farm = section.new_sector('= Farm =', 'Left')
 local Raid = section.new_sector('= Raid Boss =', 'Right')
 local Seabeast = section.new_sector('= Sea beast =', 'Left')
-local TP = section.new_sector('= Teleport =', 'Right')
-local Misc = section.new_sector('= Misc =', 'Right')
 local Accessory = section.new_sector('= Accessory =', 'Right')
 
+
+-- // Sector 2 \\ --
+
+local Misc = section2.new_sector('= Misc =', 'Left')
+local TP = section2.new_sector('= Teleport =', 'Right')
+local Style = section2.new_sector('= Fighting Style =', 'Left')
+
+
+-- // Sector 3 \\ --
+
+local Level = section3.new_sector('= Farm =', 'Left')
+local Boss = section3.new_sector('= Boss Farm =', 'Right')
+
+local Electro = Style.element('Button', 'Electro (200K Beli)', false, function()
+    game:GetService("ReplicatedStorage").Remotes.ToServer.Quest:FireServer(game:GetService("Workspace").NPC.Talk.Carrot.Info)
+end) 
+
+local BlackLeg = Style.element('Button', 'Black Leg (150K Beli)', false, function()
+    game:GetService("ReplicatedStorage").Remotes.ToServer.Quest:FireServer(game:GetService("Workspace").NPC.Talk.Sanji.Info)
+end) 
+
+local Combat = Style.element('Button', 'Combat (1K Beli)', false, function()
+    game:GetService("ReplicatedStorage").Remotes.ToServer.Quest:FireServer(game:GetService("Workspace").NPC.Talk.Khabib.Info)
+end) 
+
+local TP1 = TP.element('Button', 'Shell Town (1 - 25 levels)', false, function()
+    teleport('Shell Town (1 - 25 levels)')
+end) 
+
+local TP2 = TP.element('Button', 'Windmill Village (1 - 35 levels)', false, function()
+    teleport('Windmill Village (1 - 35 levels)')
+end) 
+
+local TP3 = TP.element('Button', 'Orange Town (35 - 60 levels)', false, function()
+    teleport('Orange Town (35 - 60 levels)')
+end) 
+
+local TP4 = TP.element('Button', 'Jungle (60 - 100 levels)', false, function()
+    teleport('Jungle (60 - 100 levels)')
+end) 
+
+local TP5 = TP.element('Button', 'Baratie (100 - 150 levels)', false, function()
+    teleport('Baratie (100 - 150 levels)')
+end) 
+
+local TP6 = TP.element('Button', 'Sandora (150 - 240 levels)', false, function()
+    teleport('Sandora (150 - 240 levels)')
+end) 
+
+local TP7 = TP.element('Button', 'Arlong Park (240 - 315 levels)', false, function()
+    teleport('Arlong Park (240 - 315 levels)')
+end) 
+
+local TP8 = TP.element('Button', 'Skypiea (315 - 600 levels)', false, function()
+    teleport('Skypiea (315 - 600 levels)')
+end) 
+
+local TP9 = TP.element('Button', 'Colosseum', false, function()
+    teleport('Colosseum')
+end) 
+
+local TP10 = TP.element('Button', 'Louge Town', false, function()
+    teleport('Louge Town')
+end) 
+
+local TP11 = TP.element('Button', 'Abandoned Territory', false, function()
+    teleport('Abandoned Territory')
+end) 
+
+local Boss_Farm = Boss.element('Toggle', 'Boss Farm', false, function(v)
+    _G.Boss_Farm = v.Toggle
+    while _G.Boss_Farm do task.wait()
+        MovePlayer()
+    end
+end)
+
+local Level = Level.element('Toggle', 'Level Farm', false, function(v)
+    _G.Level_Farm = v.Toggle
+    while _G.Level_Farm do task.wait()
+        Level_Farm()
+    end
+end) 
 
 local Combat = Farm.element('Toggle', 'Combat Hit', false, function(v)
     _G.Combat = v.Toggle
@@ -444,10 +676,6 @@ local Sword = Farm.element('Toggle', 'Sword Hit', false, function(v)
         Sword()
     end
 end) 
-
-local dropdown = TP.element('Dropdown', 'Select to teleport', {options = {'Shell Town (1 - 25 levels)','Windmill Village (1 - 35 levels)', 'Orange Town (35 - 60 levels)', 'Jungle (60 - 100 levels)', 'Baratie (100 - 150 levels)','Sandora (150 - 240 levels)','Arlong Park (240 - 315 levels)','Skypiea (315 - 600 levels)','Colosseum','Louge Town','Abandoned Territory'}}, function(v)
-    teleport(v.Dropdown)
-end)
 
 local Gacha = Misc.element('Toggle', 'Gacha', false, function(v)
     _G.Gacha = v.Toggle
