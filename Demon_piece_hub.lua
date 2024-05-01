@@ -7,8 +7,6 @@ end
     
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
 local root = chr.HumanoidRootPart
@@ -23,27 +21,61 @@ local function notify(Titles,message)
 end
 
 local function Combat()
-    local args = {
-        [1] = "Combat",
-        [2] = 0.275,
-        [3] = "left",
-        [4] = 0.275,
-        [5] = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool").Name
-    }
+    local Players = game.Players
+    local Backpack = Players.LocalPlayer.Backpack
+    local Character = Players.LocalPlayer.Character
     
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
+    for i,v in ipairs(Backpack:GetChildren()) do
+        if v:IsA("Tool") and (v.Name == "Combat" or v.Name == "Black Leg" or v.Name == "Electro") then
+            v.Parent = Character
+            break
+        end
+        
+        local current = Character:FindFirstChildOfClass("Tool")
+        if current then
+            local args = {
+                [1] = "Combat",
+                [2] = 0.275,
+                [3] = "left",
+                [4] = 0.275,
+                [5] = current.Name
+            }
+    
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
+        end
+    end
 end
 
 local function Sword()
-    local args = {
-        [1] = "SwordCombat",
-        [2] = 0.4,
-        [3] = "three",
-        [4] = 0.4,
-        [5] = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Tool").Name
-    }
+    local Sword_List = { "Axe-Hand", "Captain's Rapier", "Dark Blade", "Forest Nymphs", "Golden Hook", "Golden Staff", "Holy Book", "Iron Mace", "Jitte", "Katana", "Longsword", "Pipe", "Sandai", "Scimitar Daggers", "Shark Saw", "Shusui", "Skyborne Lance", "Tidebreaker", "Warrior's Spear", "Wooden Staff"
+}
+    local Players = game.Players
+    local Backpack = Players.LocalPlayer.Backpack
+    local Character = Players.LocalPlayer.Character
     
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
+
+    for i,v in ipairs(Backpack:GetChildren()) do
+        for _,tool in ipairs(Sword_List) do 
+            if v:IsA("Tool") and (v.Name == tool) then
+                v.Parent = Character
+                break
+            end
+        end
+    end
+        
+    local current_sword = Character:FindFirstChildOfClass("Tool")
+    if current_sword then
+        local args = {
+            [1] = "SwordCombat",
+            [2] = 0.38866666666666666,
+            [3] = "three",
+            [4] = 0.38866666666666666,
+            [5] = current_sword
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
+        
+    end
 end
 
 local function Chest()
@@ -415,35 +447,6 @@ local function GetQuest(NPC)
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ToServer"):WaitForChild("Quest"):FireServer(unpack(args))
 end
 
-local function Attack()
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local character = game.Players.LocalPlayer.Character
-    if character then
-        local backpack = game.Players.LocalPlayer.Backpack
-        if not character:FindFirstChildOfClass("Tool") and backpack then
-            for _, tool in ipairs(backpack:GetChildren()) do
-                if tool:IsA("Tool") and tool.Name == "Combat" or tool.Name == "Black Leg" then
-                    tool.Parent = character
-                    break
-                end
-            end
-        end
-    end
-
-    local currentTool = character:FindFirstChildOfClass("Tool")
-    if currentTool then
-        local args = {
-            [1] = "Combat",
-            [2] = 0.275,
-            [3] = "left",
-            [4] = 0.275,
-            [5] = currentTool.Name
-        }
-
-        ReplicatedStorage.Remotes.ServerMove:FireServer(unpack(args))
-    end
-end
-
 local function Level_Farm()
     local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     if not root then
@@ -479,7 +482,7 @@ local function Level_Farm()
                             if _G.PawBarrage then
                                 root.CFrame = target.CFrame * CFrame.new(0, 45, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
                             else
-                                Attack()
+                                Combat()
                                 root.CFrame = target.CFrame * CFrame.new(0, 0, 5)
                             end
                         else
@@ -522,7 +525,7 @@ local boss = Check_Boss()
         _G.Found = true
         local root = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
         if root then
-            Attack()
+            Combat()
             root.CFrame = boss.HumanoidRootPart.CFrame * CFrame.new(0, 0.25, 5)
         end
     else
@@ -593,6 +596,23 @@ local Style = section2.new_sector('= Fighting Style =', 'Left')
 local Level = section3.new_sector('= Farm =', 'Left')
 local Boss = section3.new_sector('= Boss Farm =', 'Right')
 
+
+
+local Combat = Farm.element('Toggle', 'Combat Hit', false, function(v)
+    _G.Combat = v.Toggle
+    while _G.Combat do task.wait()
+        Combat()
+    end
+end)
+
+local Sword = Farm.element('Toggle', 'Sword Hit', false, function(v)
+    _G.Sword = v.Toggle
+    while _G.Sword do task.wait()
+        Sword()
+    end
+end) 
+
+
 local Electro = Style.element('Button', 'Electro (200K Beli)', false, function()
     game:GetService("ReplicatedStorage").Remotes.ToServer.Quest:FireServer(game:GetService("Workspace").NPC.Talk.Carrot.Info)
 end) 
@@ -660,20 +680,6 @@ local Level = Level.element('Toggle', 'Level Farm', false, function(v)
     _G.Level_Farm = v.Toggle
     while _G.Level_Farm do task.wait()
         Level_Farm()
-    end
-end) 
-
-local Combat = Farm.element('Toggle', 'Combat Hit', false, function(v)
-    _G.Combat = v.Toggle
-    while _G.Combat do task.wait()
-        Combat()
-    end
-end) 
-
-local Sword = Farm.element('Toggle', 'Sword Hit', false, function(v)
-    _G.Sword = v.Toggle
-    while _G.Sword do task.wait()
-        Sword()
     end
 end) 
 
