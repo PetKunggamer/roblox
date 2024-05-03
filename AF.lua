@@ -1,10 +1,11 @@
 repeat wait() until game:IsLoaded()
 
+_G.JobId = "6b6afd69-2b73-473a-8972-a74ebd906213"
+
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
     A:Destroy()
 end
-    
 local function Rejoin(Job)
     local TeleportService = game:GetService("TeleportService")
     local placeId = game.PlaceId
@@ -51,11 +52,11 @@ end)
 
 local Roll = Misc.element('Button', 'Roll Data Rejoin', false, function()
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("EquipUnit"):FireServer("\255")
-    Rejoin("b3e07ab9-f3ad-4d8b-a65f-309c5706baa3")
+    Rejoin(_G.JobId)
 end)
 
 local Main = Server.element('Button', 'Join main server', false, function()
-    Rejoin("b3e07ab9-f3ad-4d8b-a65f-309c5706baa3")
+    Rejoin(_G.JobId)
 end)
 
 local Main = Server.element('Button', 'Join Old Server For COde', false, function()
