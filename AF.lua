@@ -42,7 +42,7 @@ local Server = section.new_sector('= Misc =', 'Right')
 local Code = section.new_sector('= Code Redeems =')
 local Summon = section.new_sector('= Summon =', 'Right')
 
-local Code = Code.element('Button', 'Roll Data Rejoin', false, function()
+local Code = Code.element('Button', 'Redeemed Code', false, function()
     local List = {"Release", "AnsimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500"}
 
     for i,v in ipairs(List) do
