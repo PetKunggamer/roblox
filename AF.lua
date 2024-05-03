@@ -23,7 +23,7 @@ local function Rejoin(Job)
 end
 
 local function Redeems()
-    local List = {"Release", "AnimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500", "Visit1M", "Likes4000", "Sub2RikTime"}
+    local List = {"Release", "AnimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500", "Visit1M", "Likes4000"}
     for i,v in ipairs(List) do
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("UseCode"):FireServer(v)
     end
@@ -61,8 +61,8 @@ local Main = Server.element('Button', 'Join main server', false, function()
     Rejoin(_G.JobId)
 end)
 
-local Main = Server.element('Button', 'Join Old Server For COde', false, function()
-    Rejoin("27100a69-adf7-4731-9678-e0c7c54d5698")
+local Main = Server.element('Button', 'Join Server Code', false, function()
+    Rejoin("b49e28e3-3d94-41dc-81bd-ae2b905cfc9c")
 end)
 
 local Specical = Summon.element('Button', '10x Special Summon', false, function()
