@@ -1,6 +1,6 @@
 repeat wait() until game:IsLoaded()
 
-_G.JobId = "6b6afd69-2b73-473a-8972-a74ebd906213"
+_G.JobId = game.JobId
 
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
