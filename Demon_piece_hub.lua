@@ -24,27 +24,30 @@ local function Combat()
     local Players = game.Players
     local Backpack = Players.LocalPlayer.Backpack
     local Character = Players.LocalPlayer.Character
-    
-    for i,v in ipairs(Backpack:GetChildren()) do
-        if v:IsA("Tool") and (v.Name == "Combat" or v.Name == "Black Leg" or v.Name == "Electro") then
-            v.Parent = Character
-            break
-        end
-        
-        local current = Character:FindFirstChildOfClass("Tool")
-        if current then
-            local args = {
-                [1] = "Combat",
-                [2] = 0.275,
-                [3] = "left",
-                [4] = 0.275,
-                [5] = current.Name
-            }
-    
-            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
+    if game:GetService("Players").LocalPlayer then
+        Backpack = game:GetService("Players").LocalPlayer:FindFirstChild("Backpack")
+        for i,v in ipairs(Backpack:GetChildren()) do
+            if v:IsA("Tool") and (v.Name == "Combat" or v.Name == "Black Leg" or v.Name == "Electro") then
+                v.Parent = Character
+                break
+            end
         end
     end
+
+    local current = Character:FindFirstChildOfClass("Tool")
+    if current then
+        local args = {
+            [1] = "Combat",
+            [2] = 0.275,
+            [3] = "left",
+            [4] = 0.275,
+            [5] = current.Name
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
+    end
 end
+
 
 local function Sword()
     local Sword_List = { "Axe-Hand", "Captain's Rapier", "Dark Blade", "Forest Nymphs", "Golden Hook", "Golden Staff", "Holy Book", "Iron Mace", "Jitte", "Katana", "Longsword", "Pipe", "Sandai", "Scimitar Daggers", "Shark Saw", "Shusui", "Skyborne Lance", "Tidebreaker", "Warrior's Spear", "Wooden Staff"
@@ -88,9 +91,12 @@ local function Chest()
                 if Press then
                     local cdk = Press:FindFirstChild("ClickDetector")
                     if cdk then
-                        root.CFrame = Press.CFrame
-                        wait(.222)
-                        fireclickdetector(cdk)
+                        if game.Players.LocalPlayer.Character then
+                            root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                            root.CFrame = Press.CFrame
+                            wait(.222)
+                            fireclickdetector(cdk)
+                        end
                     end     
                 end
             end
@@ -116,6 +122,9 @@ local function Kuma()
                             if _G.PawBarrage then
                                 root.CFrame = target.CFrame * CFrame.new(0,60,0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
                                 root.Velocity = Vector3.new(0,0,0)
+                            elseif _G.Sword then
+                                Sword()
+                                root.CFrame = target.CFrame * CFrame.new(0, 0, 5)
                             else
                                 root.CFrame = target.CFrame * CFrame.new(0,5,5)
                                 root.Velocity = Vector3.new(0,0,0)        
@@ -189,12 +198,15 @@ local function Chest_Farm()
         }
         for i, v in ipairs(list) do
             if root and _G.Auto_Chest_Farm then
-                root.CFrame = v
-                root.Anchored = true
-                wait(2.5)
-                root.Anchored = false
-                wait(.25)
-                Chest()
+                if game:GetService("Players").LocalPlayer.Character then
+                    root = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    root.CFrame = v
+                    root.Anchored = true
+                    wait(2.5)
+                    root.Anchored = false
+                    wait(.25)
+                    Chest()
+                end
             end
         end
     end
@@ -481,6 +493,9 @@ local function Level_Farm()
                         if CheckQuest() then
                             if _G.PawBarrage then
                                 root.CFrame = target.CFrame * CFrame.new(0, 45, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                            elseif _G.Sword then
+                                Sword()
+                                root.CFrame = target.CFrame * CFrame.new(0, 0, 5)
                             else
                                 Combat()
                                 root.CFrame = target.CFrame * CFrame.new(0, 0, 5)
@@ -507,7 +522,8 @@ local function Level_Farm()
 end
 
 local function Check_Boss()
-    local Boss_List = {"Morgan", "Reiner", "Buggy", "King Abu", "Sand Dragon", "Desert King", "Arlong", "Guard Captain", "Thunder God"}
+    -- local Boss_List = {"Morgan", "Reiner", "Buggy", "King Abu", "Sand Dragon", "Desert King", "Arlong", "Guard Captain", "Thunder God"}
+    local Boss_List = {"Desert King", "Thunder God"}
     for _,v in ipairs(Workspace.NPC.Fight:GetDescendants()) do
         if v:IsA("Model") and v:FindFirstChild("Humanoid") then
             for _,bossName in ipairs(Boss_List) do
@@ -525,8 +541,11 @@ local boss = Check_Boss()
         _G.Found = true
         local root = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
         if root then
-            Combat()
-            root.CFrame = boss.HumanoidRootPart.CFrame * CFrame.new(0, 0.25, 5)
+            local target = boss:FindFirstChild("HumanoidRootPart")
+            if target then
+                Combat()
+                root.CFrame = target.CFrame * CFrame.new(0, 0.25, 5)
+            end
         end
     else
         _G.Found = false
@@ -535,14 +554,15 @@ end
 
 local function MovePlayer()
     local positions = {
-        CFrame.new(-4698, 91, 979),
-        CFrame.new(194, 270, -676),
-        CFrame.new(-1815, 53, 2332),
-        CFrame.new(-7338, 342, -4530),
-        CFrame.new(-7338, 342, -4530),
-        CFrame.new(-2268, 84, -6161),
-        CFrame.new(6130, 1947, -8593),
-        CFrame.new(3488, 2065, -11348)
+        -- CFrame.new(-4698, 91, 979), -- Morgan
+        -- CFrame.new(194, 270, -676), -- Reiner
+        -- CFrame.new(-2194, 68, -2629), -- Buggy
+        -- CFrame.new(-1815, 53, 2332), -- Monkey
+        -- CFrame.new(-7338, 342, -4530), -- SandDragon
+        CFrame.new(-7338, 342, -4530), -- Croc
+        -- CFrame.new(-2268, 84, -6161), -- Arlong
+        -- CFrame.new(6130, 1947, -8593), -- Captain
+        CFrame.new(3488, 2065, -11348) -- Enel
     }
 
     for _, position in ipairs(positions) do
@@ -553,12 +573,50 @@ local function MovePlayer()
             else
                 local root = Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
                 if root then
-                    wait(15)
+                    wait(12.5)
                     root.CFrame = position
                 end
             end
         end
     end
+end
+
+local root = Players.LocalPlayer.Character.HumanoidRootPart
+
+local function GetIsland()
+    for i, v in ipairs(workspace.Map["Arlong Park"].STREAMEDOUTDETAILS:GetChildren()) do
+        if v:IsA("Model") and v.Name:find("Tree") then
+            local Scale = v:FindFirstChild("ScaledModel")
+            if Scale then
+                local Model = Scale:FindFirstChild("Model")
+                if Model then
+                    local Leaves = Model:FindFirstChild("Leaves")
+                    if Leaves and Leaves.CanCollide then
+                        return Leaves
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function Wood_Farm()
+    if game.Players.LocalPlayer.Character then
+        root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        root.CFrame = GetIsland().CFrame
+        root.Velocity = Vector3.new(0,0,0)
+    end
+
+    local args = {
+        [1] = "GunCombat",
+        [2] = 0.8,
+        [3] = 0.8,
+        [4] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Blast CannonM"),
+        [5] = Vector3.new(0,0,0),
+        [6] = GetIsland().CFrame
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ServerMove"):FireServer(unpack(args))
 end
 
 -- // Loadstring \\ --
@@ -594,9 +652,17 @@ local Style = section2.new_sector('= Fighting Style =', 'Left')
 -- // Sector 3 \\ --
 
 local Level = section3.new_sector('= Farm =', 'Left')
+local Stat = section3.new_sector('= Farm =', 'Left')
 local Boss = section3.new_sector('= Boss Farm =', 'Right')
 
 
+local Stat = Stat.element('Toggle', 'Str and Def', false, function(v)
+    _G.Stat = v.Toggle
+    while _G.Stat do task.wait()
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ToServer"):WaitForChild("StatMinus"):InvokeServer(1,"Strength")
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("ToServer"):WaitForChild("StatMinus"):InvokeServer(1,"Defense")
+    end
+end)
 
 local Combat = Farm.element('Toggle', 'Combat Hit', false, function(v)
     _G.Combat = v.Toggle
@@ -609,6 +675,13 @@ local Sword = Farm.element('Toggle', 'Sword Hit', false, function(v)
     _G.Sword = v.Toggle
     while _G.Sword do task.wait()
         Sword()
+    end
+end) 
+
+local Wood_Farm = Farm.element('Toggle', 'Wood Farm', false, function(v)
+    _G.Wood_Farm = v.Toggle
+    while _G.Wood_Farm do task.wait()
+        Wood_Farm()
     end
 end) 
 
