@@ -42,7 +42,14 @@ end
 if placeId == 6897167394 then
     Demon_Piece = true
 end
+if placeId == 16474126979 then
+    AF = true
+end
 
+if AF then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/AF.lua.lua"))()  -- 28/4/2024
+end
 
 if Demon_Piece then
 	repeat wait() until game:IsLoaded()
