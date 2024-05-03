@@ -38,8 +38,16 @@ local section = tab.new_section('- Main -')
 
 local Misc = section.new_sector('= Misc =', 'Left')
 local Server = section.new_sector('= Misc =', 'Right')
+local Code = section.new_sector('= Code Redeems =')
 local Summon = section.new_sector('= Summon =', 'Right')
 
+local Code Code.element('Button', 'Roll Data Rejoin', false, function()
+    local List = {"Release", "AnsimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500"}
+
+    for i,v in ipairs(List) do
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("UseCode"):FireServer(v)
+    end
+end)
 local Roll = Misc.element('Button', 'Roll Data Rejoin', false, function()
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("EquipUnit"):FireServer("\255")
     Rejoin("b3e07ab9-f3ad-4d8b-a65f-309c5706baa3")
