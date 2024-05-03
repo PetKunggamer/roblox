@@ -22,9 +22,8 @@ local function Rejoin(Job)
     end
 end
 
-local function Code()
+local function Redeems()
     local List = {"Release", "AnimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500", "Visit1M", "Likes4000"}
-
     for i,v in ipairs(List) do
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("UseCode"):FireServer(v)
     end
@@ -50,7 +49,7 @@ local Code = section.new_sector('= Code Redeems =')
 local Summon = section.new_sector('= Summon =', 'Right')
 
 local Code = Code.element('Button', 'Redeemed Code', false, function()
-    Code()
+    Redeems()
 end)
 
 local Roll = Misc.element('Button', 'Roll Data Rejoin', false, function()
