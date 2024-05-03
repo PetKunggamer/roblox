@@ -48,7 +48,7 @@ end
 
 if AF then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/AF.lua.lua"))()  -- 28/4/2024
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/AF.lua"))()  -- 28/4/2024
 end
 
 if Demon_Piece then
