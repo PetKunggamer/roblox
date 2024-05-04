@@ -120,70 +120,70 @@ local Xenith = section.new_sector('= Xenith Reroll =', 'Left')
 
 
 
-local Xenith_1 = Roll.element('Toggle', 'Levy', false, function(v)
+local Xenith_1 = Xenith.element('Toggle', 'Levy', false, function(v)
     _G.Levy = v.Toggle
     while _G.Levy do wait(.15)
         Xenith("Levy")
     end
 end)
 
-local Xenith_2 = Roll.element('Toggle', 'GodOfSky', false, function(v)
+local Xenith_2 = Xenith.element('Toggle', 'GodOfSky', false, function(v)
     _G.GodOfSky = v.Toggle
     while _G.GodOfSky do wait(.15)
         Xenith("GodOfSky")
     end
 end)
 
-local Xenith_3 = Roll.element('Toggle', 'FireFist', false, function(v)
+local Xenith_3 = Xenith.element('Toggle', 'FireFist', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Xenith("FireFist")
     end
 end)
 
-local Xenith_4 = Roll.element('Toggle', 'Bulme', false, function(v)
+local Xenith_4 = Xenith.element('Toggle', 'Bulme', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Xenith("Bulme")
     end
 end)
 
-local Xenith_5 = Roll.element('Toggle', 'Shadow Monarch', false, function(v)
+local Xenith_5 = Xenith.element('Toggle', 'Shadow Monarch', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Xenith("ShadowMonarch")
     end
 end)
 
-local Roll_1 = Roll.element('Toggle', 'Levy', false, function(v)
+local Roll_1 = Mythic.element('Toggle', 'Levy', false, function(v)
     _G.Levy = v.Toggle
     while _G.Levy do wait(.15)
         Check_Trait("Levy")
     end
 end)
 
-local Roll_2 = Roll.element('Toggle', 'GodOfSky', false, function(v)
+local Roll_2 = Mythic.element('Toggle', 'GodOfSky', false, function(v)
     _G.GodOfSky = v.Toggle
     while _G.GodOfSky do wait(.15)
         Check_Trait("GodOfSky")
     end
 end)
 
-local Roll_3 = Roll.element('Toggle', 'FireFist', false, function(v)
+local Roll_3 = Mythic.element('Toggle', 'FireFist', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Check_Trait("FireFist")
     end
 end)
 
-local Roll_4 = Roll.element('Toggle', 'Bulme', false, function(v)
+local Roll_4 = Mythic.element('Toggle', 'Bulme', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Check_Trait("Bulme")
     end
 end)
 
-local Roll_5 = Roll.element('Toggle', 'Shadow Monarch', false, function(v)
+local Roll_5 = Mythic.element('Toggle', 'Shadow Monarch', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Check_Trait("ShadowMonarch")
