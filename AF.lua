@@ -53,7 +53,7 @@ local function Sex(unit)
                             print("Rolled : ", traitValue)	
 			                notify("Trait Rolled : ", tostring(traitValue))
                             game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("TraitRerollToken"):FireServer(tostring(v))
-                            wait()
+                            wait(.35)
                         end
                     end
                 end
@@ -150,7 +150,7 @@ end)
 
 local Xenith_5 = Xenith.element('Toggle', 'Shadow Monarch', false, function(v)
     _G.Monarch = v.Toggle
-    while _G.Monarch do wait(.1)
+    while _G.Monarch do wait(.15)
         Sex("ShadowMonarch")
     end
 end)
