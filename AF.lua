@@ -53,7 +53,7 @@ local function Sex(unit)
                             print("Rolled : ", traitValue)	
 			                notify("Trait Rolled : ", tostring(traitValue))
                             game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("TraitRerollToken"):FireServer(tostring(v))
-                            wait(.35)
+                            wait()
                         end
                     end
                 end
@@ -89,7 +89,7 @@ local function Redeems()
 wait(.45)
 
 
-local List = {"Release", "AnimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500", "Visit1M", "Likes4000", "Sub2RikTime", "SorryforShutdown1"}
+local List = {"Release", "AnimeFantasy", "ShadowMonarch", "Tkz", "Sub2AekZaJunior", "Sub2Jetoza", "Sub2Watchpixel", "Visit150k", "SorryForTimeChamber", "Visit250k", "Likes1500", "Visit500k", "Likes2500", "Visit1M", "Likes4000", "Sub2RikTime", "SorryforShutdown1", "Active10k"}
 
 for i,v in ipairs(List) do
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("UseCode"):FireServer(v)
@@ -142,15 +142,15 @@ local Xenith_3 = Xenith.element('Toggle', 'FireFist', false, function(v)
 end)
 
 local Xenith_4 = Xenith.element('Toggle', 'Bulme', false, function(v)
-    _G.FireFist = v.Toggle
-    while _G.FireFist do wait(.15)
+    _G.Bulme = v.Toggle
+    while _G.Bulme do wait(.15)
         Sex("Bulme")
     end
 end)
 
 local Xenith_5 = Xenith.element('Toggle', 'Shadow Monarch', false, function(v)
-    _G.FireFist = v.Toggle
-    while _G.FireFist do wait(.15)
+    _G.Monarch = v.Toggle
+    while _G.Monarch do wait(.1)
         Sex("ShadowMonarch")
     end
 end)
