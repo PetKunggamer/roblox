@@ -135,6 +135,10 @@ local Main = Server.element('Button', 'Join Server Code', false, function()
     Rejoin("b6e9b7db-6d8f-4346-8bf5-7e24ce1a6e24")
 end)
 
+local Main = Server.element('Button', 'Join Old Server', false, function()
+    Rejoin("e977d5c0-c49e-48fe-b56d-809e049b485d")
+end)
+
 local Specical = Summon.element('Button', '10x Special Summon', false, function()
     for i = 1,10 do
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SpecialSummonTenRoll"):FireServer() -- SpecialSummonTenRoll
