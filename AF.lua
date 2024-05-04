@@ -1,5 +1,40 @@
 repeat wait() until game:IsLoaded()
 
+local function notify(Titles,message)
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+        Title = tostring(Titles),
+        Text = tostring(message),
+        Icon = "rbxassetid://1234567890"
+    })
+end
+
+local function Check_Trait(unit)
+    if game:GetService("Players").LocalPlayer:FindFirstChild("Units") then
+        for i,v in ipairs(game:GetService("Players").LocalPlayer.Units:GetChildren()) do
+            if v:IsA("Folder") and v.Name:find(tostring(unit)) then
+                local Traits = v:FindFirstChild("Traits")
+                if Traits then
+                    local traitValue = Traits.Value
+                    if traitValue then
+                        if traitValue == "Xenith" or traitValue == "Aurora" or traitValue == "Astral" or traitValue == "Golden" or traitValue == "Celestial" or traitValue == "Ethereal" then
+			                game:GetService("ReplicatedStorage").Effect.Onepiece.GodOfSky.Thunder:Play()
+                            print("Found : ", traitValue)
+                            notify("Trait Found : ", tostring(traitValue))
+                            _G.Found = true
+                            _G.A = false
+                        else
+                            print("Rolled : ", traitValue)	
+			                notify("Trait Rolled : ", tostring(traitValue))
+                            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("TraitRerollToken"):FireServer(tostring(v))
+                            wait(.35)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 _G.JobId = game.JobId
 
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
@@ -44,7 +79,7 @@ local tab = window.new_tab('rbxassetid://4483345998')
 
 -- // Sections \\ --
 local section = tab.new_section('- Main -')
-
+local section2 = tab.new_section('- Roll -')
 
 -- // Sector 1 \\ --
 
@@ -52,6 +87,31 @@ local Misc = section.new_sector('= Misc =', 'Left')
 local Server = section.new_sector('= Misc =', 'Right')
 local Code = section.new_sector('= Code Redeems =')
 local Summon = section.new_sector('= Summon =', 'Right')
+
+-- // Sector 2 \\ --
+
+local Roll = tab.new_section('- Roll -')
+
+local Roll_1 = Stat.element('Toggle', 'Levy', false, function(v)
+    _G.Levy = v.Toggle
+    while _G.Levy do wait(.15)
+        Check_Trait("Levy")
+    end
+end)
+
+local Roll_2 = Stat.element('Toggle', 'GodOfSky', false, function(v)
+    _G.GodOfSky = v.Toggle
+    while _G.GodOfSky do wait(.15)
+        Check_Trait("GodOfSky")
+    end
+end)
+
+local Roll_3 = Stat.element('Toggle', 'FireFist', false, function(v)
+    _G.FireFist = v.Toggle
+    while _G.FireFist do wait(.15)
+        Check_Trait("FireFist")
+    end
+end)
 
 local Code = Code.element('Button', 'Redeemed Code', false, function()
     Redeems()
