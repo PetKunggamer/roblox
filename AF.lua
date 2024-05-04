@@ -35,6 +35,33 @@ local function Check_Trait(unit)
     end
 end
 
+local function Xenith(unit)
+    if game:GetService("Players").LocalPlayer:FindFirstChild("Units") then
+        for i,v in ipairs(game:GetService("Players").LocalPlayer.Units:GetChildren()) do
+            if v:IsA("Folder") and v.Name:find(tostring(unit)) then
+                local Traits = v:FindFirstChild("Traits")
+                if Traits then
+                    local traitValue = Traits.Value
+                    if traitValue then
+                        if traitValue == "Xenith" then
+			                game:GetService("ReplicatedStorage").Effect.Onepiece.GodOfSky.Thunder:Play()
+                            print("Found : ", traitValue)
+                            notify("Trait Found : ", tostring(traitValue))
+                            _G.Found = true
+                            _G.A = false
+                        else
+                            print("Rolled : ", traitValue)	
+			                notify("Trait Rolled : ", tostring(traitValue))
+                            game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("TraitRerollToken"):FireServer(tostring(v))
+                            wait(.35)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 _G.JobId = game.JobId
 
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
@@ -87,8 +114,46 @@ local Misc = section.new_sector('= Misc =', 'Left')
 local Server = section.new_sector('= Misc =', 'Right')
 local Code = section.new_sector('= Code Redeems =')
 local Summon = section.new_sector('= Summon =', 'Right')
-local Roll = section.new_sector('= Trait Reroll =', 'Left')
+local Mythic = section.new_sector('= Mythic Reroll =', 'Left')
+local Xenith = section.new_sector('= Xenith Reroll =', 'Left')
 
+
+
+
+local Xenith_1 = Roll.element('Toggle', 'Levy', false, function(v)
+    _G.Levy = v.Toggle
+    while _G.Levy do wait(.15)
+        Xenith("Levy")
+    end
+end)
+
+local Xenith_2 = Roll.element('Toggle', 'GodOfSky', false, function(v)
+    _G.GodOfSky = v.Toggle
+    while _G.GodOfSky do wait(.15)
+        Xenith("GodOfSky")
+    end
+end)
+
+local Xenith_3 = Roll.element('Toggle', 'FireFist', false, function(v)
+    _G.FireFist = v.Toggle
+    while _G.FireFist do wait(.15)
+        Xenith("FireFist")
+    end
+end)
+
+local Xenith_4 = Roll.element('Toggle', 'Bulme', false, function(v)
+    _G.FireFist = v.Toggle
+    while _G.FireFist do wait(.15)
+        Xenith("Bulme")
+    end
+end)
+
+local Xenith_5 = Roll.element('Toggle', 'Shadow Monarch', false, function(v)
+    _G.FireFist = v.Toggle
+    while _G.FireFist do wait(.15)
+        Xenith("ShadowMonarch")
+    end
+end)
 
 local Roll_1 = Roll.element('Toggle', 'Levy', false, function(v)
     _G.Levy = v.Toggle
@@ -111,10 +176,17 @@ local Roll_3 = Roll.element('Toggle', 'FireFist', false, function(v)
     end
 end)
 
-local Roll_4 = Roll.element('Toggle', 'FireFist', false, function(v)
+local Roll_4 = Roll.element('Toggle', 'Bulme', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Check_Trait("Bulme")
+    end
+end)
+
+local Roll_5 = Roll.element('Toggle', 'Shadow Monarch', false, function(v)
+    _G.FireFist = v.Toggle
+    while _G.FireFist do wait(.15)
+        Check_Trait("ShadowMonarch")
     end
 end)
 
