@@ -111,6 +111,13 @@ local Roll_3 = Roll.element('Toggle', 'FireFist', false, function(v)
     end
 end)
 
+local Roll_4 = Roll.element('Toggle', 'FireFist', false, function(v)
+    _G.FireFist = v.Toggle
+    while _G.FireFist do wait(.15)
+        Check_Trait("Bulme")
+    end
+end)
+
 local Code = Code.element('Button', 'Redeemed Code', false, function()
     Redeems()
 end)
