@@ -78,8 +78,8 @@ local window = library.new('Syn0xz Hub', 'Syn0xz')
 local tab = window.new_tab('rbxassetid://4483345998')
 
 -- // Sections \\ --
+
 local section = tab.new_section('- Main -')
-local section2 = tab.new_section('- Roll -')
 
 -- // Sector 1 \\ --
 
@@ -87,26 +87,24 @@ local Misc = section.new_sector('= Misc =', 'Left')
 local Server = section.new_sector('= Misc =', 'Right')
 local Code = section.new_sector('= Code Redeems =')
 local Summon = section.new_sector('= Summon =', 'Right')
+local Roll = section.new_sector('= Trait Reroll =', 'Left')
 
--- // Sector 2 \\ --
 
-local Roll = tab.new_section('- Roll -')
-
-local Roll_1 = Stat.element('Toggle', 'Levy', false, function(v)
+local Roll_1 = Roll.element('Toggle', 'Levy', false, function(v)
     _G.Levy = v.Toggle
     while _G.Levy do wait(.15)
         Check_Trait("Levy")
     end
 end)
 
-local Roll_2 = Stat.element('Toggle', 'GodOfSky', false, function(v)
+local Roll_2 = Roll.element('Toggle', 'GodOfSky', false, function(v)
     _G.GodOfSky = v.Toggle
     while _G.GodOfSky do wait(.15)
         Check_Trait("GodOfSky")
     end
 end)
 
-local Roll_3 = Stat.element('Toggle', 'FireFist', false, function(v)
+local Roll_3 = Roll.element('Toggle', 'FireFist', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
         Check_Trait("FireFist")
