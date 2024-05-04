@@ -35,7 +35,7 @@ local function Check_Trait(unit)
     end
 end
 
-local function Xenith(unit)
+local function Sex(unit)
     if game:GetService("Players").LocalPlayer:FindFirstChild("Units") then
         for i,v in ipairs(game:GetService("Players").LocalPlayer.Units:GetChildren()) do
             if v:IsA("Folder") and v.Name:find(tostring(unit)) then
@@ -123,35 +123,35 @@ local Xenith = section.new_sector('= Xenith Reroll =', 'Left')
 local Xenith_1 = Xenith.element('Toggle', 'Levy', false, function(v)
     _G.Levy = v.Toggle
     while _G.Levy do wait(.15)
-        Xenith("Levy")
+        Sex("Levy")
     end
 end)
 
 local Xenith_2 = Xenith.element('Toggle', 'GodOfSky', false, function(v)
     _G.GodOfSky = v.Toggle
     while _G.GodOfSky do wait(.15)
-        Xenith("GodOfSky")
+        Sex("GodOfSky")
     end
 end)
 
 local Xenith_3 = Xenith.element('Toggle', 'FireFist', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
-        Xenith("FireFist")
+        Sex("FireFist")
     end
 end)
 
 local Xenith_4 = Xenith.element('Toggle', 'Bulme', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
-        Xenith("Bulme")
+        Sex("Bulme")
     end
 end)
 
 local Xenith_5 = Xenith.element('Toggle', 'Shadow Monarch', false, function(v)
     _G.FireFist = v.Toggle
     while _G.FireFist do wait(.15)
-        Xenith("ShadowMonarch")
+        Sex("ShadowMonarch")
     end
 end)
 
