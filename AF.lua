@@ -67,7 +67,7 @@ local Main = Server.element('Button', 'Join main server', false, function()
 end)
 
 local Main = Server.element('Button', 'Join Server Code', false, function()
-    Rejoin("b49e28e3-3d94-41dc-81bd-ae2b905cfc9c")
+    Rejoin("b6e9b7db-6d8f-4346-8bf5-7e24ce1a6e24")
 end)
 
 local Specical = Summon.element('Button', '10x Special Summon', false, function()
