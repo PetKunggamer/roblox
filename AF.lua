@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
---[[
+
 local function notify(Titles,message)
     game:GetService("StarterGui"):SetCore("SendNotification",{
         Title = tostring(Titles),
@@ -7,7 +7,7 @@ local function notify(Titles,message)
         Icon = "rbxassetid://1234567890"
     })
 end
-
+if game:GetService("CoreGui").RobloxGui.SettingsClippingShield.SettingsShield.VersionContainer.PlaceVersionLabel.Text == "Place Version: 4013" then
 local function Check_Trait(unit)
     if game:GetService("Players").LocalPlayer:FindFirstChild("Units") then
         for i,v in ipairs(game:GetService("Players").LocalPlayer.Units:GetChildren()) do
@@ -218,3 +218,6 @@ local Standard = Summon.element('Button', '10x Standard Summon', false, function
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("StandardSummonTenRoll"):FireServer() -- StandardSummonTenRoll
     end
 end)
+else
+	notify("Syn0xz Hub","Patched")
+end
