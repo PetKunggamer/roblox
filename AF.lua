@@ -220,4 +220,5 @@ local Standard = Summon.element('Button', '10x Standard Summon', false, function
 end)
 else
 	notify("Syn0xz Hub","Patched")
+	Rejoin("03e3cc9e-c0c8-4623-9309-2667a8e69e86")
 end
