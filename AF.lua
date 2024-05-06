@@ -195,7 +195,7 @@ local Code = Code.element('Button', 'Redeemed Code', false, function()
 end)
 
 local Roll = Misc.element('Button', 'Roll Data Rejoin', false, function()
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("EquipUnit"):FireServer("\255")
+    -- game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("EquipUnit"):FireServer("\255")
     Rejoin(_G.JobId)
 end)
 
