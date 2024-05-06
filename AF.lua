@@ -1,5 +1,5 @@
 repeat wait() until game:IsLoaded()
-
+--[[
 local function notify(Titles,message)
     game:GetService("StarterGui"):SetCore("SendNotification",{
         Title = tostring(Titles),
