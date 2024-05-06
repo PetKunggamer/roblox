@@ -196,17 +196,17 @@ end)
 
 local Roll = Misc.element('Button', 'Roll Data Rejoin', false, function()
     game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("EquipUnit"):FireServer("\255")
-    Rejoin(_G.JobId)
+    Rejoin("03e3cc9e-c0c8-4623-9309-2667a8e69e86")
 end)
 
 local Main = Server.element('Button', 'Join main server', false, function()
-    Rejoin(_G.JobId)
+    Rejoin("03e3cc9e-c0c8-4623-9309-2667a8e69e86")
 end)
 
 local Main = Server.element('Button', 'Join Server Code', false, function()
-    Rejoin("b6a46334-11a1-4200-bb21-f158c49bf2ea")
+    Rejoin("03e3cc9e-c0c8-4623-9309-2667a8e69e86")
 end)
-
+	
 local Specical = Summon.element('Button', '10x Special Summon', false, function()
     for i = 1,10 do
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SpecialSummonTenRoll"):FireServer() -- SpecialSummonTenRoll
