@@ -28,7 +28,7 @@ local function Redeem_Code()
                                     Interact.Text = v
                                     clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Codes.Main.Redeem, true)
                                     clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Codes.Main.Redeem, false)
-                                    wait(.65)
+                                    wait(.95)
                                 end
                             end
                         end
