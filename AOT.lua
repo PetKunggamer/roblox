@@ -28,7 +28,7 @@ local function Redeem_Code()
                                     Interact.Text = v
                                     clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Codes.Main.Redeem, true)
                                     clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Codes.Main.Redeem, false)
-                                    wait(.95)
+                                    wait(.65)
                                 end
                             end
                         end
@@ -96,6 +96,7 @@ local function Finding_Clan()
 end
 
 local function TP_Titan()
+    local virtualInputManager = game:GetService('VirtualInputManager')
     for i,v in ipairs(workspace.Titans:GetChildren()) do
        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
           local Hitboxes = v:FindFirstChild("Hitboxes")
@@ -105,6 +106,8 @@ local function TP_Titan()
                 local target = Hit:FindFirstChild("Nape")
                 target.Size = Vector3.new(200,200,200)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target.CFrame * CFrame.new(0,80,0)
+                virtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+                virtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
              end
           end
        end
