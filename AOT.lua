@@ -3,8 +3,8 @@ function clickUiButton(v, state)
     virtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
 end
 
-local function Redeem_Code()
-    local List = { "RERELEASE", "FOLLOWERGI999", "FOLLOWJLEAY" }
+local function Redeem_Code() 
+    local List = { "RERELEASE", "FOLLOWERGI999", "FOLLOWJLEAY", "MEMBERS70K", "LIKES35K", "SUB2SLYKAGE"}
     for i, v in ipairs(List) do
         local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
         if PlayerGui then
