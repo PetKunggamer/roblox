@@ -1,3 +1,9 @@
+repeat task.wait() until game:IsLoaded()
+
+
+_G.Retry = true
+_G.TP_Titan = true
+
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
     A:Destroy()
@@ -29,44 +35,8 @@ local function Anti_Grab()
 end
 
 function clickUiButton(v, state)
-    local virtualInputManager = game:GetService('VirtualInputManager')
-    virtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
-end
-local VirtualInputManager = game:GetService("VirtualInputManager")
-local function Redeem_Code() 
-    local List = { "RERELEASE", "FOLLOWERGI999", "FOLLOWJLEAY", "MEMBERS70K", "LIKES35K", "SUB2SLYKAGE"}
-    for i, v in ipairs(List) do
-        local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
-        if PlayerGui then
-            local Interface = PlayerGui:FindFirstChild("Interface")
-            if Interface then
-                local Title_Screen = Interface:FindFirstChild("Title_Screen")
-                if Title_Screen then
-                    local Codes = Title_Screen:FindFirstChild("Codes")
-                    if not Codes.Visible then
-                        clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Buttons.Codes, true)
-                        clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Buttons.Codes, false)
-                        wait(.5)
-                    end
-                    if Codes then
-                        local Main = Codes:FindFirstChild("Main")
-                        if Main then
-                            local Code = Main:FindFirstChild("Code")
-                            if Code then
-                                local Interact = Code:FindFirstChild("Interact")
-                                if Interact then
-                                    Interact.Text = v
-                                    clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Codes.Main.Redeem, true)
-                                    clickUiButton(game:GetService("Players").LocalPlayer.PlayerGui.Interface.Title_Screen.Codes.Main.Redeem, false)
-                                    wait(.95)
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
 end
 
 local function Roll()
@@ -126,6 +96,68 @@ local function Finding_Clan()
     end
 end
 
+local function Get_Mob()
+    local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local dist, mob = math.huge
+    for i,v in ipairs(workspace.Titans:GetChildren()) do
+        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
+            local mag = (root.Position - v:FindFirstChild("HumanoidRootPart").Position).magnitude
+            if mag < dist then
+                local Hitboxes = v:FindFirstChild("Hitboxes")
+                if Hitboxes then
+                    local Hit = Hitboxes:FindFirstChild("Hit")
+                    if Hit then
+                        local target = Hit:FindFirstChild("Nape")
+                        if target then
+                            return target
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function tp(CF,delay)
+local TweenService = game:GetService("TweenService")
+local plr = game.Players.LocalPlayer
+local chr = plr.Character
+local root = chr.HumanoidRootPart
+    if chr then
+        local root = plr.Character:FindFirstChild("HumanoidRootPart")
+        if root then
+            local tween =
+                TweenService:Create(
+                root,
+                TweenInfo.new((CF.Position - root.Position).magnitude / 100),
+                {CFrame = CF}
+            )
+            tween:Play()
+            root.Velocity = Vector3.new(0,0,0)
+            root.Anchored = true
+            wait(delay)
+            root.Anchored = false
+        end
+    end
+end
+
+local function Hitbox()
+    if Get_Mob() then
+        Get_Mob().Size = Vector3.new(450,450,450)
+    end
+end
+
+local function Check_Sword()
+    local plrName = game.Players.LocalPlayer.Character.Name
+    local LeftHand = workspace.Characters[plrName]["Rig_"..plrName].LeftHand.Blade_1.Transparency
+    local RightHand = workspace.Characters[plrName]["Rig_"..plrName].RightHand.Blade_1.Transparency
+    if LeftHand == 1 or RightHand == 1 then
+       local VirtualInputManager = game:GetService("VirtualInputManager")
+       VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
+       VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
+    end
+end
+
 local function Retry()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -155,110 +187,58 @@ local function Retry()
     end
 end
 
-local function Get_Mob()
-    local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-    local dist, mob = math.huge
-    for i,v in ipairs(workspace.Titans:GetChildren()) do
-        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
-            local mag = (root.Position - v:FindFirstChild("HumanoidRootPart").Position).magnitude
-            if mag < dist then
-                local Hitboxes = v:FindFirstChild("Hitboxes")
-                if Hitboxes then
-                    local Hit = Hitboxes:FindFirstChild("Hit")
-                    if Hit then
-                        local target = Hit:FindFirstChild("Nape")
-                        if target then
-                            return target
-                        end
-                    end
+local function Auto_Retry(toggle)
+    _G.Auto_Retry = toggle
+    if _G.Auto_Retry then
+        while _G.Auto_Retry do wait()
+            Retry()
+        end
+    end
+end
+
+local function TP_Titan(toggle)
+    _G.Farm = toggle
+    if _G.Farm then
+        while _G.Farm do wait(.125)
+            local VirtualInputManager = game:GetService("VirtualInputManager")
+            local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+            local Blade = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Blade.Sets
+            local Gas = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Gas.Percentage
+            Retry()
+            if Blade.Text == "0 / 3" or Gas.Text == "0%" then
+                _G.Stop = true
+                tp((workspace:FindFirstChild("Unclimbable"):FindFirstChild("Reloads"):FindFirstChild("GasTanks"):FindFirstChild("Refill").CFrame),1)
+                local VirtualInputManager = game:GetService("VirtualInputManager")
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
+                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
+                wait(2)
+            else
+                _G.Stop = false
+            end
+            if not _G.Stop then
+                local VirtualInputManager = game:GetService("VirtualInputManager")
+                VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+                VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
+                Hitbox()
+                Anti_Grab()
+                Check_Sword()
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+                if Get_Mob() then 
+                    tp(Get_Mob().CFrame * CFrame.new(0,150,0),.55)
                 end
             end
         end
     end
 end
 
-local function tp(CF)
-local TweenService = game:GetService("TweenService")
-local plr = game.Players.LocalPlayer
-local chr = plr.Character
-local root = chr.HumanoidRootPart
-    if chr then
-        local root = plr.Character:FindFirstChild("HumanoidRootPart")
-        if root then
-            local tween =
-                TweenService:Create(
-                root,
-                TweenInfo.new((CF.Position - root.Position).magnitude / 255),
-                {CFrame = CF}
-            )
-            tween:Play()
-            tween.Completed:wait()
-            root.Velocity = Vector3.new(0,0,0)
-            root.Anchored = true
-            root.Anchored = false
-            wait(.55)
-        end
-    end
-end
-
-local function Hitbox()
-    if Get_Mob() then
-        Get_Mob().Size = Vector3.new(450,450,450)
-    end
-end
-
-local function Check_Sword()
-    local plrName = game.Players.LocalPlayer.Character.Name
-    local LeftHand = workspace.Characters[plrName]["Rig_"..plrName].LeftHand.Blade_1.Transparency
-    local RightHand = workspace.Characters[plrName]["Rig_"..plrName].RightHand.Blade_1.Transparency
-    if LeftHand == 1 or RightHand == 1 then
-       local VirtualInputManager = game:GetService("VirtualInputManager")
-       VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
-       VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
-    end
- end
-
-local function Hit()
-    local VirtualInputManager = game:GetService("VirtualInputManager")
-    VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-    VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
-end
-
-local function TP_Titan(x,y,z)
-    Hitbox()
-    Hit()
-    Anti_Grab()
-    Retry()
-    Check_Sword()
-    local VirtualInputManager = game:GetService("VirtualInputManager")
-    local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-    local Blade = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Blade.Sets
-    local Gas = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Gas.Percentage
-    if Blade.Text == "0 / 3" or Gas.Text == "0%" then
-        _G.Farm = false
-        tp(workspace.Unclimbable.Reloads.GasTanks.Refill.CFrame)
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
-        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
-        wait(10)
-    else
-        _G.Farm = true
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
-        if _G.Farm then
-            if Get_Mob() then
-                tp(Get_Mob().CFrame * CFrame.new(x,y,z))
-            end
-        end
-    end
-end
-
-local TweenService = game:GetService("TweenService")
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
 local root = chr.HumanoidRootPart
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
 
+_G.Test = true
 -- // Window \\ --
 local window = library.new('Syn0xz Hub', 'Syn0xz')
 
@@ -274,10 +254,7 @@ local Main = section.new_sector('= Main =', 'Left')
 local Misc = section.new_sector('= Misc =', 'Right')
 
 local AutoFarm = Main.element('Toggle', 'Auto Farm (Fast)', false, function(v)
-    _G.AutoFarm = v.Toggle
-    while _G.AutoFarm do task.wait(.125)
-        TP_Titan(0,120,0)
-    end
+    TP_Titan(v.Toggle)
 end) 
 
 
@@ -293,3 +270,13 @@ local Finding_Clan = Main.element('Toggle', 'Finding Clan', false, function(v)
     end
 end) 
 
+local function load()
+    if game:GetService("CoreGui"):FindFirstChild("unknown") then
+        game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
+    end
+    wait(2)
+    TP_Titan(_G.TP_Titan)
+    Auto_Retry(_G.Auto_Retry)
+end
+
+load()
