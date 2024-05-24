@@ -1,6 +1,8 @@
 repeat task.wait() until game:IsLoaded()
 
 
+local PlaceId = game.PlaceId
+if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 then
 _G.Retry = true
 _G.TP_Titan = true
 
@@ -118,7 +120,7 @@ local function Get_Mob()
     end
 end
 
-local function tp(CF,delay)
+local function tp(CF)
 local TweenService = game:GetService("TweenService")
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
@@ -129,21 +131,15 @@ local root = chr.HumanoidRootPart
             local tween =
                 TweenService:Create(
                 root,
-                TweenInfo.new((CF.Position - root.Position).magnitude / 100),
+                TweenInfo.new((CF.Position - root.Position).magnitude / 80),
                 {CFrame = CF}
             )
             tween:Play()
             root.Velocity = Vector3.new(0,0,0)
             root.Anchored = true
-            wait(delay)
+            wait(.25)
             root.Anchored = false
         end
-    end
-end
-
-local function Hitbox()
-    if Get_Mob() then
-        Get_Mob().Size = Vector3.new(450,450,450)
     end
 end
 
@@ -196,36 +192,109 @@ local function Auto_Retry(toggle)
     end
 end
 
+
+local function Hit()
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+    VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
+end
+
+local function Hook(state)
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.E, false, game)
+    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.Q, false, game)
+end
+
+
+local function Get_Refill()
+    local main = workspace:FindFirstChild("Unclimbable")
+    if main then
+        local Reloads = main:FindFirstChild("Reloads")
+        if Reloads then
+            local GasTanks = Reloads:FindFirstChild("GasTanks")
+            if GasTanks then
+                local Refill = GasTanks:FindFirstChild("Refill")
+                if Refill then
+                    return Refill
+                end
+            end
+        end
+    end
+end
+
+local function Gen_Refill()
+    if not Get_Refill() then
+        local PlaceId = game.PlaceId
+        if PlaceId == 13379349730 then -- [AOT:R] Shiganshina
+            tp(CFrame.new(510, 172, 771))
+        end
+        if PlaceId == 14638336319 then -- [AOT:R] Giant Forest
+            tp(CFrame.new(270, 17, -685))
+        end
+        if PlaceId == 14012874501 then -- [AOT:R] Trost
+            tp(CFrame.new(-952, 50, 148))
+        end
+        if PlaceId == 13904207646 then -- [AOT:R] Trost Outskirts
+            tp(CFrame.new(1866, 9, -76))
+        end
+    end
+end
+
+local function Refill()
+    if Get_Refill() then 
+        tp((Get_Refill().CFrame))
+        wait(2)
+    else
+        Gen_Refill()
+    end
+end
+
+local function Gas()
+    local Blade = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Blade.Sets
+    local Gas = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Gas.Percentage
+    if Blade.Text == "0 / 3" or Gas.Text == "0%" then
+        return true
+    else
+        return false
+    end
+end
+
+local function Hitbox(x,y,z)
+    for i,v in ipairs(workspace.Titans:GetChildren()) do
+        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
+            local Hitboxes = v:FindFirstChild("Hitboxes")
+            if Hitboxes then
+                local Hit = Hitboxes:FindFirstChild("Hit")
+                if Hit then
+                    local target = Hit:FindFirstChild("Nape")
+                    if target then
+                        target.Size = Vector3.new(x,y,z)
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
         while _G.Farm do wait(.125)
-            local VirtualInputManager = game:GetService("VirtualInputManager")
-            local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-            local Blade = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Blade.Sets
-            local Gas = game:GetService("Players").LocalPlayer.PlayerGui.Interface.HUD.Main.Top.Gas.Percentage
             Retry()
-            if Blade.Text == "0 / 3" or Gas.Text == "0%" then
-                _G.Stop = true
-                tp((workspace:FindFirstChild("Unclimbable"):FindFirstChild("Reloads"):FindFirstChild("GasTanks"):FindFirstChild("Refill").CFrame),1)
+            if Gas() then
+                Hook(false)
+                Refill()
                 local VirtualInputManager = game:GetService("VirtualInputManager")
                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
                 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
-                wait(2)
             else
-                _G.Stop = false
-            end
-            if not _G.Stop then
-                local VirtualInputManager = game:GetService("VirtualInputManager")
-                VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-                VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
-                Hitbox()
+                Hit()
+                Hitbox(1000,1000,1000)
                 Anti_Grab()
                 Check_Sword()
-                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Q, false, game)
+                Hook(true)
                 if Get_Mob() then 
-                    tp(Get_Mob().CFrame * CFrame.new(0,150,0),.55)
+                    tp(Get_Mob().CFrame * CFrame.new(0,120,0))
                 end
             end
         end
@@ -235,6 +304,7 @@ end
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
 local root = chr.HumanoidRootPart
+local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
 
@@ -280,3 +350,5 @@ local function load()
 end
 
 load()
+
+end
