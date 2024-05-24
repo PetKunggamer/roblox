@@ -131,13 +131,13 @@ local root = chr.HumanoidRootPart
             local tween =
                 TweenService:Create(
                 root,
-                TweenInfo.new((CF.Position - root.Position).magnitude / 80),
+                TweenInfo.new((CF.Position - root.Position).magnitude / 60),
                 {CFrame = CF}
             )
             tween:Play()
             root.Velocity = Vector3.new(0,0,0)
             root.Anchored = true
-            wait(.25)
+            wait(.15)
             root.Anchored = false
         end
     end
