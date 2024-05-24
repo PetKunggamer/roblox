@@ -131,13 +131,13 @@ local root = chr.HumanoidRootPart
             local tween =
                 TweenService:Create(
                 root,
-                TweenInfo.new((CF.Position - root.Position).magnitude / 60),
+                TweenInfo.new((CF.Position - root.Position).magnitude / 50),
                 {CFrame = CF}
             )
             tween:Play()
             root.Velocity = Vector3.new(0,0,0)
             root.Anchored = true
-            wait(.15)
+            wait(.25)
             root.Anchored = false
         end
     end
@@ -243,7 +243,7 @@ end
 local function Refill()
     if Get_Refill() then 
         tp((Get_Refill().CFrame))
-        wait(2)
+        wait(5)
     else
         Gen_Refill()
     end
@@ -287,6 +287,7 @@ local function TP_Titan(toggle)
                 local VirtualInputManager = game:GetService("VirtualInputManager")
                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
                 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
+                wait(3)
             else
                 Hit()
                 Hitbox(1000,1000,1000)
