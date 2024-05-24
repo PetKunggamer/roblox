@@ -1,10 +1,10 @@
 repeat task.wait() until game:IsLoaded()
 
-
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 then
-_G.Retry = true
-_G.TP_Titan = true
+
+_G.TP_Titan = getgenv().Auto_Farm
+_G.Speed = getgenv().Speed
 
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
@@ -131,7 +131,7 @@ local root = chr.HumanoidRootPart
             local tween =
                 TweenService:Create(
                 root,
-                TweenInfo.new((CF.Position - root.Position).magnitude / 50),
+                TweenInfo.new((CF.Position - root.Position).magnitude / _G.Speed),
                 {CFrame = CF}
             )
             tween:Play()
@@ -309,7 +309,6 @@ local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
 
-_G.Test = true
 -- // Window \\ --
 local window = library.new('Syn0xz Hub', 'Syn0xz')
 
@@ -347,7 +346,6 @@ local function load()
     end
     wait(2)
     TP_Titan(_G.TP_Titan)
-    Auto_Retry(_G.Auto_Retry)
 end
 
 load()
