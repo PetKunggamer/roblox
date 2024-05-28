@@ -25,7 +25,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
 end)
 
 local function Redeem_Code()
-    local List = { "MEMBERS150K", "MEMBERS175K", "LIKES80K", "UPDATE1SOON"}
+    local List = {"LIKES90K", "LIKES100K", "MEMBERS200K"}
     for i, v in ipairs(List) do
         local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
         if PlayerGui then
