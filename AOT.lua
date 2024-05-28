@@ -7,6 +7,10 @@ if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or
 _G.TP_Titan = getgenv().Auto_Farm
 _G.Speed = getgenv().Speed
 
+if getgenv().UGphone then
+else
+    
+end
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
     A:Destroy()
@@ -76,6 +80,11 @@ end
 function clickUiButton(v, state)
     local VirtualInputManager = game:GetService('VirtualInputManager')
     VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
+end
+
+function clickUiButtonUG(v, state)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 70, 0, state, game, 1)
 end
 
 local function Roll()
@@ -228,6 +237,8 @@ local function Retry()
                                 if Retry then
                                     clickUiButton(Retry, true)
                                     clickUiButton(Retry, false)
+                                    clickUiButtonUG(Retry, true)
+                                    clickUiButtonUG(Retry, false)
                                 end
                             end
                         end 
