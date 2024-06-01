@@ -1,5 +1,5 @@
 repeat task.wait() until game:IsLoaded()
-wait(.25)
+
 pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
@@ -19,6 +19,135 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
         end
     end
 end)
+
+local function Rewards()
+    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
+    if PlayerGui then
+        local Interface = PlayerGui:FindFirstChild("Interface")
+        if Interface then
+            local Rewards = Interface:FindFirstChild("Rewards")
+            if Rewards then
+                local Main1 = Rewards:FindFirstChild("Main")
+                if Main1 then
+                    local Info = Main1:FindFirstChild("Info")
+                    if Info then
+                        return Info.Visible
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function getRewards()
+    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
+    if PlayerGui then
+        local Interface = PlayerGui:FindFirstChild("Interface")
+        if Interface then
+            local Rewards = Interface:FindFirstChild("Rewards")
+            if Rewards then
+                local Main1 = Rewards:FindFirstChild("Main")
+                if Main1 then
+                    local Info = Main1:FindFirstChild("Info")
+                    if Info and Info.Visible == true then
+                        local Main = Info:FindFirstChild("Main")
+                        if Main then
+                            return Main
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+local function GetButton_Text()
+    return getRewards():FindFirstChild("Buttons"):FindFirstChild("Retry"):FindFirstChild("Title").Text
+end
+
+local function webhooks(url_link)
+    local url = url_link
+    if getRewards() then
+        local function sendMessageEmbed(url, embed)
+            local http = game:GetService("HttpService")
+            local data = {
+                ["embeds"] = { embed }
+            }
+            local body = http:JSONEncode(data)
+            request({
+                Url = url,
+                Method = "POST",
+                Headers = { ["Content-Type"] = "application/json" },
+                Body = body
+            })
+        end
+    
+        local function getDrop() 
+            local Drop = {}
+            local Perk = {}
+            local Rewards = getRewards()
+            local Items = Rewards:FindFirstChild("Items")
+            local function getItemQuantity(name)
+                return Items:FindFirstChild(name):FindFirstChild("Main"):FindFirstChild("Inner"):FindFirstChild("Quantity").Text
+            end
+    
+            local Gold = getItemQuantity("Gold")
+            local XP = getItemQuantity("XP")
+            local BP_XP = getItemQuantity("BP_XP")
+    
+            for _, v in ipairs(Items:GetChildren()) do
+                if v:IsA("Frame") then
+                    if v.Name == "Gold" then
+                        table.insert(Drop, "- GOLD : " .. Gold .. "\n")
+                    elseif v.Name == "XP" then
+                        table.insert(Drop, "- XP : " .. XP .. "\n")
+                    elseif v.Name == "BP_XP" then
+                        table.insert(Drop, "- Battle Pass : " .. BP_XP .. "\n")
+                    elseif v.Name:find("Perk") then
+                        table.insert(Perk, "- PERK : " .. v.Name .. "\n")
+                    elseif not v.Name:find("Grid") then
+                        table.insert(Drop, "- Secret : **" .. v.Name .. "**\n")
+                    end
+                end
+            end
+            return table.concat(Drop)
+        end
+    
+        local function getPerk() 
+            local Perk = {}
+            local Rewards = getRewards()
+            local Items = Rewards:FindFirstChild("Items")
+            for _, v in ipairs(Items:GetChildren()) do
+                if v:IsA("Frame") then
+                    if v.Name:find("Perk") then
+                        table.insert(Perk, "- PERK : " .. v.Name .. "\n")
+                    end
+                end
+            end
+            return table.concat(Perk)
+        end
+    
+        local function PlayerData() 
+            local PlayerData = {}
+            return table.concat(PlayerData)
+        end
+    
+        local Time = getRewards():WaitForChild("Stats"):WaitForChild("Time_Taken"):WaitForChild("Amount").Text
+        local embed = {
+            title = "Completed Mission :white_check_mark: ",
+            description = ":clock1: Total Time : " .. Time,
+            color = 65280, -- green
+            fields = {
+                { name = ":flushed: Username :", value = game.Players.LocalPlayer.Character.Name },
+                { name = "Player Information", value = PlayerData() },
+                { name = "Result Drop :", value = getDrop(), inline = true },
+                { name = "Perk Drop:", value = getPerk(), inline = true }
+            },
+            footer = { text = "เวลา : " .. os.date("%H:%M:%S", os.time() + 11 * 60 * 60) }
+        }
+    
+        sendMessageEmbed(url, embed)
+        end
+    end
 
 local function Redeem_Code()
     local List = {"LIKES90K", "LIKES100K", "MEMBERS200K"}
@@ -338,6 +467,10 @@ local function TP_Titan(toggle)
                     Hitbox(200,1000,200)
                     tp(Get_Mob().CFrame * CFrame.new(0,80,80),true)
                 end
+            end
+            if GetButton_Text() == "STARTING (5s)" then
+                webhooks(getgenv().Webhook)
+                wait(1)
             end
         end
     end
