@@ -1,5 +1,6 @@
 repeat task.wait() until game:IsLoaded()
 
+wait(.25)
 pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
