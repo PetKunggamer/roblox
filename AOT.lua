@@ -478,6 +478,12 @@ local function TP_Titan(toggle)
 end
 
 spawn(function()
+    while _G.Ended do task.wait()
+        Retry()
+    end
+end)
+            
+spawn(function()
     while _G.Tween do task.wait()
         game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
     end
