@@ -1,6 +1,8 @@
+getgenv().Auto_Farm = true
+getgenv().Speed = 300
+getgenv().Webhook = "https://discord.com/api/webhooks/1132813768791961841/LjAXG16IurjzxF86q7zAMTdm90zBapph3nZOWpjWXYI1ZaYFFnIiLqtzJnd_D-ITCm1P"
 repeat task.wait() until game:IsLoaded()
 
-wait(.25)
 pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
@@ -41,6 +43,7 @@ local function Rewards()
 end
 
 local function getRewards()
+    _G.Ended = true
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
         local Interface = PlayerGui:FindFirstChild("Interface")
@@ -113,6 +116,20 @@ local function webhooks(url_link)
             return table.concat(Drop)
         end
     
+        local function getPerk() 
+            local Perk = {}
+            local Rewards = getRewards()
+            local Items = Rewards:FindFirstChild("Items")
+            for _, v in ipairs(Items:GetChildren()) do
+                if v:IsA("Frame") then
+                    if v.Name:find("Perk") then
+                        table.insert(Perk, "- PERK : " .. v.Name .. "\n")
+                    end
+                end
+            end
+            return table.concat(Perk)
+        end
+    
         local function PlayerData() 
             local PlayerData = {}
             return table.concat(PlayerData)
@@ -127,9 +144,9 @@ local function webhooks(url_link)
                 { name = ":flushed: Username :", value = game.Players.LocalPlayer.Character.Name },
                 { name = "Player Information", value = PlayerData() },
                 { name = "Result Drop :", value = getDrop(), inline = true },
-                { name = "Perk Drop:", value = getPerk(), inline = true }
+                { name = "Perk Drop :", value = getPerk(), inline = true }
             },
-            footer = { text = "เวลา : " .. os.date("%H:%M:%S", os.time() - 1 * 60 * 60) }
+            footer = { text = "เวลา : " .. os.date("%H:%M:%S", os.time() + (-1) * 60 * 60) }
         }
     
         sendMessageEmbed(url, embed)
@@ -288,43 +305,6 @@ local function Check_Sword()
     end
 end
 
-local function tp(CF,state)
-    local TweenService = game:GetService("TweenService")
-    local plr = game.Players.LocalPlayer
-    local chr = plr.Character or plr.CharacterAdded:Wait()
-    local root = chr:WaitForChild("HumanoidRootPart")
-    if chr then
-        local root = plr.Character:FindFirstChild("HumanoidRootPart")
-        if root then
-            _G.Tween = true
-            local VirtualInputManager = game:GetService("VirtualInputManager")
-            local distance = (root.Position - CF.Position).magnitude
-            local duration = distance / getgenv().Speed
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-
-            local tweenInfo = TweenInfo.new(
-                duration,  -- Duration based on distance and speed
-                Enum.EasingStyle.Linear  -- Linear easing for consistent speed
-            )
-            
-            local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
-            tween:Play()
-            Check_Sword()
-            tween.Completed:wait()
-            _G.Tween = false
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
-            if state then
-                root.Velocity = Vector3.new(-100, 0, 100)  -- Reset velocity to zero
-            else
-                root.Velocity = Vector3.new(0, 0, 0)
-            end
-            root.Anchored = true
-            task.wait(.01)
-            root.Anchored = false
-        end
-    end
-end
-
 local function Retry()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -354,12 +334,43 @@ local function Retry()
     end
 end
 
-local function Hook(state)
-    local VirtualInputManager = game:GetService("VirtualInputManager")
-    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.E, false, game)
-    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.Q, false, game)
-end
+local function tp(CF,state)
+    local TweenService = game:GetService("TweenService")
+    local plr = game.Players.LocalPlayer
+    local chr = plr.Character or plr.CharacterAdded:Wait()
+    local root = chr:WaitForChild("HumanoidRootPart")
+    if chr then
+        local root = plr.Character:FindFirstChild("HumanoidRootPart")
+        if root then
+            _G.Tween = true
+            local VirtualInputManager = game:GetService("VirtualInputManager")
+            local distance = (root.Position - CF.Position).magnitude
+            local duration = distance / getgenv().Speed
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
 
+            local tweenInfo = TweenInfo.new(
+                duration,  -- Duration based on distance and speed
+                Enum.EasingStyle.Linear  -- Linear easing for consistent speed
+            )
+            
+            local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
+            Retry()
+            tween:Play()
+            Check_Sword()
+            tween.Completed:wait()
+            _G.Tween = false
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
+            if state then
+                root.Velocity = Vector3.new(-100, 0, 100)  -- Reset velocity to zero
+            else
+                root.Velocity = Vector3.new(0, 0, 0)
+            end
+            root.Anchored = true
+            task.wait(.01)
+            root.Anchored = false
+        end
+    end
+end
 
 local function Get_Refill()
     local main = workspace:FindFirstChild("Unclimbable")
@@ -468,7 +479,7 @@ spawn(function()
         Retry()
     end
 end)
-            
+
 spawn(function()
     while _G.Tween do task.wait()
         game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
