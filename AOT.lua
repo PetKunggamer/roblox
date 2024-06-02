@@ -104,27 +104,13 @@ local function webhooks(url_link)
                     elseif v.Name == "BP_XP" then
                         table.insert(Drop, "- Battle Pass : " .. BP_XP .. "\n")
                     elseif v.Name:find("Perk") then
-                        table.insert(Perk, "- PERK : " .. v.Name .. "\n")
+                        table.insert(Drop, "- PERK : " .. v.Name .. "\n")
                     elseif not v.Name:find("Grid") then
                         table.insert(Drop, "- Secret : **" .. v.Name .. "**\n")
                     end
                 end
             end
             return table.concat(Drop)
-        end
-    
-        local function getPerk() 
-            local Perk = {}
-            local Rewards = getRewards()
-            local Items = Rewards:FindFirstChild("Items")
-            for _, v in ipairs(Items:GetChildren()) do
-                if v:IsA("Frame") then
-                    if v.Name:find("Perk") then
-                        table.insert(Perk, "- PERK : " .. v.Name .. "\n")
-                    end
-                end
-            end
-            return table.concat(Perk)
         end
     
         local function PlayerData() 
