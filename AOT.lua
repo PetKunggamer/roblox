@@ -1,8 +1,5 @@
-getgenv().Auto_Farm = true
-getgenv().Speed = 300
-getgenv().Webhook = "https://discord.com/api/webhooks/1132813768791961841/LjAXG16IurjzxF86q7zAMTdm90zBapph3nZOWpjWXYI1ZaYFFnIiLqtzJnd_D-ITCm1P"
 repeat task.wait() until game:IsLoaded()
-
+wait(.25)
 pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
