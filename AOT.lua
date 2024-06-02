@@ -143,7 +143,7 @@ local function webhooks(url_link)
                 { name = "Result Drop :", value = getDrop(), inline = true },
                 { name = "Perk Drop:", value = getPerk(), inline = true }
             },
-            footer = { text = "เวลา : " .. os.date("%H:%M:%S", os.time() + 11 * 60 * 60) }
+            footer = { text = "เวลา : " .. os.date("%H:%M:%S", os.time() - 1 * 60 * 60) }
         }
     
         sendMessageEmbed(url, embed)
