@@ -340,7 +340,6 @@ local function tp(CF,state)
         local root = plr.Character:FindFirstChild("HumanoidRootPart")
         if root then
             _G.Tween = true
-            local VirtualInputManager = game:GetService("VirtualInputManager")
             local distance = (root.Position - CF.Position).magnitude
             local duration = distance / getgenv().Speed
 
@@ -351,8 +350,6 @@ local function tp(CF,state)
             
             local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
             tween:Play()
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             Check_Sword()
             tween.Completed:wait()
             _G.Tween = false
@@ -443,18 +440,6 @@ local function Hitbox(x,y,z)
     end
 end
 
-spawn(function()
-    while _G.Ended do task.wait()
-        Retry()
-    end
-end)
-
-spawn(function()
-    while _G.Tween do task.wait()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-    end
-end)
-
 local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
@@ -480,6 +465,26 @@ local function TP_Titan(toggle)
         end
     end
 end
+
+spawn(function()
+    while _G.Ended do task.wait()
+        Retry()
+    end
+end)
+
+spawn(function()
+    while _G.Tween do task.wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+    end
+end)
+
+spawn(function()
+    while _G.Farm do task.wait()
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
+    end
+end)
 
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
