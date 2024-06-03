@@ -471,7 +471,7 @@ spawn(function()
     while _G.Tween do task.wait()
         local VirtualInputManager = game:GetService("VirtualInputManager")
         VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-        task.wait(.25)
+        task.wait(.1)
         VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
     end
 end)
