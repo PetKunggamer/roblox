@@ -444,9 +444,6 @@ local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
         while _G.Farm do task.wait(.125)
-            local VirtualInputManager = game:GetService("VirtualInputManager")
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             Retry()
             Anti_Grab()
             if Blade() then
@@ -468,6 +465,16 @@ local function TP_Titan(toggle)
         end
     end
 end
+
+
+spawn(function()
+    while _G.Tween do task.wait()
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+        task.wait(.25)
+        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
+    end
+end)
 
 spawn(function()
     while _G.Ended do task.wait()
