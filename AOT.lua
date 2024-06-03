@@ -351,7 +351,6 @@ local function tp(CF,state)
             )
             
             local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
-            Retry()
             tween:Play()
             Check_Sword()
             tween.Completed:wait()
