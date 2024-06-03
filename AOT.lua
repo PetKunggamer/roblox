@@ -343,7 +343,6 @@ local function tp(CF,state)
             local VirtualInputManager = game:GetService("VirtualInputManager")
             local distance = (root.Position - CF.Position).magnitude
             local duration = distance / getgenv().Speed
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
 
             local tweenInfo = TweenInfo.new(
                 duration,  -- Duration based on distance and speed
@@ -352,11 +351,11 @@ local function tp(CF,state)
             
             local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
             tween:Play()
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             Check_Sword()
             tween.Completed:wait()
             _G.Tween = false
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             if state then
                 root.Velocity = Vector3.new(-100, 0, 100)  -- Reset velocity to zero
             else
