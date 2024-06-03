@@ -444,6 +444,9 @@ local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
         while _G.Farm do task.wait(.125)
+            local VirtualInputManager = game:GetService("VirtualInputManager")
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             Retry()
             Anti_Grab()
             if Blade() then
@@ -455,8 +458,6 @@ local function TP_Titan(toggle)
                 if Get_Mob() then
                     Check_Sword()
                     Hitbox(200,1000,200)
-                    VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-                    VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
                     tp(Get_Mob().CFrame * CFrame.new(0,80,80),true)
                 end
             end
@@ -477,14 +478,6 @@ end)
 spawn(function()
     while _G.Tween do task.wait()
         game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-    end
-end)
-
-spawn(function()
-    while _G.Farm do task.wait()
-        local VirtualInputManager = game:GetService("VirtualInputManager")
-        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
     end
 end)
 
