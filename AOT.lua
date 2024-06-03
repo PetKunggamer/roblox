@@ -444,6 +444,18 @@ local function Hitbox(x,y,z)
     end
 end
 
+spawn(function()
+    while _G.Ended do task.wait()
+        Retry()
+    end
+end)
+
+spawn(function()
+    while _G.Tween do task.wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+    end
+end)
+
 local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
@@ -470,18 +482,6 @@ local function TP_Titan(toggle)
         end
     end
 end
-
-spawn(function()
-    while _G.Ended do task.wait()
-        Retry()
-    end
-end)
-
-spawn(function()
-    while _G.Tween do task.wait()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-    end
-end)
 
 local plr = game.Players.LocalPlayer
 local chr = plr.Character
