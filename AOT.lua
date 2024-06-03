@@ -462,7 +462,6 @@ local function TP_Titan(toggle)
             Retry()
             Anti_Grab()
             if Blade() then
-                Hook(false)
                 Refill()
                 local VirtualInputManager = game:GetService("VirtualInputManager")
                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
