@@ -444,6 +444,8 @@ local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
         while _G.Farm do task.wait(.125)
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             Retry()
             Anti_Grab()
             if Blade() then
