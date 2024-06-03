@@ -355,6 +355,7 @@ local function tp(CF,state)
             Check_Sword()
             tween.Completed:wait()
             _G.Tween = false
+            VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
             VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
             if state then
                 root.Velocity = Vector3.new(-100, 0, 100)  -- Reset velocity to zero
