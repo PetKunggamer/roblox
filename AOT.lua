@@ -477,6 +477,13 @@ spawn(function()
 end)
 
 spawn(function()
+    if _G.Farm then
+        wait(360)
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+    end
+end)
+
+spawn(function()
     while _G.Ended do task.wait()
         Retry()
     end
