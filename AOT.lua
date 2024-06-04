@@ -478,7 +478,7 @@ end)
 
 spawn(function()
     if _G.Farm then
-        wait(360)
+        wait(400)
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
     end
 end)
