@@ -542,8 +542,10 @@ local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 then
     load()
 end
-
-    wait(5)
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0
 end
-
+    print("countdown 5 sec)
+    for i = 1,5 do
+        print(i)
+        wait(1)
+    end
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
