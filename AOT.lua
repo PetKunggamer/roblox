@@ -1,6 +1,6 @@
 repeat task.wait() until game:IsLoaded()
 wait(.25)
-
+pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
 
@@ -471,14 +471,14 @@ spawn(function()
     while _G.Tween do task.wait()
         local VirtualInputManager = game:GetService("VirtualInputManager")
         VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-        task.wait(.1)
+        task.wait(.25)
         VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
     end
 end)
 
 spawn(function()
     if _G.Farm then
-        wait(400)
+        wait(360)
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
     end
 end)
@@ -531,6 +531,20 @@ local Finding_Clan = Main.element('Toggle', 'Finding Clan', false, function(v)
     end
 end)
 
+local function countdownTimer(time)
+    wait(.25)
+    for i = 1,time do
+        print(i)
+        wait(1)
+    end
+    print("Died")
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end
+
+spawn(function()
+    countdownTimer(500)
+end)
+
 local function load()
     if game:GetService("CoreGui"):FindFirstChild("unknown") then
         game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
@@ -542,10 +556,6 @@ local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 then
     load()
 end
+        
 end
-    print("countdown 5 sec)
-    for i = 1,5 do
-        print(i)
-        wait(1)
-    end
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end)
