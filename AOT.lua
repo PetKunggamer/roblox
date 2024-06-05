@@ -538,15 +538,12 @@ local function countdownTimer()
     end
 end
 
-spawn(function()
-    countdownTimer()
-end)
-
 local function load()
     if game:GetService("CoreGui"):FindFirstChild("unknown") then
         game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
     end
     TP_Titan(_G.TP_Titan)
+    countdownTimer()
 end
 
 local PlaceId = game.PlaceId
