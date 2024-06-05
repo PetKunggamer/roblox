@@ -530,17 +530,29 @@ local Finding_Clan = Main.element('Toggle', 'Finding Clan', false, function(v)
         Finding_Clan()
     end
 end)
-    local function load()
-        if game:GetService("CoreGui"):FindFirstChild("unknown") then
-            game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
-        end
-        TP_Titan(_G.TP_Titan)
-    end
 
-    local PlaceId = game.PlaceId
-    if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 then
-        load()
+local function countdownTimer()
+    wait(5)
+    if not Rewards() then
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
     end
+end
+
+spawn(function()
+    countdownTimer()
+end)
+
+local function load()
+    if game:GetService("CoreGui"):FindFirstChild("unknown") then
+        game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
+    end
+    TP_Titan(_G.TP_Titan)
+end
+
+local PlaceId = game.PlaceId
+if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 then
+    load()
+end
         
 end
 end)
