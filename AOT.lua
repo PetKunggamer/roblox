@@ -531,19 +531,13 @@ local Finding_Clan = Main.element('Toggle', 'Finding Clan', false, function(v)
     end
 end)
 
-local function countdownTimer()
-    wait(5)
-    if not Rewards() then
-        game.Players.LocalPlayer.Character.Humanoid.Health = 0
-    end
-end
-
 local function load()
     if game:GetService("CoreGui"):FindFirstChild("unknown") then
         game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
     end
     TP_Titan(_G.TP_Titan)
-    countdownTimer()
+    wait(5)
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
 end
 
 local PlaceId = game.PlaceId
