@@ -471,7 +471,7 @@ spawn(function()
     while _G.Tween do task.wait()
         local VirtualInputManager = game:GetService("VirtualInputManager")
         VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-        task.wait(.25)
+        task.wait(.125)
         VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
     end
 end)
@@ -484,8 +484,11 @@ spawn(function()
 end)
 
 spawn(function()
-    while _G.Ended do task.wait()
-        Retry()
+    if getRewards() then
+        _G.Rejoin = true
+        while _G.Rejoin do task.wait()
+            Retry()
+        end
     end
 end)
 
