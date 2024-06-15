@@ -172,48 +172,56 @@ local function Instant()
 end
 
 local function Get_Mob_PC()
-    for _, v in ipairs(game.Workspace.Living:GetChildren()) do
-        local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-        local target = v:FindFirstChild("HumanoidRootPart")
-        local hum = v:FindFirstChild("Humanoid")
-        local Tags = v:FindFirstChild("Tags")
-        if target and hum and Tags and v.Name ~= game.Players.LocalPlayer.Character.Name then
-            local dist = (target.Position - root.Position).magnitude
-            if GetChest_Interaction() then
-                Collect_Chest_PC()
-            else
-                if dist < 500 and not GetChest_Interaction() then
-                    root.CFrame = target.CFrame * CFrame.new(0, 25, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
-                    root.Velocity = Vector3.new(0,0,0)
-                    Instant()
+    pcall(function()
+        for _, v in ipairs(game.Workspace.Living:GetChildren()) do
+            local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+            local target = v:FindFirstChild("HumanoidRootPart")
+            local hum = v:FindFirstChild("Humanoid")
+            local Tags = v:FindFirstChild("Tags")
+            if target and hum and Tags and v.Name ~= game.Players.LocalPlayer.Character.Name then
+                local dist = (target.Position - root.Position).magnitude
+                if GetChest_Interaction() then
+                    Collect_Chest_PC()
                 else
-                    CFrame.new(1976, 931, -1531)
+                    if target then
+                        if dist < 500 and not GetChest_Interaction() then
+                            root.CFrame = target.CFrame * CFrame.new(0, 25, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                            root.Velocity = Vector3.new(0,0,0)
+                            Instant()
+                        else
+                            CFrame.new(1976, 931, -1531)
+                        end
+                    end
                 end
             end
         end
-    end
+    end)
 end
 
 local function Get_Mob()
-    for _, v in ipairs(game.Workspace.Living:GetChildren()) do
-        local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-        local target = v:FindFirstChild("HumanoidRootPart")
-        local hum = v:FindFirstChild("Humanoid")
-        local Tags = v:FindFirstChild("Tags")
-        if target and hum and Tags and v.Name ~= game.Players.LocalPlayer.Character.Name then
-            local dist = (target.Position - root.Position).magnitude
-            if GetChest_Interaction() then
-                Collect_Chest()
-            else
-                if dist < 500 and not GetChest_Interaction() then
-                    root.CFrame = target.CFrame * CFrame.new(0, 25, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
-                    Instant()
+    pcall(function()
+        for _, v in ipairs(game.Workspace.Living:GetChildren()) do
+            local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+            local target = v:FindFirstChild("HumanoidRootPart")
+            local hum = v:FindFirstChild("Humanoid")
+            local Tags = v:FindFirstChild("Tags")
+            if target and hum and Tags and v.Name ~= game.Players.LocalPlayer.Character.Name then
+                local dist = (target.Position - root.Position).magnitude
+                if GetChest_Interaction() then
+                    Collect_Chest()
                 else
-                    CFrame.new(1976, 931, -1531)
+                    if target then
+                        if dist < 500 and not GetChest_Interaction() then
+                            root.CFrame = target.CFrame * CFrame.new(0, 25, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                            Instant()
+                        else
+                            CFrame.new(1976, 931, -1531)
+                        end
+                    end
                 end
             end
         end
-    end
+    end)
 end
 
 game:GetService("UserInputService").InputBegan:Connect(function(input)
