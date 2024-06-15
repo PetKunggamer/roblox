@@ -326,14 +326,14 @@ local Skill = section.new_sector('= Attack =', 'Right')
 -- // Sector2 \\ --
 local TP = section2.new_sector('= Teleport =', 'Right')
 
-local Auto_Farm = Main.element('Toggle', 'Auto Farm', false, function(v)
+local Auto_Farm = Main.element('Toggle', 'Auto Farm (Fluxus executor)', false, function(v)
     _G.Auto_Farm = v.Toggle
     while _G.Auto_Farm do task.wait()
         Get_Mob()
     end
 end) 
 
-local Auto_Farm = Main.element('Toggle', 'Auto Farm (Solara)', false, function(v)
+local Auto_Farm = Main.element('Toggle', 'Auto Farm (Solara executor)', false, function(v)
     _G.Auto_Farm = v.Toggle
     while _G.Auto_Farm do task.wait()
         Get_Mob_PC()
