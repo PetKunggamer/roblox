@@ -5,8 +5,13 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
+local function Quest(Mob)
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer("Slayer_Quest",Mob)
+end
+
 local function teleport(Spot)
     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+    root.Velocity = Vector3.new(0,0,0)
     if Spot == "Park" then
         root.CFrame = CFrame.new(2060, 974, 337)
     end
@@ -50,6 +55,12 @@ local function NO_CHESTUI()
                 end
             end
         end
+    end
+end
+
+local function Effects()
+    for i,v in ipairs(Workspace.Effects:GetChildren()) do
+        v:Destroy()    
     end
 end
 
@@ -173,7 +184,10 @@ local function Get_Mob_PC()
             else
                 if dist < 500 and not GetChest_Interaction() then
                     root.CFrame = target.CFrame * CFrame.new(0, 25, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
+                    root.Velocity = Vector3.new(0,0,0)
                     Instant()
+                else
+                    CFrame.new(1976, 931, -1531)
                 end
             end
         end
@@ -194,6 +208,8 @@ local function Get_Mob()
                 if dist < 500 and not GetChest_Interaction() then
                     root.CFrame = target.CFrame * CFrame.new(0, 25, 0) * CFrame.Angles(math.rad(270), math.rad(0), math.rad(0))
                     Instant()
+                else
+                    CFrame.new(1976, 931, -1531)
                 end
             end
         end
@@ -294,7 +310,9 @@ local section2 = tab.new_section('- Teleport -')
 
 -- // Sector \\ --
 local Main = section.new_sector('= Main =', 'Left')
+local Boss_Quest = section.new_sector('= Boss Quest =', 'Left')
 local Misc = section.new_sector('= Misc =', 'Right')
+local Misc2 = section.new_sector('= Misc 2 =', 'Right')
 local Skill = section.new_sector('= Attack =', 'Right')
 
 -- // Sector2 \\ --
@@ -322,18 +340,38 @@ local Skill_E = Skill.element('Toggle', 'Auto Skill E', false, function(v)
 end) 
 
 local Instant = Misc.element('Toggle', 'Instant Kill', false, function(v)
-    _G.Auto_E = v.Toggle
-    while _G.Auto_E do task.wait()
+    _G.Instant = v.Toggle
+    while _G.Instant do wait()
         Instant()
     end
 end) 
 
+local Effect = Misc.element('Toggle', 'No Effects', false, function(v)
+    _G.Auto_E = v.Toggle
+    while _G.Auto_E do wait()
+        Effects()
+    end
+end) 
 
-local Go_Black = Misc.element('Button', 'TP Black Market', false, function()
+local NO_CHESTUI = Misc.element('Toggle', 'No ChestUI', false, function(v)
+    _G.NO_CHESTUI = v.Toggle
+    while _G.NO_CHESTUI do wait()
+        NO_CHESTUI()
+    end
+end) 
+
+local NO_CHESTUI = Boss_Quest.element('Toggle', 'Quest Gojo', false, function(v)
+    _G.NO_CHESTUI = v.Toggle
+    while _G.NO_CHESTUI do wait()
+        Quest("Gojo")
+    end
+end) 
+
+local Go_Black = Misc2.element('Button', 'TP Black Market', false, function()
     GOTO_BM()
 end)
 
-local Roll_10 = Misc.element('Button', 'Roll_10 Gacha', false, function()
+local Roll_10 = Misc2.element('Button', 'Roll_10 Gacha', false, function()
     local args = {
         [1] = 1,
         [2] = "UShards",
