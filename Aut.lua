@@ -5,6 +5,35 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 end)
 
+local function Roll10Gacha()
+local args = {
+        [1] = 1,
+        [2] = "UShards",
+        [3] = 10
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("RollBanner"):InvokeServer(unpack(args))
+end
+local function SkinCrate()
+    local args = {
+    [1] = "Skin_Crate",
+    [2] = "UShards",
+    [3] = 10
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("BuySkinCrate"):InvokeServer(unpack(args))
+end
+
+local function SkinCrate()
+    local args = {
+    [1] = "Skin_Crate",
+    [2] = "UShards",
+    [3] = 10
+    }
+    
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("BuySkinCrate"):InvokeServer(unpack(args))
+end
+
 local function Quest(Mob)
     game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer("Slayer_Quest",Mob)
 end
@@ -380,13 +409,11 @@ local Go_Black = Misc2.element('Button', 'TP Black Market', false, function()
 end)
 
 local Roll_10 = Misc2.element('Button', 'Roll_10 Gacha', false, function()
-    local args = {
-        [1] = 1,
-        [2] = "UShards",
-        [3] = 10
-    }
+    Roll10Gacha()
+end)
 
-    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("RollBanner"):InvokeServer(unpack(args))
+local RollSkin = Misc2.element('Button', 'Skin Crate Gacha', false, function()
+    SkinCrate()
 end)
 
 local TP1 = TP.element('Button', 'Park', false, function()
