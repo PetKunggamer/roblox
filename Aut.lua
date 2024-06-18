@@ -1,9 +1,41 @@
-    local vu = game:GetService("VirtualUser")
-    game:GetService("Players").LocalPlayer.Idled:connect(function()
-    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    wait(1)
-    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    end)
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+wait(1)
+vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+
+local function LevelUp()
+    while true do wait()
+        local args = {
+            [1] = {
+                ["ABILITY_911111"] = 0.0125
+            }
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("LevelService"):WaitForChild("RF"):WaitForChild("ConsumeShardsForXP"):InvokeServer(unpack(args))
+    end
+end
+
+local function Skin_Roll10()
+    local args = {
+        [1] = "Skin_Crate",
+        [2] = "UShards",
+        [3] = 10
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("BuySkinCrate"):InvokeServer(unpack(args))
+end
+
+    local function Shard_Roll10()
+            local args = {
+            [1] = 1,
+            [2] = "UShards",
+            [3] = 10
+        }
+
+        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("RollBanner"):InvokeServer(unpack(args))
+    end
 
     local function Quest(Mob)
         game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("DialogueService"):WaitForChild("RF"):WaitForChild("CheckDialogue"):InvokeServer("Slayer_Quest",Mob)
@@ -340,9 +372,23 @@
     local Misc = section.new_sector('= Misc =', 'Right')
     local Misc2 = section.new_sector('= Misc 2 =', 'Right')
     local Skill = section.new_sector('= Attack =', 'Right')
+    local Boundless = section.new_sector('= Boundless Only =', 'Right')
 
     -- // Sector2 \\ --
     local TP = section2.new_sector('= Teleport =', 'Right')
+
+
+    local LevelUp_1 = Boundless.element('Button', 'Level 1 (Mero Shard)', false, function()
+        for i = 1,1 do
+            spawn(LevelUp)
+        end
+    end)
+
+    local LevelUp_200 = Boundless.element('Button', 'Level 200 (Mero Shard)', false, function()
+        for i = 1,200 do
+            spawn(LevelUp)
+        end
+    end)
 
     local Auto_Farm = Main.element('Toggle', 'Auto Farm (Fluxus executor)', false, function(v)
         _G.Auto_Farm = v.Toggle
@@ -397,14 +443,12 @@
         GOTO_BM()
     end)
 
-    local Roll_10 = Misc2.element('Button', 'Roll 10 Gacha', false, function()
-        local args = {
-            [1] = 1,
-            [2] = "UShards",
-            [3] = 10
-        }
+    local Roll_10 = Misc2.element('Button', 'Roll 10 Skin', false, function()
+        Skin_Roll10()
+    end)
 
-        game:GetService("ReplicatedStorage"):WaitForChild("ReplicatedModules"):WaitForChild("KnitPackage"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ShopService"):WaitForChild("RF"):WaitForChild("RollBanner"):InvokeServer(unpack(args))
+    local Roll_10_Shard = Misc2.element('Button', 'Roll 10 Shard', false, function()
+        Shard_Roll10()
     end)
 
     local TP1 = TP.element('Button', 'Park', false, function()
