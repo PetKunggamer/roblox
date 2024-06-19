@@ -9,7 +9,7 @@ local function LevelUp()
     while true do wait()
         local args = {
             [1] = {
-                ["ABILITY_911111"] = 0.0125
+                ["ABILITY_12789"] = 0.0125
             }
         }
 
@@ -389,6 +389,13 @@ end
             spawn(LevelUp)
         end
     end)
+
+    local Backtospot = Main.element('Toggle', 'Auto TP curse', false, function(v)
+        _G.Backtospot = v.Toggle
+        while _G.Backtospot do wait(60)
+            teleport('Curse')
+        end
+    end) 
 
     local Auto_Farm = Main.element('Toggle', 'Auto Farm (Fluxus executor)', false, function(v)
         _G.Auto_Farm = v.Toggle
