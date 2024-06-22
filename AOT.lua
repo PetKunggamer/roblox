@@ -20,6 +20,12 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
+function clickUiButton(v, state)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 70, 0, state, game, 1)
+end
+
+
 local function Rewards()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -201,11 +207,6 @@ local function Anti_Grab()
          end
       end
    end
-end
-
-function clickUiButton(v, state)
-    local VirtualInputManager = game:GetService('VirtualInputManager')
-    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 30, 0, state, game, 1)
 end
 
 local function Roll()
