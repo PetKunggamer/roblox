@@ -319,6 +319,7 @@ local function Retry()
                             if Buttons then
                                 local Retry = Buttons:FindFirstChild("Retry")
                                 if Retry then
+                                    Retry.Size= UDim2.new(0.25, 0, 3, 0)
                                     clickUiButton(Retry, true)
                                     clickUiButton(Retry, false)
                                 end
