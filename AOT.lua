@@ -22,9 +22,7 @@ end)
 
 function clickUiButton(v, state)
     local VirtualInputManager = game:GetService('VirtualInputManager')
-    local centerX = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
-    local centerY = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2
-    VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, state, game, 1)
+    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
 end
 
 local function Rewards()
