@@ -392,7 +392,7 @@ local function tp(CF)
             Lock.Parent = root
 
             local distance = (root.Position - CF.Position).magnitude
-            local duration = distance / 80
+            local duration = distance / getgenv().Speed
             local tweenInfo = TweenInfo.new(
                 duration,  -- Duration based on distance and speed
                 Enum.EasingStyle.Linear  -- Linear easing for consistent speed
