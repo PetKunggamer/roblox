@@ -20,11 +20,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
-function clickUiButton(v, state)
-    local VirtualInputManager = game:GetService('VirtualInputManager')
-    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
-end
-
 local function Rewards()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -208,6 +203,11 @@ local function Anti_Grab()
    end
 end
 
+function clickUiButton(v, state)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    VirtualInputManager:SendMouseButtonEvent(v.AbsolutePosition.X + v.AbsoluteSize.X / 2, v.AbsolutePosition.Y + 50, 0, state, game, 1)
+end
+
 local function Roll()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -265,11 +265,32 @@ local function Finding_Clan()
     end
 end
 
+local function Attack_Titan()
+    local Objective = game.Workspace.Unclimbable:FindFirstChild("Objective")
+    if Objective then
+        local Defend_Eren = Objective:FindFirstChild("Defend_Eren")
+        if Defend_Eren then
+            local Attack_Titan = Defend_Eren:FindFirstChild("Attack_Titan")
+            if Attack_Titan then
+                local Eren = Attack_Titan:FindFirstChild("HumanoidRootPart")
+                if Eren then
+                    return Eren
+                else
+                    return
+                end
+            end
+        end
+    end
+end
+
 local function Get_Mob()
     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
     local dist, mob = math.huge
     for i,v in ipairs(workspace.Titans:GetChildren()) do
         if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
+            if Attack_Titan() then
+                local root = Attack_Titan()
+            end
             local mag = (root.Position - v:FindFirstChild("HumanoidRootPart").Position).magnitude
             if mag < dist then
                 local Hitboxes = v:FindFirstChild("Hitboxes")
@@ -319,7 +340,6 @@ local function Retry()
                             if Buttons then
                                 local Retry = Buttons:FindFirstChild("Retry")
                                 if Retry then
-                                    Retry.Size = UDim2.new(0.25, 0, 3, 0)
                                     clickUiButton(Retry, true)
                                     clickUiButton(Retry, false)
                                 end
@@ -332,7 +352,34 @@ local function Retry()
     end
 end
 
-local function tp(CF,state)
+local function Hit()
+    wait(.45)
+    local player = game.Players.LocalPlayer
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Parent = player:WaitForChild("PlayerGui")
+
+    local screenWidth = screenGui.AbsoluteSize.X
+    local screenHeight = screenGui.AbsoluteSize.Y
+
+    local centerX = screenWidth / 2
+    local centerY = screenHeight / 2
+
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerX, centerY, 0, true, game, 1)
+    wait(0.1)
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerX, centerY, 0, false, game, 1)
+end   
+
+local function setNoclip(state)
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    for _, part in pairs(character:GetDescendants()) do
+        if part:IsA("BasePart") and part.CanCollide then
+            part.CanCollide = not state
+        end
+    end
+end
+
+local function tp(CF)
     local TweenService = game:GetService("TweenService")
     local plr = game.Players.LocalPlayer
     local chr = plr.Character or plr.CharacterAdded:Wait()
@@ -341,27 +388,63 @@ local function tp(CF,state)
         local root = plr.Character:FindFirstChild("HumanoidRootPart")
         if root then
             _G.Tween = true
-            local distance = (root.Position - CF.Position).magnitude
-            local duration = distance / getgenv().Speed
 
+            local Lock = Instance.new("BodyVelocity")
+            Lock.MaxForce = Vector3.new(9e9,9e9,9e9)
+            Lock.Velocity = Vector3.new(0,0,0)
+            Lock.Parent = root
+
+            local distance = (root.Position - CF.Position).magnitude
+            local duration = distance / 80
             local tweenInfo = TweenInfo.new(
                 duration,  -- Duration based on distance and speed
                 Enum.EasingStyle.Linear  -- Linear easing for consistent speed
             )
+
+            setNoclip(true)
             
             local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
             tween:Play()
-            Check_Sword()
+            wait(.125)
+            tween:Cancel()
+            setNoclip(false)
+            Lock:Destroy()
+            root.Velocity = Vector3.new(0,0,0)
+        end
+    end
+end
+
+local function tp_refill(CF)
+    local TweenService = game:GetService("TweenService")
+    local plr = game.Players.LocalPlayer
+    local chr = plr.Character or plr.CharacterAdded:Wait()
+    local root = chr:WaitForChild("HumanoidRootPart")
+    if chr then
+        local root = plr.Character:FindFirstChild("HumanoidRootPart")
+        if root then
+            _G.Tween = true
+
+            local Lock = Instance.new("BodyVelocity")
+            Lock.MaxForce = Vector3.new(9e9,9e9,9e9)
+            Lock.Velocity = Vector3.new(0,0,0)
+            Lock.Parent = root
+
+            local distance = (root.Position - CF.Position).magnitude
+            local duration = distance / 80
+            local tweenInfo = TweenInfo.new(
+                duration,  -- Duration based on distance and speed
+                Enum.EasingStyle.Linear  -- Linear easing for consistent speed
+            )
+
+            setNoclip(true)
+            
+            local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
+            tween:Play()
+            wait(.125)
             tween.Completed:wait()
-            _G.Tween = false
-            if state then
-                root.Velocity = Vector3.new(-100, 0, 100)  -- Reset velocity to zero
-            else
-                root.Velocity = Vector3.new(0, 0, 0)
-            end
-            root.Anchored = true
-            task.wait(.01)
-            root.Anchored = false
+            setNoclip(false)
+            Lock:Destroy()
+            root.Velocity = Vector3.new(0,0,0)
         end
     end
 end
@@ -403,12 +486,19 @@ end
 local function Refill()
     if Get_Refill() then 
         local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-        tp((Get_Refill().CFrame),false)
-        wait(1)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Refill().CFrame
-        root.Velocity = Vector3.new(0,0,0)
-    else
-        Gen_Refill()
+        tp(Get_Refill().CFrame)
+        local dist = (root.Position - Get_Refill().Position).magnitude
+        if dist < 20 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Refill().CFrame
+            wait(1)
+            root.Velocity = Vector3.new(0,0,0)
+            local VirtualInputManager = game:GetService("VirtualInputManager")
+            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
+            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
+            wait(2.5)
+        else
+            Gen_Refill()
+        end
     end
 end
 
@@ -441,22 +531,30 @@ local function Hitbox(x,y,z)
     end
 end
 
+
 local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
-        while _G.Farm do task.wait(.125)
-            Retry()
+        while _G.Farm do task.wait()
             Anti_Grab()
             if Blade() then
                 Refill()
-                local VirtualInputManager = game:GetService("VirtualInputManager")
-                VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
-                VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
             else
                 if Get_Mob() then
-                    Check_Sword()
                     Hitbox(200,1000,200)
-                    tp(Get_Mob().CFrame * CFrame.new(0,80,80),true)
+                    tp(Get_Mob().CFrame * CFrame.new(0,70,60))
+                    local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local mob_dist = (Get_Mob().Position - root.Position).magnitude
+                    if mob_dist < 95 then
+                        spawn(Hit)
+                        wait(.125)
+                        root.Velocity = Vector3.new(-320,0,350)
+                        wait(.25)
+                    end
+                else
+                    if getRewards() then
+                        Retry()
+                    end
                 end
             end
             if GetButton_Text() == "STARTING (5s)" then
@@ -467,35 +565,10 @@ local function TP_Titan(toggle)
     end
 end
 
-
-spawn(function()
-    while _G.Tween do wait(.25)
-        local VirtualInputManager = game:GetService("VirtualInputManager")
-        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, true, game, 1)
-        task.wait(.125)
-        VirtualInputManager:SendMouseButtonEvent(100, 50, 0, false, game, 1)
-    end
-end)
-
 spawn(function()
     if _G.Farm then
         wait(360)
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
-    end
-end)
-
-spawn(function()
-    if getRewards() then
-        _G.Rejoin = true
-        while _G.Rejoin do wait(.5)
-            Retry()
-        end
-    end
-end)
-
-spawn(function()
-    while _G.Tween do task.wait()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
     end
 end)
 
@@ -533,20 +606,6 @@ local Finding_Clan = Main.element('Toggle', 'Finding Clan', false, function(v)
     while _G.Finding_Clan do task.wait()
         Finding_Clan()
     end
-end)
-
-local function countdownTimer(time)
-    wait(.25)
-    for i = 1,time do
-        print(i)
-        wait(1)
-    end
-    print("Died")
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0
-end
-
-spawn(function()
-    countdownTimer(500)
 end)
 
 local function load()
