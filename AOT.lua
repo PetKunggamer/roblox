@@ -1,11 +1,8 @@
 repeat task.wait() until game:IsLoaded()
-wait(.25)
+wait(.125)
 pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
-
-_G.TP_Titan = getgenv().Auto_Farm
-_G.Speed = getgenv().Speed
 
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
@@ -430,7 +427,7 @@ local function tp_refill(CF)
             Lock.Parent = root
 
             local distance = (root.Position - CF.Position).magnitude
-            local duration = distance / 80
+            local duration = distance / getgenv().Speed
             local tweenInfo = TweenInfo.new(
                 duration,  -- Duration based on distance and speed
                 Enum.EasingStyle.Linear  -- Linear easing for consistent speed
@@ -612,7 +609,7 @@ local function load()
     if game:GetService("CoreGui"):FindFirstChild("unknown") then
         game:GetService("CoreGui"):FindFirstChild("unknown").Enabled = false
     end
-    TP_Titan(_G.TP_Titan)
+    TP_Titan(getgenv().Auto_Farm)
 end
 
 local PlaceId = game.PlaceId
