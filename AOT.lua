@@ -336,7 +336,7 @@ local function Retry()
                 game:GetService("VirtualInputManager"):SendMouseButtonEvent(150, 160, 0, false, game, 1)
             end
             local Rewards = Interface:FindFirstChild("Rewards")
-            if Rewards then
+            if Rewards.Visible then
                 local Main1 = Rewards:FindFirstChild("Main")
                 if Main1 then
                     local Info = Main1:FindFirstChild("Info")
