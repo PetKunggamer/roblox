@@ -498,6 +498,12 @@ local function Hitbox(x,y,z)
     end
 end
 
+local function Hook(state)
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.E, false, game)
+    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.Q, false, game)
+end
+            
 
 local function TP_Titan(toggle)
     _G.Farm = toggle
@@ -515,7 +521,9 @@ local function TP_Titan(toggle)
                     tp(Get_Mob().CFrame * CFrame.new(0,80,60))
                     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
                     local mob_dist = (Get_Mob().Position - root.Position).magnitude
+                    Hook(false)
                     if mob_dist < 95 then
+                        Hook(true)
                         spawn(Hit)
                         wait(.125)
                         root.Velocity = Vector3.new(-350,0,350)
