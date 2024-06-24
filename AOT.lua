@@ -342,7 +342,7 @@ local function Retry()
                 local Main1 = Rewards:FindFirstChild("Main")
                 if Main1 then
                     local Info = Main1:FindFirstChild("Info")
-                    if Info thenl
+                    if Info then
                         local Main = Info:FindFirstChild("Main")
                         if Main then
                             local Buttons = Main:FindFirstChild("Buttons")
