@@ -329,6 +329,12 @@ local function Retry()
     if PlayerGui then
         local Interface = PlayerGui:FindFirstChild("Interface")
         if Interface then
+            local RetryButton = Interface:FindFirstChild("Retry")
+            if RetryButton then
+                game:GetService("VirtualInputManager"):SendMouseButtonEvent(150, 160, 0, true, game, 1)
+                wait()
+                game:GetService("VirtualInputManager"):SendMouseButtonEvent(150, 160, 0, false, game, 1)
+            end
             local Rewards = Interface:FindFirstChild("Rewards")
             if Rewards then
                 local Main1 = Rewards:FindFirstChild("Main")
@@ -338,12 +344,11 @@ local function Retry()
                         local Main = Info:FindFirstChild("Main")
                         if Main then
                             local Buttons = Main:FindFirstChild("Buttons")
-                            if Buttons then
+                            if Buttons then 
                                 local Retry = Buttons:FindFirstChild("Retry")
                                 if Retry then
                                     Retry.Size = UDim2.new(3, 0, 3, 0)
-                                    clickUiButton(Retry, true)
-                                    clickUiButton(Retry, false)
+                                    Retry.Parent = Interface
                                 end
                             end
                         end 
@@ -353,6 +358,7 @@ local function Retry()
         end
     end
 end
+
 
 
 local function Hit()
