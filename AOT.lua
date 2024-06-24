@@ -29,6 +29,8 @@ local function Rewards()
                     local Info = Main1:FindFirstChild("Info")
                     if Info then
                         return Info.Visible
+                    else
+                        return false
                     end
                 end
             end
