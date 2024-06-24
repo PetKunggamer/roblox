@@ -416,41 +416,6 @@ local function tp(CF)
     end
 end
 
-local function tp_refill(CF)
-    local TweenService = game:GetService("TweenService")
-    local plr = game.Players.LocalPlayer
-    local chr = plr.Character or plr.CharacterAdded:Wait()
-    local root = chr:WaitForChild("HumanoidRootPart")
-    if chr then
-        local root = plr.Character:FindFirstChild("HumanoidRootPart")
-        if root then
-            _G.Tween = true
-
-            local Lock = Instance.new("BodyVelocity")
-            Lock.MaxForce = Vector3.new(9e9,9e9,9e9)
-            Lock.Velocity = Vector3.new(0,0,0)
-            Lock.Parent = root
-
-            local distance = (root.Position - CF.Position).magnitude
-            local duration = distance / getgenv().Speed
-            local tweenInfo = TweenInfo.new(
-                duration,  -- Duration based on distance and speed
-                Enum.EasingStyle.Linear  -- Linear easing for consistent speed
-            )
-
-            setNoclip(true)
-            
-            local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
-            tween:Play()
-            wait(.125)
-            tween.Completed:wait()
-            setNoclip(false)
-            Lock:Destroy()
-            root.Velocity = Vector3.new(0,0,0)
-        end
-    end
-end
-
 local function Get_Refill()
     local main = workspace:FindFirstChild("Unclimbable")
     if main then
@@ -547,13 +512,13 @@ local function TP_Titan(toggle)
             else
                 if Get_Mob() then
                     Hitbox(300,1000,300)
-                    tp(Get_Mob().CFrame * CFrame.new(0,70,60))
+                    tp(Get_Mob().CFrame * CFrame.new(0,80,60))
                     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
                     local mob_dist = (Get_Mob().Position - root.Position).magnitude
                     if mob_dist < 95 then
                         spawn(Hit)
                         wait(.125)
-                        root.Velocity = Vector3.new(-280,0,280)
+                        root.Velocity = Vector3.new(-350,0,350)
                         wait(.25)
                     end
                 end
