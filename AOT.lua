@@ -281,13 +281,16 @@ local function Attack_Titan()
 end
 
 local function Get_Mob()
-    local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local root
+    if Attack_Titan() then
+        root = Attack_Titan()
+    else
+        root = game.Players.LocalPlayer.Character.HumanoidRootPart
+    end
+
     local dist, mob = math.huge
-    for i,v in ipairs(workspace.Titans:GetChildren()) do
+    for i, v in ipairs(workspace.Titans:GetChildren()) do
         if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") then
-            if Attack_Titan() then
-                local root = Attack_Titan()
-            end
             local mag = (root.Position - v:FindFirstChild("HumanoidRootPart").Position).magnitude
             if mag < dist then
                 local Hitboxes = v:FindFirstChild("Hitboxes")
@@ -306,6 +309,7 @@ local function Get_Mob()
     end
     return mob
 end
+
 
 
 
@@ -350,6 +354,7 @@ local function Retry()
 end
 
 local function Hit()
+    Check_Sword()
     wait(.45)
     local player = game.Players.LocalPlayer
     local screenGui = Instance.new("ScreenGui")
@@ -545,7 +550,7 @@ local function TP_Titan(toggle)
                     if mob_dist < 95 then
                         spawn(Hit)
                         wait(.125)
-                        root.Velocity = Vector3.new(-320,0,350)
+                        root.Velocity = Vector3.new(-280,0,280)
                         wait(.25)
                     end
                 else
