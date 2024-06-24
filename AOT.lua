@@ -340,13 +340,13 @@ local function Retry()
                 local Main1 = Rewards:FindFirstChild("Main")
                 if Main1 then
                     local Info = Main1:FindFirstChild("Info")
-                    if Info then
+                    if Info thenl
                         local Main = Info:FindFirstChild("Main")
                         if Main then
                             local Buttons = Main:FindFirstChild("Buttons")
                             if Buttons then 
                                 local Retry = Buttons:FindFirstChild("Retry")
-                                if Retry.Visible then
+                                if Retry.Visible and Rewards() then
                                     Retry.Size = UDim2.new(3, 0, 3, 0)
                                     Retry.Parent = Interface
                                 end
