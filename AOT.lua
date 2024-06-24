@@ -510,6 +510,7 @@ local function TP_Titan(toggle)
     if _G.Farm then
         while _G.Farm do task.wait()
             Anti_Grab()
+            spawn(Retry)
             if getRewards() then
                 Retry()
             end
