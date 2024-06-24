@@ -341,6 +341,7 @@ local function Retry()
                             if Buttons then
                                 local Retry = Buttons:FindFirstChild("Retry")
                                 if Retry then
+                                    Retry.Size = UDim2.new(3, 0, 3, 0)
                                     clickUiButton(Retry, true)
                                     clickUiButton(Retry, false)
                                 end
@@ -352,6 +353,7 @@ local function Retry()
         end
     end
 end
+
 
 local function Hit()
     Check_Sword()
@@ -426,6 +428,8 @@ local function Get_Refill()
                 local Refill = GasTanks:FindFirstChild("Refill")
                 if Refill then
                     return Refill
+                else
+                    return
                 end
             end
         end
