@@ -364,7 +364,11 @@ local function Retry()
                                         clickUiButtonV2(RetryButton, true, -10)  wait(.65) 
                                         clickUiButtonV2(RetryButton, false, -10) wait(.65)
                                         clickUiButtonV2(RetryButton, true, -20)  wait(.65) 
-                                        clickUiButtonV2(RetryButton, false, -20) wait(.65)     
+                                        clickUiButtonV2(RetryButton, false, -20) wait(.65)
+                                        clickUiButtonV2(RetryButton, true, -30)  wait(.65) 
+                                        clickUiButtonV2(RetryButton, false, -30) wait(.65)
+                                        clickUiButtonV2(RetryButton, true, -40)  wait(.65) 
+                                        clickUiButtonV2(RetryButton, false, -40) wait(.65)     
                                     end
                                 end
                             end
