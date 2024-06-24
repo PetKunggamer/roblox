@@ -338,7 +338,7 @@ local function Retry()
                 game:GetService("VirtualInputManager"):SendMouseButtonEvent(150, 160, 0, false, game, 1)
             end
             local Rewards = Interface:FindFirstChild("Rewards")
-            if Rewards then
+            if Rewards.Visible then
                 local Main1 = Rewards:FindFirstChild("Main")
                 if Main1 then
                     local Info = Main1:FindFirstChild("Info")
@@ -348,7 +348,7 @@ local function Retry()
                             local Buttons = Main:FindFirstChild("Buttons")
                             if Buttons then 
                                 local Retry = Buttons:FindFirstChild("Retry")
-                                if Retry.Visible and Rewards() then
+                                if Retry then
                                     Retry.Size = UDim2.new(3, 0, 3, 0)
                                     Retry.Parent = Interface
                                 end
@@ -360,8 +360,6 @@ local function Retry()
         end
     end
 end
-
-
 
 local function Hit()
     Check_Sword()
