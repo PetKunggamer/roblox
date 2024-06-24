@@ -522,7 +522,7 @@ local function TP_Titan(toggle)
                     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
                     local mob_dist = (Get_Mob().Position - root.Position).magnitude
                     Hook(false)
-                    if mob_dist < 95 then
+                    if mob_dist < 105 then
                         Hook(true)
                         spawn(Hit)
                         wait(.125)
