@@ -333,6 +333,14 @@ function clickUiButton(v, state)
     VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
 end
 
+function clickUiButtonV2(v, state, add)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
+    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + (50 + add)
+    VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
+end
+
+            
 local function Retry()
     pcall(function()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
@@ -351,10 +359,10 @@ local function Retry()
                                 if Buttons then 
                                     local RetryButton = Buttons:FindFirstChild("Retry")
                                     if RetryButton then
-                                       -- Simulate button press
-                                       clickUiButton(RetryButton, true)  -- MouseButton down
-                                       wait(0.65)                         -- Wait for a short moment
-                                       clickUiButton(RetryButton, false) -- MouseButton up
+                                        clickUiButtonV2(RetryButton, true, -10)  wait(0.65) 
+                                        clickUiButtonV2(RetryButton, false, -10) wait(0.65)
+                                        clickUiButtonV2(RetryButton, true, -20)  wait(0.65) 
+                                        clickUiButtonV2(RetryButton, false, -20) wait(0.65)     
                                     end
                                 end
                             end
