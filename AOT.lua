@@ -518,7 +518,7 @@ local function TP_Titan(toggle)
             else
                 if Get_Mob() then
                     Hitbox(300,1000,300)
-                    tp(Get_Mob().CFrame * CFrame.new(0,80,60))
+                    tp(Get_Mob().CFrame * CFrame.new(0,70,60))
                     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
                     local mob_dist = (Get_Mob().Position - root.Position).magnitude
                     Hook(false)
