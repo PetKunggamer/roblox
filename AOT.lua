@@ -355,7 +355,7 @@ end
 
 local function Hit()
     Check_Sword()
-    wait(.45)
+    wait(.125)
     local player = game.Players.LocalPlayer
     local screenGui = Instance.new("ScreenGui")
     screenGui.Parent = player:WaitForChild("PlayerGui")
