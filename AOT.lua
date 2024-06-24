@@ -326,19 +326,20 @@ local function Check_Sword()
     end
 end
 
+function clickUiButton(v, state)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
+    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + 50
+    VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
+end
+
 local function Retry()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
         local Interface = PlayerGui:FindFirstChild("Interface")
         if Interface then
-            local RetryButton = Interface:FindFirstChild("Retry")
-            if RetryButton then
-                game:GetService("VirtualInputManager"):SendMouseButtonEvent(150, 160, 0, true, game, 1)
-                wait()
-                game:GetService("VirtualInputManager"):SendMouseButtonEvent(150, 160, 0, false, game, 1)
-            end
             local Rewards = Interface:FindFirstChild("Rewards")
-            if Rewards.Visible then
+            if Rewards and Rewards.Visible then
                 local Main1 = Rewards:FindFirstChild("Main")
                 if Main1 then
                     local Info = Main1:FindFirstChild("Info")
@@ -347,13 +348,15 @@ local function Retry()
                         if Main then
                             local Buttons = Main:FindFirstChild("Buttons")
                             if Buttons then 
-                                local Retry = Buttons:FindFirstChild("Retry")
-                                if Retry then
-                                    Retry.Size = UDim2.new(3, 0, 3, 0)
-                                    Retry.Parent = Interface
+                                local RetryButton = Buttons:FindFirstChild("Retry")
+                                if RetryButton then
+                                   -- Simulate button press
+                                   clickUiButton(RetryButton, true)  -- MouseButton down
+                                   wait(0.65)                         -- Wait for a short moment
+                                   clickUiButton(RetryButton, false) -- MouseButton up
                                 end
                             end
-                        end 
+                        end
                     end
                 end
             end
