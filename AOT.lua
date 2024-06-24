@@ -359,10 +359,12 @@ local function Retry()
                                 if Buttons then 
                                     local RetryButton = Buttons:FindFirstChild("Retry")
                                     if RetryButton then
-                                        clickUiButtonV2(RetryButton, true, -10)  wait(0.65) 
-                                        clickUiButtonV2(RetryButton, false, -10) wait(0.65)
-                                        clickUiButtonV2(RetryButton, true, -20)  wait(0.65) 
-                                        clickUiButtonV2(RetryButton, false, -20) wait(0.65)     
+                                        clickUiButton(RetryButton, true) wait(.65)
+                                        clickUiButton(RetryButton, false) wait(.65)
+                                        clickUiButtonV2(RetryButton, true, -10)  wait(.65) 
+                                        clickUiButtonV2(RetryButton, false, -10) wait(.65)
+                                        clickUiButtonV2(RetryButton, true, -20)  wait(.65) 
+                                        clickUiButtonV2(RetryButton, false, -20) wait(.65)     
                                     end
                                 end
                             end
