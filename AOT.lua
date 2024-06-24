@@ -334,26 +334,28 @@ function clickUiButton(v, state)
 end
 
 local function Retry()
+    pcall(function()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
-    if PlayerGui then
-        local Interface = PlayerGui:FindFirstChild("Interface")
-        if Interface then
-            local Rewards = Interface:FindFirstChild("Rewards")
-            if Rewards and Rewards.Visible then
-                local Main1 = Rewards:FindFirstChild("Main")
-                if Main1 then
-                    local Info = Main1:FindFirstChild("Info")
-                    if Info then
-                        local Main = Info:FindFirstChild("Main")
-                        if Main then
-                            local Buttons = Main:FindFirstChild("Buttons")
-                            if Buttons then 
-                                local RetryButton = Buttons:FindFirstChild("Retry")
-                                if RetryButton then
-                                   -- Simulate button press
-                                   clickUiButton(RetryButton, true)  -- MouseButton down
-                                   wait(0.65)                         -- Wait for a short moment
-                                   clickUiButton(RetryButton, false) -- MouseButton up
+        if PlayerGui then
+            local Interface = PlayerGui:FindFirstChild("Interface")
+            if Interface then
+                local Rewards = Interface:FindFirstChild("Rewards")
+                if Rewards and Rewards.Visible then
+                    local Main1 = Rewards:FindFirstChild("Main")
+                    if Main1 then
+                        local Info = Main1:FindFirstChild("Info")
+                        if Info then
+                            local Main = Info:FindFirstChild("Main")
+                            if Main then
+                                local Buttons = Main:FindFirstChild("Buttons")
+                                if Buttons then 
+                                    local RetryButton = Buttons:FindFirstChild("Retry")
+                                    if RetryButton then
+                                       -- Simulate button press
+                                       clickUiButton(RetryButton, true)  -- MouseButton down
+                                       wait(0.65)                         -- Wait for a short moment
+                                       clickUiButton(RetryButton, false) -- MouseButton up
+                                    end
                                 end
                             end
                         end
@@ -361,7 +363,7 @@ local function Retry()
                 end
             end
         end
-    end
+    end)
 end
 
 local function Hit()
