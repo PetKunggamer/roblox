@@ -523,34 +523,48 @@ end
 local function TP_Titan(toggle)
     _G.Farm = toggle
     if _G.Farm then
-        while _G.Farm do task.wait()
+        while _G.Farm do
+            task.wait()
+            print("Starting loop iteration")
             Anti_Grab()
             Retry()
+            print("After Retry")
+
             if Blade() then
+                print("Blade check passed")
                 Refill()
             else
-                if Get_Mob() then
-                    Hitbox(300,1000,300)
-                    tp(Get_Mob().CFrame * CFrame.new(0,70,60))
+                local mob = Get_Mob()
+                if mob then
+                    print("Mob found")
+                    Hitbox(300, 1000, 300)
+                    tp(mob.CFrame * CFrame.new(0, 70, 60))
                     local root = game.Players.LocalPlayer.Character.HumanoidRootPart
-                    local mob_dist = (Get_Mob().Position - root.Position).magnitude
+                    local mob_dist = (mob.Position - root.Position).magnitude
                     Hook(false)
+
                     if mob_dist < 105 then
+                        print("Mob within range")
                         Hook(true)
                         spawn(Hit)
                         wait(.125)
-                        root.Velocity = Vector3.new(-350,0,350)
+                        root.Velocity = Vector3.new(-350, 0, 350)
                         wait(.25)
                     end
+                else
+                    print("No mob found")
                 end
             end
+
             if GetButton_Text() == "STARTING (5s)" then
+                print("Starting in 5s")
                 webhooks(getgenv().Webhook)
                 wait(1)
             end
         end
     end
 end
+
 
 spawn(function()
     if _G.Farm then
