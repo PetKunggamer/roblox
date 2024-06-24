@@ -539,6 +539,9 @@ local function TP_Titan(toggle)
     if _G.Farm then
         while _G.Farm do task.wait()
             Anti_Grab()
+            if getRewards() then
+                Retry()
+            end
             if Blade() then
                 Refill()
             else
@@ -552,10 +555,6 @@ local function TP_Titan(toggle)
                         wait(.125)
                         root.Velocity = Vector3.new(-280,0,280)
                         wait(.25)
-                    end
-                else
-                    if getRewards() then
-                        Retry()
                     end
                 end
             end
