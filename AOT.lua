@@ -4,6 +4,8 @@ pcall(function()
 local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
 
+_G.Webhook = getgenv().Webhook
+    
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
     A:Destroy()
@@ -574,7 +576,7 @@ local function TP_Titan(toggle)
 
             if GetButton_Text() == "STARTING (5s)" then
                 print("Starting in 5s")
-                webhooks(getgenv().Webhook)
+                webhooks(_G.Webhook)
                 wait(1)
             end
         end
