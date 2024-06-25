@@ -100,6 +100,8 @@ local function webhooks(url_link)
                         table.insert(Drop, "- GOLD : " .. Gold .. "\n")
                     elseif v.Name == "XP" then
                         table.insert(Drop, "- XP : " .. XP .. "\n")
+                    elseif v.Name == "GEMS" then
+                        table.insert(Drop, "- GEM : " .. GEM .. "\n")
                     elseif v.Name == "BP_XP" then
                         table.insert(Drop, "- Battle Pass : " .. BP_XP .. "\n")
                     elseif v.Name:find("Perk") then
