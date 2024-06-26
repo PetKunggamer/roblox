@@ -486,6 +486,7 @@ end
 local function Refill()
     if Get_Refill() then 
         local root = game.Players.LocalPlayer.Character.HumanoidRootPart
+        Hook(false)
         tp(Get_Refill().CFrame)
         local dist = (root.Position - Get_Refill().Position).magnitude
         if dist < 20 then
