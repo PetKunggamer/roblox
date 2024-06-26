@@ -412,6 +412,41 @@ local function setNoclip(state)
     end
 end
 
+local function tp_refill(CF)
+    local TweenService = game:GetService("TweenService")
+    local plr = game.Players.LocalPlayer
+    local chr = plr.Character or plr.CharacterAdded:Wait()
+    local root = chr:WaitForChild("HumanoidRootPart")
+    
+    if root then
+        _G.Tween = true
+
+        local Lock = Instance.new("BodyVelocity")
+        Lock.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        Lock.Velocity = Vector3.new(0, 0, 0)
+        Lock.Parent = root
+
+        local distance = (root.Position - CF.Position).Magnitude
+        local duration = distance / getgenv().Speed
+        local tweenInfo = TweenInfo.new(
+            duration,  -- Duration based on distance and speed
+            Enum.EasingStyle.Linear  -- Linear easing for consistent speed
+        )
+
+        setNoclip(true)
+        
+        local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
+        tween:Play()
+        
+        -- Ensure the tween completes properly
+        tween.Completed:Wait()
+        
+        setNoclip(false)
+        Lock:Destroy()
+        root.Velocity = Vector3.new(0, 0, 0)
+    end
+end
+
 local function tp(CF)
     local TweenService = game:GetService("TweenService")
     local plr = game.Players.LocalPlayer
@@ -469,16 +504,16 @@ local function Gen_Refill()
     if not Get_Refill() then
         local PlaceId = game.PlaceId
         if PlaceId == 13379349730 then -- [AOT:R] Shiganshina
-            tp(CFrame.new(510, 172, 771))
+            tp_refill(CFrame.new(510, 172, 771))
         end
         if PlaceId == 14638336319 then -- [AOT:R] Giant Forest
-            tp(CFrame.new(270, 17, -685))
+            tp_refill(CFrame.new(270, 17, -685))
         end
         if PlaceId == 14012874501 then -- [AOT:R] Trost
-            tp(CFrame.new(-952, 50, 148))
+            tp_refill(CFrame.new(-952, 50, 148))
         end
         if PlaceId == 13904207646 then -- [AOT:R] Trost Outskirts
-            tp(CFrame.new(1866, 9, -76))
+            tp_refill(CFrame.new(1866, 9, -76))
         end
     end
 end
@@ -487,7 +522,7 @@ local function Refill()
     if Get_Refill() then 
         local root = game.Players.LocalPlayer.Character.HumanoidRootPart
         Hook(false)
-        tp(Get_Refill().CFrame)
+        tp_refill(Get_Refill().CFrame)
         local dist = (root.Position - Get_Refill().Position).magnitude
         if dist < 20 then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Refill().CFrame
