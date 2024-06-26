@@ -5,7 +5,7 @@ local PlaceId = game.PlaceId
 if PlaceId == 13379349730 or PlaceId == 14638336319 or PlaceId == 14012874501 or PlaceId == 13904207646 or PlaceId == 13379208636 then
 
 _G.Webhook = getgenv().Webhook
-    
+
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
 if A then
     A:Destroy()
@@ -417,7 +417,7 @@ local function tp_refill(CF)
     local plr = game.Players.LocalPlayer
     local chr = plr.Character or plr.CharacterAdded:Wait()
     local root = chr:WaitForChild("HumanoidRootPart")
-    
+
     if root then
         _G.Tween = true
 
@@ -427,20 +427,20 @@ local function tp_refill(CF)
         Lock.Parent = root
 
         local distance = (root.Position - CF.Position).Magnitude
-        local duration = distance / getgenv().Speed
+        local duration = distance / getgenv().Speed -- Default speed if not set
         local tweenInfo = TweenInfo.new(
-            duration,  -- Duration based on distance and speed
-            Enum.EasingStyle.Linear  -- Linear easing for consistent speed
+            duration, -- Duration based on distance and speed
+            Enum.EasingStyle.Linear -- Linear easing for consistent speed
         )
 
         setNoclip(true)
-        
+
         local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
         tween:Play()
-        
+
         -- Ensure the tween completes properly
         tween.Completed:Wait()
-        
+
         setNoclip(false)
         Lock:Destroy()
         root.Velocity = Vector3.new(0, 0, 0)
