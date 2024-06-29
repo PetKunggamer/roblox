@@ -224,8 +224,17 @@ local function Roll()
                     if Buttons_2 then
                         local Roll = Buttons_2:FindFirstChild("Roll")
                         if Roll then
-                            clickUiButton(Roll, true)
-                            clickUiButton(Roll, false)
+                                clickUiButton(RetryButton, true) wait(.65)
+                                clickUiButton(RetryButton, false) wait(.65)
+                                clickUiButtonV2(RetryButton, true, -10)  wait(.65) 
+                                clickUiButtonV2(RetryButton, false, -10) wait(.65)
+                                clickUiButtonV2(RetryButton, true, -20)  wait(.65) 
+                                clickUiButtonV2(RetryButton, false, -20) wait(.65)
+                                clickUiButtonV2(RetryButton, true, -30)  wait(.65) 
+                                clickUiButtonV2(RetryButton, false, -30) wait(.65)
+                                clickUiButtonV2(RetryButton, true, -40)  wait(.65) 
+                                clickUiButtonV2(RetryButton, false, -40) wait(.65)     
+                            end
                         end
                     end
                 end
