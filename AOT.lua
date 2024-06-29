@@ -19,21 +19,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
-
-function clickUiButton(v, state)
-    local VirtualInputManager = game:GetService('VirtualInputManager')
-    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
-    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + 50
-    VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
-end
-
-function clickUiButtonV2(v, state, add)
-    local VirtualInputManager = game:GetService('VirtualInputManager')
-    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
-    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + (50 + add)
-    VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
-end
-
 local function Rewards()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -239,17 +224,8 @@ local function Roll()
                     if Buttons_2 then
                         local Roll = Buttons_2:FindFirstChild("Roll")
                         if Roll then
-                                clickUiButton(RetryButton, true) wait(.65)
-                                clickUiButton(RetryButton, false) wait(.65)
-                                clickUiButtonV2(RetryButton, true, -10)  wait(.65) 
-                                clickUiButtonV2(RetryButton, false, -10) wait(.65)
-                                clickUiButtonV2(RetryButton, true, -20)  wait(.65) 
-                                clickUiButtonV2(RetryButton, false, -20) wait(.65)
-                                clickUiButtonV2(RetryButton, true, -30)  wait(.65) 
-                                clickUiButtonV2(RetryButton, false, -30) wait(.65)
-                                clickUiButtonV2(RetryButton, true, -40)  wait(.65) 
-                                clickUiButtonV2(RetryButton, false, -40) wait(.65)     
-                            end
+                            clickUiButton(Roll, true)
+                            clickUiButton(Roll, false)
                         end
                     end
                 end
@@ -353,6 +329,21 @@ local function Check_Sword()
         VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
     end
 end
+
+function clickUiButton(v, state)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
+    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + 50
+    VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
+end
+
+function clickUiButtonV2(v, state, add)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
+    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + (50 + add)
+    VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
+end
+
             
 local function Retry()
     pcall(function()
