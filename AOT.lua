@@ -19,7 +19,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
-function ClickChest(v, add)
+function SpamClick(v, add)
     local VirtualInputManager = game:GetService('VirtualInputManager')
     local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
     local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + (50 + add)
@@ -47,42 +47,21 @@ if Chest_Reward() then
     local Finish = Chest_Reward():FindFirstChild("Finish")
     
         if Free.Visible then
-            ClickChest(Free, 30) 
-            ClickChest(Free, 20) 
-            ClickChest(Free, 10) 
-            ClickChest(Free, 0) 
-            ClickChest(Free, -10)
-            ClickChest(Free, -20)
-            ClickChest(Free, -30)
+            SpamClick(Free, 30) 
+            SpamClick(Free, 20) 
+            SpamClick(Free, 10) 
+            SpamClick(Free, 0) 
+            SpamClick(Free, -10)
+            SpamClick(Free, -20)
+            SpamClick(Free, -30)
         else
-            ClickChest(Finish, 30) 
-            ClickChest(Finish, 20) 
-            ClickChest(Finish, 10) 
-            ClickChest(Finish, 0) 
-            ClickChest(Finish, -10)
-            ClickChest(Finish, -20)
-            ClickChest(Finish, -30)
-        end
-    end
-end
-
-local function Rewards()
-    local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
-    if PlayerGui then
-        local Interface = PlayerGui:FindFirstChild("Interface")
-        if Interface then
-            local Rewards = Interface:FindFirstChild("Rewards")
-            if Rewards then
-                local Main1 = Rewards:FindFirstChild("Main")
-                if Main1 then
-                    local Info = Main1:FindFirstChild("Info")
-                    if Info then
-                        return Info.Visible
-                    else
-                        return false
-                    end
-                end
-            end
+            SpamClick(Finish, 30) 
+            SpamClick(Finish, 20) 
+            SpamClick(Finish, 10) 
+            SpamClick(Finish, 0) 
+            SpamClick(Finish, -10)
+            SpamClick(Finish, -20)
+            SpamClick(Finish, -30)
         end
     end
 end
@@ -363,9 +342,6 @@ local function Get_Mob()
     return mob
 end
 
-
-
-
 local function Check_Sword()
     local plrName = game.Players.LocalPlayer.Character.Name
     local LeftHand = workspace.Characters[plrName]["Rig_"..plrName].LeftHand.Blade_1.Transparency
@@ -391,7 +367,6 @@ function clickUiButtonV2(v, state, add)
     VirtualInputManager:SendMouseButtonEvent(x, y, 0, state, game, 1)
 end
 
-            
 local function Retry()
     pcall(function()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
@@ -459,39 +434,10 @@ local function setNoclip(state)
     end
 end
 
-local function tp_refill(CF)
-    local TweenService = game:GetService("TweenService")
-    local plr = game.Players.LocalPlayer
-    local chr = plr.Character or plr.CharacterAdded:Wait()
-    local root = chr:WaitForChild("HumanoidRootPart")
-
-    if root then
-        _G.Tween = true
-
-        local Lock = Instance.new("BodyVelocity")
-        Lock.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-        Lock.Velocity = Vector3.new(0, 0, 0)
-        Lock.Parent = root
-
-        local distance = (root.Position - CF.Position).Magnitude
-        local duration = distance / getgenv().Speed -- Default speed if not set
-        local tweenInfo = TweenInfo.new(
-            duration, -- Duration based on distance and speed
-            Enum.EasingStyle.Linear -- Linear easing for consistent speed
-        )
-
-        setNoclip(true)
-
-        local tween = TweenService:Create(root, tweenInfo, {CFrame = CF})
-        tween:Play()
-
-        -- Ensure the tween completes properly
-        tween.Completed:Wait()
-
-        setNoclip(false)
-        Lock:Destroy()
-        root.Velocity = Vector3.new(0, 0, 0)
-    end
+local function Hook(state)
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.E, false, game)
+    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.Q, false, game)
 end
 
 local function tp(CF)
@@ -569,7 +515,7 @@ local function Refill()
     if Get_Refill() then 
         local root = game.Players.LocalPlayer.Character.HumanoidRootPart
         Hook(false)
-        tp_refill(Get_Refill().CFrame)
+        tp(Get_Refill().CFrame)
         local dist = (root.Position - Get_Refill().Position).magnitude
         if dist < 20 then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Get_Refill().CFrame
@@ -612,14 +558,7 @@ local function Hitbox(x,y,z)
             end
         end
     end
-end
-
-local function Hook(state)
-    local VirtualInputManager = game:GetService("VirtualInputManager")
-    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.E, false, game)
-    VirtualInputManager:SendKeyEvent(state, Enum.KeyCode.Q, false, game)
-end
-            
+end    
 
 local function TP_Titan(toggle)
     _G.Farm = toggle
