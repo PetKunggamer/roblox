@@ -19,6 +19,53 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
+function ClickChest(v, add)
+    local VirtualInputManager = game:GetService('VirtualInputManager')
+    local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
+    local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + (50 + add)
+    VirtualInputManager:SendMouseButtonEvent(x, y, 0, true, game, 1)
+    wait(.1)
+    VirtualInputManager:SendMouseButtonEvent(x, y, 0, false, game, 1)
+end
+
+local function Chest_Reward()
+    local PlayerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+    if PlayerGui then
+        local Interface = PlayerGui:FindFirstChild("Interface")
+        if Interface then
+            local ChestUI = Interface:FindFirstChild("Chests")
+            if ChestUI and ChestUI.Visible then
+                return ChestUI
+            end
+        end
+    end
+end
+
+local function OpenChest()
+if Chest_Reward() then
+    local Free = Chest_Reward():FindFirstChild("Free")
+    local Finish = Chest_Reward():FindFirstChild("Finish")
+    
+        if Free.Visible then
+            ClickChest(Free, 30) 
+            ClickChest(Free, 20) 
+            ClickChest(Free, 10) 
+            ClickChest(Free, 0) 
+            ClickChest(Free, -10)
+            ClickChest(Free, -20)
+            ClickChest(Free, -30)
+        else
+            ClickChest(Finish, 30) 
+            ClickChest(Finish, 20) 
+            ClickChest(Finish, 10) 
+            ClickChest(Finish, 0) 
+            ClickChest(Finish, -10)
+            ClickChest(Finish, -20)
+            ClickChest(Finish, -30)
+        end
+    end
+end
+
 local function Rewards()
     local PlayerGui = game:GetService("Players").LocalPlayer.PlayerGui
     if PlayerGui then
@@ -581,6 +628,7 @@ local function TP_Titan(toggle)
             task.wait()
             print("Starting loop iteration")
             Anti_Grab()
+            OpenChest()
             Retry()
             print("After Retry")
 
