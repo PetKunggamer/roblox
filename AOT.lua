@@ -250,8 +250,13 @@ local function Roll()
                     if Buttons_2 then
                         local Roll = Buttons_2:FindFirstChild("Roll")
                         if Roll then
-                            clickUiButton(Roll, true)
-                            clickUiButton(Roll, false)
+                            SpamClick(Roll, 30) 
+                            SpamClick(Roll, 20) 
+                            SpamClick(Roll, 10) 
+                            SpamClick(Roll, 0) 
+                            SpamClick(Roll, -10)
+                            SpamClick(Roll, -20)
+                            SpamClick(Roll, -30)
                         end
                     end
                 end
