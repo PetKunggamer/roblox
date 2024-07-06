@@ -581,7 +581,8 @@ local function TP_Titan(toggle)
                 Refill()
             else
                 local mob = Get_Mob()
-                if mob then
+                local root = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if mob and root then
                     print("Mob found")
                     Hitbox(300, 1000, 300)
                     tp(mob.CFrame * CFrame.new(0, 70, 60))
