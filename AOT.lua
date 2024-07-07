@@ -19,7 +19,13 @@ game:GetService("UserInputService").InputBegan:Connect(function(input)
     end
 end)
 
-function SpamClick(v, add)
+local function Auto_skill()
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Three, false, game) wait()
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Three, false, game)
+end
+
+local function SpamClick(v, add)
     local VirtualInputManager = game:GetService('VirtualInputManager')
     local x = v.AbsolutePosition.X + v.AbsoluteSize.X / 2
     local y = v.AbsolutePosition.Y + v.AbsoluteSize.Y / 2 + (50 + add)
@@ -575,7 +581,6 @@ local function TP_Titan(toggle)
             OpenChest()
             Retry()
             print("After Retry")
-
             if Blade() then
                 print("Blade check passed")
                 Refill()
@@ -593,6 +598,7 @@ local function TP_Titan(toggle)
                     if mob_dist < 105 then
                         print("Mob within range")
                         Hook(true)
+                        Auto_skill()
                         spawn(Hit)
                         wait(.125)
                         root.Velocity = Vector3.new(-350, 0, 350)
