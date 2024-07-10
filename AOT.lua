@@ -433,6 +433,7 @@ local function Hit()
     game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerX, centerY, 0, true, game, 1)
     wait(0.1)
     game:GetService("VirtualInputManager"):SendMouseButtonEvent(centerX, centerY, 0, false, game, 1)
+    screenGui:Destroy()
 end   
 
 local function setNoclip(state)
