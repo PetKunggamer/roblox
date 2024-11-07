@@ -276,7 +276,7 @@ local function Time_Teller()
             Notify('Trial Time', 'Time Remaining : '.. Trial.Text, 1)
         end
         print('Time Remaining : '.. Trial.Text)
-        wait(1.1)
+        wait(1.125)
     end
     return nil
 end
