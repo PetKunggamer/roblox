@@ -4,9 +4,6 @@ if A then
     A:Destroy()
 end
 
-local char = game.Players.LocalPlayer.Character
-local hrp = char:FindFirstChild("HumanoidRootPart")
-
 
 --[[
 
@@ -18,6 +15,11 @@ local hrp = char:FindFirstChild("HumanoidRootPart")
     ╚═╝░░░░░░╚═════╝░╚═╝░░╚══╝░╚════╝░░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝
 
 ]]--
+
+local char = game.Players.LocalPlayer.Character
+local hrp = char:FindFirstChild("HumanoidRootPart")
+
+
 local function Get_Map()
     for i,v in ipairs(workspace.Client.Maps:GetChildren()) do
         return v
@@ -199,7 +201,6 @@ local function Get_Near_SetMob()
         for _, mob in ipairs(folder:GetChildren()) do
             if mob:IsA("Part") and mob ~= nearestMob then
                 local dist = (mob.Position - hrp.Position).magnitude
-                print("Checking mob:", mob.Name, "Distance:", dist)
                 if dist < minDist and dist < 1000 then
                     minDist = dist
                     secondNearestMob = mob
@@ -207,13 +208,6 @@ local function Get_Near_SetMob()
             end
         end
     end
-
-    if secondNearestMob then
-        print("Second nearest mob found:", secondNearestMob.Name, "Distance:", minDist)
-    else
-        print("No second nearest mob found within 1000 units.")
-    end
-
     return secondNearestMob
 end
 
@@ -241,6 +235,19 @@ local function Get_Waypoint_CFarm()
     return nil
 end
 
+local function Get_Waypoint_CFarm()
+    local mob = workspace:FindFirstChild('Mob')
+    local secound_mob = Get_Near_SetMob()
+    if not mob then
+        Notify('Custom Farm', 'Set Mob Part missing.', 1)
+    end
+
+    if mob and secound_mob then
+        return {mob, secound_mob}
+    end
+    return nil
+end
+
 local function Stack(WayPoint)
      local W1, W2 = WayPoint[1], WayPoint[2] -- Unpack the table
     if not W1 then
@@ -250,13 +257,14 @@ local function Stack(WayPoint)
         Notify('Stack Damage Function','Part 2 Missing',1.5)
     end
     if W1 and W2 then
-        for i = 1, 300 do
+        for i = 1, 100 do
             hrp.CFrame = W1.CFrame
             task.wait()
             hrp.CFrame = W2.CFrame
             task.wait()
         end
         hrp.CFrame = W1.CFrame
+        hrp.Velocity = Vector3.new(0,0,0)
     end
 end
 
@@ -301,6 +309,37 @@ local function Save_UI()
         UI.Enabled = true
     end
 end
+
+local function Farm_MS()
+    local mob = Get_Mob(workspace:FindFirstChild('Mob'))
+    local mob_sec = Get_Near_SetMob()
+    local oldppos = hrp.CFrame
+    if mob then
+        local respawn = mob:FindFirstChild("RespawnHUD")
+        if respawn and respawn.Enabled then
+            local Status = respawn:FindFirstChild("Status")
+            if Status then
+                local Frame = Status:FindFirstChild("Frame")
+                if Frame then
+                    local val = Frame:FindFirstChild("Value")
+                    if val.Text == "0s" then
+                        wait(1)
+                        for i = 1,50 do
+                            hrp.CFrame = mob.CFrame
+                            task.wait()
+                            hrp.CFrame = mob_sec.CFrame
+                            task.wait()
+                        end
+                        task.wait(.225)
+                        hrp.CFrame = oldppos
+                    end
+                end
+            end
+        end
+    end
+end
+
+
 
 
 
@@ -384,11 +423,9 @@ local Dmg = section.new_sector('Damage Stacking', 'Right')
     ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝
 ]]--
 
-local Jiren_Farm = Farm.element('Toggle', 'Auto Jiren', false, function(v)
+local Jiren_Farm = Farm.element('Toggle', 'Test', false, function(v)
     _G.Jiren_Farm = v.Toggle
-    while _G.Jiren_Farm do task.wait()
-        Jeren_Spawn()
-    end
+    print(_G.Jiren_Farm)
 end) 
 
 
@@ -556,8 +593,12 @@ end)
 
 
 
-
-
+local Farm_MS = C_Farm.element('Toggle', 'Auto Farm Set Mob', false, function(v)
+    _G.Farm_MS = v.Toggle
+    while _G.Farm_MS do task.wait()
+        Farm_MS()
+    end
+end) 
 
 local mob_set = C_Farm.element('Button', 'Set Mob', nil, function()
     local mob = Get_Mob()
