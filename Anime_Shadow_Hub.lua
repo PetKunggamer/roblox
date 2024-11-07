@@ -273,10 +273,10 @@ local function Time_Teller()
     local Time_list = {'30:00','25:00','20:00','15:00','10:00','05:00','04:00','03:00','02:00','01:00','00:30','00:20','00:10','00:09', '00:08', '00:07', '00:06', '00:05', '00:04', '00:03', '00:02', '00:01'}
     for i,Time in ipairs(Time_list) do
         if Trial.Text == Time then
-            print('Time Remaining : '.. Trial.Text)
             Notify('Trial Time', 'Time Remaining : '.. Trial.Text, 1)
-            wait(1.1)
         end
+        print('Time Remaining : '.. Trial.Text)
+        wait(1.1)
     end
     return nil
 end
