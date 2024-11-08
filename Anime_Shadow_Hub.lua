@@ -391,6 +391,17 @@ local function Farm_Trial_Fast()
     end
 end
 
+local function Passives_UI(state)
+local frame = game:GetService("Players").LocalPlayer.PlayerGui.UI.Frames:FindFirstChild('Passives')
+    if frame then
+        if not state then
+            frame.Visible = true
+            frame.Position = UDim2.new(0.5, 0, 1.6, 0)
+        else
+            frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+        end
+    end
+end
 
 
 
@@ -435,7 +446,8 @@ local Farm = section.new_sector('Farming', 'Left')
 local Trial = section.new_sector('Trial', 'Left')
 local C_Farm = section.new_sector('Custom Farm', 'Left')
 local Misc = section.new_sector('Misc', 'Right') 
-local Dmg = section.new_sector('Damage Stacking', 'Right') 
+local Dmg: any = section.new_sector('Damage Stacking', 'Right') 
+local UI_OPEN = section.new_sector('UI Opening', 'Right') 
 
 
 
@@ -454,6 +466,24 @@ local Dmg = section.new_sector('Damage Stacking', 'Right')
 
 
 
+
+
+--[[
+
+
+██╗░░░██╗██╗  ░█████╗░██████╗░███████╗███╗░░██╗
+██║░░░██║██║  ██╔══██╗██╔══██╗██╔════╝████╗░██║
+██║░░░██║██║  ██║░░██║██████╔╝█████╗░░██╔██╗██║
+██║░░░██║██║  ██║░░██║██╔═══╝░██╔══╝░░██║╚████║
+╚██████╔╝██║  ╚█████╔╝██║░░░░░███████╗██║░╚███║
+░╚═════╝░╚═╝  ░╚════╝░╚═╝░░░░░╚══════╝╚═╝░░╚══╝
+]]--
+
+
+
+local Passive_UI = UI_OPEN.element('Toggle', 'Passive Reroll', false, function(v)
+    Passives_UI(v.Toggle)
+end) 
 
 
 
