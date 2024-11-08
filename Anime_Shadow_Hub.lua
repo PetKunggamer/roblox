@@ -109,8 +109,18 @@ local function Get_Coin()
     end
 end
 
+local function Check_Door()
+    local old_doorpos = CFrame.new(-8832.51953, 57, -3682)
+    local door = workspace.Server.Trial.Lobby:FindFirstChild('Easy_Door')
+    if door and not (door.CFrame == old_doorpos) then
+        return true
+    end
+    return
+end
+
 local function Join_Trial()
-    if workspace.Server.Trial.Lobby.Easy_Screen.Frame.Value.Text == "00:00" then
+    local val = workspace.Server.Trial.Lobby.Easy_Screen.Frame:FindFirstChild("Value")
+    if val.Text == "00:00" or val.Text == "00:01" or Check_Door() then
         local args = {
             [1] = "Enemies",
             [2] = "Trial_Easy",
@@ -339,6 +349,48 @@ local function Farm_MS()
     end
 end
 
+local function Get_Mob_Trial()
+    local highest_hp = 0
+    local mob = nil
+    for i, v in ipairs(workspace.Server.Trial.Enemies.Easy:GetChildren()) do
+        local Health = v:GetAttribute("Health")
+        if Health and Health > highest_hp then
+            highest_hp = Health
+            mob = v
+        end
+    end
+    return mob
+end
+
+local function Farm_Trial()
+    local mob = Get_Mob_Trial()
+    local mob_sec = Get_Near_SetMob()
+    if mob and mob_sec then
+        if not hrp then return end
+        to_target()
+        hrp.CFrame = mob.CFrame
+        hrp.Velocity = Vector3.new(0,0,0)
+    end
+end
+
+local function Farm_Trial_Fast()
+    local mob = Get_Mob_Trial()
+    local mob_sec = Get_Near_SetMob()
+    if mob and mob_sec then
+        if not hrp then return end
+        for i = 1,30 do
+            hrp.CFrame = mob.CFrame
+            task.wait()
+            hrp.CFrame = mob_sec.CFrame
+            task.wait()
+        end
+        to_target()
+        hrp.CFrame = mob.CFrame
+        hrp.Velocity = Vector3.new(0,0,0)
+        wait(10)
+    end
+end
+
 
 
 
@@ -442,7 +494,19 @@ end)
     ░░░╚═╝░░░╚═╝╚═╝░░░░░╚═╝╚══════╝  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝╚═╝░░╚═╝╚══════╝
 ]]--
 
+local Farm_Trial = Trial.element('Toggle', 'Auto Farm Trial (Normal)', false, function(v)
+    _G.Farm_Trial = v.Toggle
+    while _G.Farm_Trial do task.wait()
+        Farm_Trial()
+    end
+end)
 
+local Farm_Trial_Fast = Trial.element('Toggle', 'Auto Farm Trial (Fast)', false, function(v)
+    _G.Farm_Trial_Fast = v.Toggle
+    while _G.Farm_Trial_Fast do task.wait()
+        Farm_Trial_Fast()
+    end
+end) 
 
 local Trial_Teller = Trial.element('Toggle', 'Trial Alert Time', false, function(v)
     _G.Time_Teller = v.Toggle
