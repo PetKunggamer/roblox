@@ -349,6 +349,13 @@ local function Farm_MS()
     end
 end
 
+local function Move_to_mob(mob)
+    if not hrp then return end
+    to_target()
+    hrp.CFrame = mob.CFrame
+    hrp.Velocity = Vector3.new(0,0,0)
+end
+
 local function Get_Mob_Trial()
     local highest_hp = 0
     local mob = nil
@@ -403,19 +410,109 @@ local frame = game:GetService("Players").LocalPlayer.PlayerGui.UI.Frames:FindFir
     end
 end
 
+local function Daily_Quest()
+    local Quest_Ticket = game:GetService("Players").LocalPlayer.PlayerGui.UI.HUD:FindFirstChild("Ticket_Quest")
+    if Quest_Ticket and not Quest_Ticket.Visible then 
+        game:GetService("ReplicatedStorage").Remotes.Bridge:FireServer("General","Quests","Tickets")
+    else
+        game:GetService("ReplicatedStorage").Remotes.Bridge:FireServer("General","Quests","TicketsClaim")
+    end
+end
+
+local function GetMob_Quest()
+    local Quest = game:GetService("Players").LocalPlayer.PlayerGui.UI.HUD:FindFirstChild("Quests")
+    if Quest and Quest.Visible then
+        local Description = Quest:FindFirstChild('Description')
+        if Description then
+            -- Extract the mob type from the Description
+            local mobType = string.match(Description.Text, "Defeat %d+ ([%w%s]+)'s")
+            if mobType then
+                -- Try to match against "Ebito" and "Ebito Evolution" mobs
+                for i, v in ipairs(Get_World():GetChildren()) do
+                    if v:IsA('Part') then
+                        -- Check if the mob matches the mob type
+                        if string.find(v.Name, mobType) then
+                            local hp = v:GetAttribute('Health')
+                            if hp and hp > 0 then
+                                return v  -- Return the mob if it has health and matches
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return nil  -- If no valid mob is found
+end
+
+local function Remote_Quest(State,Quest)
+    local args = {
+        [1] = "General",
+        [2] = "Quests",
+        [3] = State,
+        [4] = tostring((Get_Map().Name)),
+        [5] = Quest
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge"):FireServer(unpack(args))
+end
+
+
+local function Get_Module_Quest()
+    for i,v in ipairs(game:GetService("Players").LocalPlayer.PlayerScripts.StarX.UserInterface.Scripts.Dialog.Info:GetChildren()) do
+        if v:IsA('ModuleScript') then
+            local Map = string.gsub(Get_Map().Name, "%s+", "")  -- Remove all spaces (whitespace)
+            if Map then
+                if string.find(v.Name, 'EximiusX_'..Map) then
+                    return v
+                end
+            end
+        end
+    end
+    return
+end
+
+local function Get_Quest()
+    local Quest = game:GetService("Players").LocalPlayer.PlayerGui.UI.HUD:FindFirstChild("Quests")
+    if Quest then
+        local Completed = Quest:FindFirstChild("Completed")
+        for i,v in ipairs(Get_Module_Quest():GetChildren()) do
+            if Quest.Visible and Completed.Visible then
+                Remote_Quest('Claim', v.Name)
+            elseif not Quest.Visible then
+                Remote_Quest('Accept', v.Name)
+            end
+        end
+    end
+end
 
 
 
+local mob_list = {} -- Table to keep track of stacked mobs by unique ID
 
-
-
-
-
-
-
-
-
-
+local function Auto_Quest()
+    Get_Quest()
+    local mob = GetMob_Quest()            -- Get the current quest mob
+    local near_mob = Get_Near_SetMob()     -- Get a nearby mob
+    if mob and near_mob then
+        local ID = mob:GetAttribute('ID')      -- Get the unique ID attribute of the mob
+        local HP = mob:GetAttribute('Health')  -- Get the Health attribute of the mob
+        if ID and HP then
+            if not (HP == 0) then
+                print(#mob_list)
+                if not mob_list[2] then
+                    Move_to_mob(mob)
+                    table.insert(mob_list, ID)
+                    Stack({mob, near_mob})
+                else
+                    Move_to_mob(mob)
+                end
+            else
+                table.clear(mob_list)
+            end
+        end
+    end
+end
 
 
 --[[
@@ -468,25 +565,6 @@ local UI_OPEN = section.new_sector('UI Opening', 'Right')
 
 
 
---[[
-
-
-██╗░░░██╗██╗  ░█████╗░██████╗░███████╗███╗░░██╗
-██║░░░██║██║  ██╔══██╗██╔══██╗██╔════╝████╗░██║
-██║░░░██║██║  ██║░░██║██████╔╝█████╗░░██╔██╗██║
-██║░░░██║██║  ██║░░██║██╔═══╝░██╔══╝░░██║╚████║
-╚██████╔╝██║  ╚█████╔╝██║░░░░░███████╗██║░╚███║
-░╚═════╝░╚═╝  ░╚════╝░╚═╝░░░░░╚══════╝╚═╝░░╚══╝
-]]--
-
-
-
-local Passive_UI = UI_OPEN.element('Toggle', 'Passive Reroll', false, function(v)
-    Passives_UI(v.Toggle)
-end) 
-
-
-
 
 
 
@@ -505,9 +583,11 @@ end)
     ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝
 ]]--
 
-local Jiren_Farm = Farm.element('Toggle', 'Test', false, function(v)
-    _G.Jiren_Farm = v.Toggle
-    print(_G.Jiren_Farm)
+local Auto_Quest = Farm.element('Toggle', 'Auto Quest', false, function(v)
+    _G.Auto_Quest = v.Toggle
+    while _G.Auto_Quest do task.wait()
+        Auto_Quest()
+    end 
 end) 
 
 
@@ -580,7 +660,13 @@ end)
     ╚═╝░░░░░╚═╝╚═╝╚═════╝░░╚════╝░
 ]]--
 
-
+local Auto_Daily_Quest = Misc.element('Toggle', 'Auto Daily Quest', false, function(v)
+    _G.Auto_Daily = v.Toggle
+    while _G.Auto_Daily do task.wait()
+        Daily_Quest()
+        wait(60)
+    end
+end) 
 
 local Attack = Misc.element('Toggle', 'Auto Attack', false, function(v)
     _G.Trial = v.Toggle
@@ -707,3 +793,22 @@ end)
 local Start = C_Farm.element('Button', 'Start', nil, function()
     Stack(Get_Waypoint_CFarm())
 end)
+
+
+--[[
+
+
+██╗░░░██╗██╗  ░█████╗░██████╗░███████╗███╗░░██╗
+██║░░░██║██║  ██╔══██╗██╔══██╗██╔════╝████╗░██║
+██║░░░██║██║  ██║░░██║██████╔╝█████╗░░██╔██╗██║
+██║░░░██║██║  ██║░░██║██╔═══╝░██╔══╝░░██║╚████║
+╚██████╔╝██║  ╚█████╔╝██║░░░░░███████╗██║░╚███║
+░╚═════╝░╚═╝  ░╚════╝░╚═╝░░░░░╚══════╝╚═╝░░╚══╝
+]]--
+
+
+
+local Passive_UI = UI_OPEN.element('Toggle', 'Passive Reroll', false, function(v)
+    Passives_UI(v.Toggle)
+end) 
+
