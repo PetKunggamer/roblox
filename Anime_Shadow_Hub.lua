@@ -143,35 +143,6 @@ local args = {
 game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge"):FireServer(unpack(args))
 end
 
-
-local function TP_MAIN()
-    if char.Name == "Resiturz" then
-        hrp.CFrame = workspace.x_Switft.HumanoidRootPart.CFrame
-    end
-end
-
-local function Jiren()
-    for i = 1,100 do
-        hrp.CFrame = CFrame.new(-147, 29, -2227)
-        task.wait()
-        hrp.CFrame = CFrame.new(-222, 11, -1977)
-        task.wait()
-    end
-end
-
-local function Jeren_Spawn()
-    local respawn_hud = workspace.Server.Enemies["Dragon World"].Jeren:FindFirstChild("RespawnHUD")
-    local respawn_text = workspace.Server.Enemies["Dragon World"].Jeren.RespawnHUD.Status.Frame.Value
-    local hud = workspace.Client.Enemies.Jeren.HumanoidRootPart:FindFirstChild("HUD")
-    if not hud.Enabled then
-        hrp.CFrame = CFrame.new(-226, 11, -1976)
-    end
-    if respawn_hud.Enabled == true and respawn_text.Text == "0s" then
-        wait(1.25)
-        Jiren()
-    end
-end
-
 local function Create_WayPoint(name, pos)
     local waypoint = workspace:FindFirstChild(name)
     if waypoint then
@@ -371,10 +342,7 @@ local function Farm_Trial()
     local mob = Get_Mob_Trial()
     local mob_sec = Get_Near_SetMob()
     if mob and mob_sec then
-        if not hrp then return end
-        to_target()
-        hrp.CFrame = mob.CFrame
-        hrp.Velocity = Vector3.new(0,0,0)
+        Move_to_mob(mob)
     end
 end
 
