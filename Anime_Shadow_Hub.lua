@@ -357,12 +357,10 @@ local function Move_to_mob(mob)
 end
 
 local function Get_Mob_Trial()
-    local highest_hp = 0
     local mob = nil
     for i, v in ipairs(workspace.Server.Trial.Enemies.Easy:GetChildren()) do
         local Health = v:GetAttribute("Health")
-        if Health and Health > highest_hp then
-            highest_hp = Health
+        if Health and Health > 0 then
             mob = v
         end
     end
@@ -513,7 +511,6 @@ local function Auto_Quest()
         end
     end
 end
-
 
 --[[
 
@@ -811,4 +808,3 @@ end)
 local Passive_UI = UI_OPEN.element('Toggle', 'Passive Reroll', false, function(v)
     Passives_UI(v.Toggle)
 end) 
-
