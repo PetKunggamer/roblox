@@ -240,8 +240,10 @@ local function Stack(WayPoint)
     if W1 and W2 then
         for i = 1, 100 do
             hrp.CFrame = W1.CFrame
+            Attack()
             task.wait()
             hrp.CFrame = W2.CFrame
+            Attack()
             task.wait()
         end
         hrp.CFrame = W1.CFrame
@@ -399,8 +401,9 @@ local function GetMob_Quest()
                         -- Check if the mob matches the mob type
                         if string.find(v.Name, mobType) then
                             local hp = v:GetAttribute('Health')
+                            local max = v:GetAttribute('MaxHealth')
                             if hp and hp > 0 then
-                                return v  -- Return the mob if it has health and matches
+                                return v
                             end
                         end
                     end
@@ -408,7 +411,7 @@ local function GetMob_Quest()
             end
         end
     end
-    return nil  -- If no valid mob is found
+    return
 end
 
 local function Remote_Quest(State,Quest)
@@ -452,31 +455,24 @@ local function Get_Quest()
     end
 end
 
-
-
-local mob_list = {} -- Table to keep track of stacked mobs by unique ID
+local current_mob = nil
 
 local function Auto_Quest()
-    Get_Quest()
-    local mob = GetMob_Quest()            -- Get the current quest mob
-    local near_mob = Get_Near_SetMob()     -- Get a nearby mob
-    if mob and near_mob then
-        local ID = mob:GetAttribute('ID')      -- Get the unique ID attribute of the mob
-        local HP = mob:GetAttribute('Health')  -- Get the Health attribute of the mob
-        if ID and HP then
-            if not (HP == 0) then
-                print(#mob_list)
-                if not mob_list[2] then
-                    Move_to_mob(mob)
-                    table.insert(mob_list, ID)
-                    Stack({mob, near_mob})
-                else
-                    Move_to_mob(mob)
-                end
-            else
-                table.clear(mob_list)
-            end
+    local near = Get_Near_SetMob()
+    print("current_mob:", current_mob)
+    print("near:", near)
+
+    if current_mob and near then
+        if current_mob:GetAttribute('Health') == 0 then
+            current_mob = nil
+            Stack({GetMob_Quest(),near})
+        else
+            Move_to_mob(current_mob)
         end
+    elseif not current_mob then
+        current_mob = GetMob_Quest()
+        Stack({current_mob,near})
+        Move_to_mob(current_mob)
     end
 end
 
@@ -548,7 +544,14 @@ local UI_OPEN = section.new_sector('UI Opening', 'Right')
     ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝
 ]]--
 
-local Auto_Quest = Farm.element('Toggle', 'Auto Quest', false, function(v)
+local Get_Quest = Farm.element('Toggle', 'Auto Quest', false, function(v)
+    _G.Get_Quest = v.Toggle
+    while _G.Get_Quest do task.wait()
+        Get_Quest()
+    end 
+end) 
+
+local Auto_Quest = Farm.element('Toggle', 'TP MOB Quest', false, function(v)
     _G.Auto_Quest = v.Toggle
     while _G.Auto_Quest do task.wait()
         Auto_Quest()
