@@ -1,9 +1,13 @@
 local A = game:GetService("CoreGui"):FindFirstChild("unknown")
+local afk = game:GetService("CoreGui"):FindFirstChild("thisoneissocoldww")
 
 if A then
     A:Destroy()
 end
 
+if afk then
+    afk:Destroy()
+end
 
 --[[
 
@@ -18,6 +22,7 @@ end
 
 local char = game.Players.LocalPlayer.Character
 local hrp = char:FindFirstChild("HumanoidRootPart")
+local current_mob = nil
 
 
 local function Get_Map()
@@ -42,6 +47,11 @@ local function Notify(title,text,dura)
     Text = text, 
     Duration = dura
     })
+end
+
+local function AFK()
+    Notify('Syn0xz Hub', 'Anti afk loaded', 3)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
 end
 
 local function Get_Mob()
@@ -331,14 +341,17 @@ end
 
 local function Get_Mob_Trial()
     local mob = nil
+    local highest = 0
     for i, v in ipairs(workspace.Server.Trial.Enemies.Easy:GetChildren()) do
-        local Health = v:GetAttribute("Health")
-        if Health and Health > 0 then
-            mob = v
+        local MaxHP = v:GetAttribute("MaxHealth")
+        if MaxHP and MaxHP > highest then
+            highest = MaxHP  -- Compare against MaxHealth
+            mob = v          -- Update to the mob with the highest MaxHealth
         end
     end
     return mob
 end
+
 
 local function Farm_Trial()
     local mob = Get_Mob_Trial()
@@ -349,20 +362,22 @@ local function Farm_Trial()
 end
 
 local function Farm_Trial_Fast()
-    local mob = Get_Mob_Trial()
-    local mob_sec = Get_Near_SetMob()
-    if mob and mob_sec then
-        if not hrp then return end
-        for i = 1,30 do
-            hrp.CFrame = mob.CFrame
-            task.wait()
-            hrp.CFrame = mob_sec.CFrame
-            task.wait()
+    local near = Get_Near_SetMob()
+    print('nearmob :', near)
+    print('current mob :', current_mob)
+
+    -- Check if the current mob is valid and alive
+    if current_mob and current_mob.Parent and current_mob:GetAttribute("Health") > 0 then
+        if not _G.Stack then
+            _G.Stack = true
+            Stack({Get_Mob_Trial(), near})
         end
-        to_target()
-        hrp.CFrame = mob.CFrame
-        hrp.Velocity = Vector3.new(0,0,0)
-        wait(10)
+        Move_to_mob(Get_Mob_Trial())
+    else
+        -- If the current mob is dead or invalid, reset and find a new one
+        wait(.25)
+        _G.Stack = false
+        current_mob = Get_Mob_Trial()
     end
 end
 
@@ -455,8 +470,6 @@ local function Get_Quest()
     end
 end
 
-local current_mob = nil
-
 local function Auto_Quest()
     local near = Get_Near_SetMob()
     print("current_mob:", current_mob)
@@ -472,7 +485,9 @@ local function Auto_Quest()
     elseif not current_mob then
         current_mob = GetMob_Quest()
         Stack({current_mob,near})
-        Move_to_mob(current_mob)
+        if current_mob then
+            Move_to_mob(current_mob)
+        end
     end
 end
 
@@ -779,3 +794,19 @@ end)
 local Passive_UI = UI_OPEN.element('Toggle', 'Passive Reroll', false, function(v)
     Passives_UI(v.Toggle)
 end) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Notify('Syn0xz Hub', 'Hub is loaded', 3)
+AFK()
