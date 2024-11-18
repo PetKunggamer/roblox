@@ -62,8 +62,11 @@ local function Get_Mob()
                 if not hrp then return end
                 local mag = (mob.Position - hrp.Position).magnitude
                 if mag < dist and mag < 1000 then
-                    dist = mag
-                    nearestMob = mob
+                    local hp = mob:GetAttribute('Health')
+                    if hp and hp > 0 then
+                        dist = mag
+                        nearestMob = mob
+                    end
                 end
             end
         end
@@ -128,6 +131,33 @@ local function Check_Door()
     return
 end
 
+local function Get_All_World()
+    local World = {}
+    for i,v in ipairs(workspace.Client.Portals:GetChildren()) do
+        table.insert(World, v.Name)
+    end
+    return World
+end
+
+local function Teleport_World(World)
+    local args = {
+        [1] = "General",
+        [2] = "Teleport",
+        [3] = "Teleport",
+        [4] = World
+    }
+
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge"):FireServer(unpack(args))
+end
+
+local function Trial_Safer()
+    local trial = game:GetService("Players").LocalPlayer.PlayerGui.UI.HUD:FindFirstChild("Trial")
+    local timer = trial.Frame.Timer:FindFirstChild("Value")
+    if not trial or timer.Text == '00:01' or timer.Text == '00:00' then
+        Teleport_World('Leaf Village')
+    end
+end
+
 local function Join_Trial()
     local val = workspace.Server.Trial.Lobby.Easy_Screen.Frame:FindFirstChild("Value")
     if val.Text == "00:00" or val.Text == "00:01" or Check_Door() then
@@ -140,6 +170,7 @@ local function Join_Trial()
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge"):FireServer(unpack(args))
     end
 end
+
 
 local function Egg()
 local args = {
@@ -226,21 +257,9 @@ local function Get_Waypoint_CFarm()
     return nil
 end
 
-local function Get_Waypoint_CFarm()
-    local mob = workspace:FindFirstChild('Mob')
-    local secound_mob = Get_Near_SetMob()
-    if not mob then
-        Notify('Custom Farm', 'Set Mob Part missing.', 1)
-    end
-
-    if mob and secound_mob then
-        return {mob, secound_mob}
-    end
-    return nil
-end
-
 local function Stack(WayPoint)
-     local W1, W2 = WayPoint[1], WayPoint[2] -- Unpack the table
+    local W1, W2 = WayPoint[1], WayPoint[2] -- Unpack the table
+    local oldpos = hrp.CFrame
     if not W1 then
         Notify('Stack Damage Function','Part 1 Missing',1.5)
     end
@@ -256,7 +275,7 @@ local function Stack(WayPoint)
             Attack()
             task.wait()
         end
-        hrp.CFrame = W1.CFrame
+        hrp.CFrame = oldpos
         hrp.Velocity = Vector3.new(0,0,0)
     end
 end
@@ -268,31 +287,11 @@ local function Time_Teller()
         if Trial.Text == Time then
             Notify('Trial Time', 'Time Remaining : '.. Trial.Text, 1)
         end
-        print('Time Remaining : '.. Trial.Text)
-        wait(1.125)
     end
+    print('Time Remaining : '.. Trial.Text)
+    wait(1)
     return nil
 end
-
-local function Get_All_World()
-    local World = {}
-    for i,v in ipairs(workspace.Client.Portals:GetChildren()) do
-        table.insert(World, v.Name)
-    end
-    return World
-end
-
-local function Teleport_World(World)
-    local args = {
-        [1] = "General",
-        [2] = "Teleport",
-        [3] = "Teleport",
-        [4] = World
-    }
-
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge"):FireServer(unpack(args))
-end
-
 
 local function Save_UI()
     local UI = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild('UI')
@@ -304,7 +303,7 @@ local function Save_UI()
 end
 
 local function Farm_MS()
-    local mob = Get_Mob(workspace:FindFirstChild('Mob'))
+    local mob = workspace:FindFirstChild('Mob')
     local mob_sec = Get_Near_SetMob()
     local oldppos = hrp.CFrame
     if mob then
@@ -335,8 +334,10 @@ end
 local function Move_to_mob(mob)
     if not hrp then return end
     to_target()
-    hrp.CFrame = mob.CFrame
-    hrp.Velocity = Vector3.new(0,0,0)
+    if mob then
+        hrp.CFrame = mob.CFrame
+        hrp.Velocity = Vector3.new(0,0,0)
+    end
 end
 
 local function Get_Mob_Trial()
@@ -372,6 +373,8 @@ local function Farm_Trial_Fast()
             _G.Stack = true
             Stack({Get_Mob_Trial(), near})
         end
+        Move_to_mob(current_mob)
+        wait()
         Move_to_mob(Get_Mob_Trial())
     else
         -- If the current mob is dead or invalid, reset and find a new one
@@ -416,7 +419,6 @@ local function GetMob_Quest()
                         -- Check if the mob matches the mob type
                         if string.find(v.Name, mobType) then
                             local hp = v:GetAttribute('Health')
-                            local max = v:GetAttribute('MaxHealth')
                             if hp and hp > 0 then
                                 return v
                             end
@@ -608,15 +610,19 @@ local Trial_Teller = Trial.element('Toggle', 'Trial Alert Time', false, function
     end
 end) 
 
+local Safer = Trial.element('Toggle', 'Trial Safer', false, function(v)
+    _G.Safer = v.Toggle
+    while _G.Safer do task.wait()
+        Trial_Safer()
+    end
+end) 
+
 local Trial = Trial.element('Toggle', 'Auto Join Trial', false, function(v)
     _G.Trial = v.Toggle
     while _G.Trial do task.wait()
         Join_Trial()
     end
 end) 
-
-
-
 
 
 
