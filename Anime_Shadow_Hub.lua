@@ -1,3 +1,14 @@
+local A = game:GetService("CoreGui"):FindFirstChild("unknown")
+local afk = game:GetService("CoreGui"):FindFirstChild("thisoneissocoldww")
+
+if A then
+    A:Destroy()
+end
+
+if afk then
+    afk:Destroy()
+end
+
 --[[
 
     ███████╗██╗░░░██╗███╗░░██╗░█████╗░████████╗██╗░█████╗░███╗░░██╗
