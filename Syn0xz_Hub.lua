@@ -49,6 +49,12 @@ if placeId == 89438510123061 then
     AS = true
 end
 
+
+if JJK_INF then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/Jujutsu_Infinite.lua"))()  -- 28/4/2024
+end
+
 if AS then
 	repeat wait() until game:IsLoaded()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/Anime_Shadow_Hub.lua"))()  -- 28/4/2024
