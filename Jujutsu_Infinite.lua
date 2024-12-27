@@ -264,6 +264,31 @@ local function Kill_Aura()
     end
 end
 
+local function Spin(Slot)
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Speech"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild(Slot)
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = Slot
+            }
+            local response = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates[Slot].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates[Slot].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
 --[[
 
     ██╗░░░██╗██╗      ███████╗░█████╗░███╗░░██╗███████╗
@@ -289,6 +314,7 @@ local section = tab.new_section('- Main -')
 
 -- // Sector \\ --
 local Farm = section.new_sector('Farming', 'Left')
+local Spin = section.new_sector('Spin [Menu]', 'Left')
 local Misc = section.new_sector('Misc', 'Right')
 local TP = section.new_sector('Teleport', 'Right')
 local FPS = section.new_sector('Low FPS', 'Right')
@@ -336,6 +362,21 @@ local Kill_Aura = Farm.element('Toggle', 'Kill Aura', false, function(v)
     _G.Kill_Aura = v.Toggle
     while _G.Kill_Aura do task.wait(.001)
         Kill_Aura()
+    end
+end)
+
+
+local Spin_Slot1: any = Spin.element('Toggle', 'Spin Slot 1', false, function(v)
+    _G.Spin_Slot1 = v.Toggle
+    while _G.Spin_Slot1 do task.wait(.001)
+        Spin(1)
+    end
+end)
+
+local Spin_Slot2: any = Spin.element('Toggle', 'Spin Slot 2', false, function(v)
+    _G.Spin_Slot2 = v.Toggle
+    while _G.Spin_Slot2 do task.wait(.001)
+        Spin(2)
     end
 end)
 
