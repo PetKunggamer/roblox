@@ -18,16 +18,20 @@ local function Get_Mob()
         if v:IsA("Model") then
             local target = v:FindFirstChild("HumanoidRootPart")
             local hum = v:FindFirstChild("Humanoid")
-            if target and hrp and hum and hum.Health > 0 then
+            local death = v:FindFirstChild("DeathBall")
+            if target and hrp and hum and not death then
                 local mag = (hrp.Position - target.Position).Magnitude
                 if mag < dist then
-                    dist = mag
-                    mob = target
+                    if target then
+                        dist = mag
+                        mob = v
+                        return mob
+                    end
                 end
             end
         end
     end
-    return mob
+    return
 end
 
 local function Rescue()
@@ -65,34 +69,6 @@ local function tp(CF)
     local tween = tweenService:Create(hrp, tweenInfo, {CFrame = CF})
     tween:Play()
     tween.Completed:Wait()
-end
-
-local function Kill_Aura()
-    local hrp = game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    for i,v in ipairs(workspace.Objects.Mobs:GetChildren()) do
-        if v:IsA("Model") then
-            local target = v:FindFirstChild("HumanoidRootPart")
-            if target then
-                local hum = v:FindFirstChild("Humanoid")
-                if hum then
-                    local mag = (hrp.Position - target.Position).magnitude
-                    if hum and hum.Health > 0 and mag < 100 then
-                        hum.Health = 0
-                        --[[
-                        local args = {
-                            [1] = 4,
-                            [2] = {
-                                [1] = hum
-                            }
-                        }
-
-                        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
-                        ]]--
-                    end
-                end
-            end
-        end
-    end
 end
 
 local function Mission_Item()
@@ -176,6 +152,34 @@ local function God_Mode()
     Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("ReverseHeal"):InvokeServer(-100)
 end
 
+local function Kill_Aura()
+    local hrp = game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    for i,v in ipairs(workspace.Objects.Mobs:GetChildren()) do
+        if v:IsA("Model") then
+            local target = v:FindFirstChild("HumanoidRootPart")
+            if target then
+                local hum = v:FindFirstChild("Humanoid")
+                if hum then
+                    local mag = (hrp.Position - target.Position).magnitude
+                    if hum and mag < 125 then
+                        hum.Health = 0
+                        
+                        local args = {
+                            [1] = 4,
+                            [2] = {
+                                [1] = hum
+                            }
+                        }
+
+                        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
+                        
+                    end
+                end
+            end
+        end
+    end
+end
+
 Equip:InvokeServer("Luck Vial")
 Equip:InvokeServer("Wooden Beckoning Cat")
 Equip:InvokeServer("White Lotus")
@@ -183,26 +187,42 @@ Equip:InvokeServer("White Lotus")
 _G.A = not _G.A
 print(_G.A)
 while _G.A do task.wait()
-    StorylineDialogueSkip:FireServer()
-    spawn(Auto_Loot)
-    local Result = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Results")
-    local Mission_Item_Check = workspace.Objects.MissionItems
-        if Result and Result.Enabled then
-            Replay()
-        end
-        if Mission_Item_Check:FindFirstChild("CursedObject") then
-            Mission_Item()
-        elseif Mission_Item_Check:FindFirstChild("Civilian") then
-            Rescue()
-        else
-            if Get_Mob() then
-                tp(Get_Mob().CFrame * CFrame.new(0,25,0))
-                wait(.2)
-                Kill_Aura()
-                wait(.1)
-                hrp.CFrame = hrp.CFrame * CFrame.new(0,50,100)
-                wait(.125)
+        pcall(function()
+        Get_Mob()
+        StorylineDialogueSkip:FireServer()
+        spawn(Auto_Loot)
+        local Result = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Results")
+        local Mission_Item_Check = workspace.Objects.MissionItems
+            if Result and Result.Enabled then
+                Replay()
             end
-        end
+            if Mission_Item_Check:FindFirstChild("CursedObject") then
+                Mission_Item()
+            elseif Mission_Item_Check:FindFirstChild("Civilian") then
+                Rescue()
+            else
+                local mob = Get_Mob()
+                local target = Get_Mob():FindFirstChild("HumanoidRootPart")
+                if mob and target and Get_Mob().Name == "Finger Bearer" then
+	                hrp.CFrame = hrp.CFrame * CFrame.new(0,300,0)
+                    wait(.125)
+	                hrp.Anchored = true
+                    wait(15)
+                    hrp.Anchored = false
+                    wait(.125)
+                    hrp.CFrame = Get_Mob().HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                    wait(.25)
+                    Kill_Aura()
+                    wait(.25)
+                    hrp.CFrame = hrp.CFrame * CFrame.new(0,300,200)
+                    wait(.125)
+                else
+                    hrp.CFrame = Get_Mob().HumanoidRootPart.CFrame * CFrame.new(0,15,0)
+                    wait(.25)
+                    Kill_Aura()
+                    wait(.125)
+                end
+            end
+        end)
     end
 end
