@@ -67,7 +67,7 @@ local function tp(CF)
     tween.Completed:Wait()
 end
 
-local function Kill_Aura(target)
+local function Kill_Aura()
     local hrp = game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     for i,v in ipairs(workspace.Objects.Mobs:GetChildren()) do
         if v:IsA("Model") then
@@ -198,7 +198,7 @@ while _G.A do task.wait()
             if Get_Mob() then
                 tp(Get_Mob().CFrame * CFrame.new(0,25,0))
                 wait(.2)
-                Kill_Aura(Get_Mob().Parent.Humanoid)
+                Kill_Aura()
                 wait(.1)
                 hrp.CFrame = hrp.CFrame * CFrame.new(0,50,100)
                 wait(.125)
