@@ -172,7 +172,6 @@ local function Kill_Aura()
                         }
 
                         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
-                        
                     end
                 end
             end
@@ -180,6 +179,9 @@ local function Kill_Aura()
     end
 end
 
+local function Skill()
+    Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("Death Sentence")
+end
 Equip:InvokeServer("Luck Vial")
 Equip:InvokeServer("Wooden Beckoning Cat")
 Equip:InvokeServer("White Lotus")
@@ -189,6 +191,7 @@ print(_G.A)
 while _G.A do task.wait()
         pcall(function()
         Get_Mob()
+        spawn(Skill)
         StorylineDialogueSkip:FireServer()
         spawn(Auto_Loot)
         local Result = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Results")
