@@ -195,11 +195,11 @@ while _G.A do task.wait()
         else
             if Get_Mob() then
                 tp(Get_Mob().CFrame * CFrame.new(0,25,0))
-                wait(.25)
+                wait(.75)
                 Kill_Aura(Get_Mob().Parent.Humanoid)
-                wait(.25)
+                wait(.75)
                 hrp.CFrame = hrp.CFrame * CFrame.new(0,1500,100)
-                wait(.125)
+                wait(.725)
             end
         end
     end
