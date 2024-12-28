@@ -198,7 +198,7 @@ while _G.A do task.wait()
                 wait(.75)
                 Kill_Aura(Get_Mob().Parent.Humanoid)
                 wait(.75)
-                hrp.CFrame = hrp.CFrame * CFrame.new(0,1500,100)
+                hrp.CFrame = hrp.CFrame * CFrame.new(0,50,100)
                 wait(.725)
             end
         end
