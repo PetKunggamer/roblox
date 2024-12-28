@@ -111,25 +111,25 @@ local function Check_Level()
     elseif Level > 59 and Level < 120 then
         return {
             Location = "Umi Village Set",
-            Grade = "Grade 3",
+            Grade = "Non Sorcerer",
             Essence = "2"
         }
     elseif Level > 119 and Level < 180 then
         return {
             Location = "Numa Temple Set",
-            Grade = "Grade 3",
+            Grade = "Non Sorcerer",
             Essence = "4"
         }
     elseif Level > 179 and Level < 240 then
         return {
             Location = "Kura Camp Set",
-            Grade = "Grade 3",
+            Grade = "Non Sorcerer",
             Essence = "8"
         }
     elseif Level > 240 then
         return {
             Location = "Yuki Fortress Set",
-            Grade = "Grade 3",
+            Grade = "Non Sorcerer",
             Essence = "12"
         }
     end
@@ -264,27 +264,52 @@ local function Kill_Aura()
     end
 end
 
-local function Spin(Slot)
+local function Spin_1()
 local List = {
     "Infinity",
     "Demon Vessel",
     "Star Rage",
     "Gambler Fever",
     "Soul Manipulation",
-    "Cursed Speech"
+    "Cursed Queen"
 }
 
-local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild(Slot)
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("1")
     if Power_Slot then
         if not table.find(List, Power_Slot.Value) then
             local args = {
-                [1] = Slot
+                [1] = 1
             }
             local response = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
             print(response)
-            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates[Slot].Frame.TextLabel.Text = Power_Slot.Value
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["1"].Frame.TextLabel.Text = Power_Slot.Value
             else
-            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates[Slot].Frame.TextLabel.Text = Power_Slot.Value
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["1"].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
+local function Spin_2()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("2")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 2
+            }
+            local response = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["2"].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["2"].Frame.TextLabel.Text = Power_Slot.Value
         end
     end
 end
@@ -369,14 +394,14 @@ end)
 local Spin_Slot1: any = Spin.element('Toggle', 'Spin Slot 1', false, function(v)
     _G.Spin_Slot1 = v.Toggle
     while _G.Spin_Slot1 do task.wait(.001)
-        Spin(1)
+        Spin_1()
     end
 end)
 
 local Spin_Slot2: any = Spin.element('Toggle', 'Spin Slot 2', false, function(v)
     _G.Spin_Slot2 = v.Toggle
     while _G.Spin_Slot2 do task.wait(.001)
-        Spin(2)
+        Spin_2()
     end
 end)
 
