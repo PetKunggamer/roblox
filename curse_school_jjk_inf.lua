@@ -54,7 +54,7 @@ end
 
 local function tp(CF)
     local distance = (hrp.Position - CF.Position).Magnitude
-    local duration = distance / getgnev().Speed
+    local duration = distance / getgenv().Speed
     local tweenInfo = TweenInfo.new(
         duration, -- Duration based on distance and speed
         Enum.EasingStyle.Linear -- Linear easing for consistent speed
