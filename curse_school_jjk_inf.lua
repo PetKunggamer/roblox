@@ -78,6 +78,7 @@ local function Kill_Aura(target)
                     local mag = (hrp.Position - target.Position).magnitude
                     if hum and hum.Health > 0 and mag < 100 then
                         hum.Health = 0
+                        --[[
                         local args = {
                             [1] = 4,
                             [2] = {
@@ -86,6 +87,7 @@ local function Kill_Aura(target)
                         }
 
                         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
+                        ]]--
                     end
                 end
             end
