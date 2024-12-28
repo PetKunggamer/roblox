@@ -1,5 +1,3 @@
-getgenv().Speed = 400
-
 repeat task.wait() until game:IsLoaded()
 wait(10)
 if game.PlaceId == 16379684339 then
