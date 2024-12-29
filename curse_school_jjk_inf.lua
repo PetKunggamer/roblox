@@ -52,7 +52,7 @@ local function Rescue()
                             hrp.CFrame = CFrame.new(-4370, -325, 3574)
                         end
                         if getgenv().Dungeon == "Detention Center" then
-                            hrp.CFrame = CFrame.new(-2867, 135, 4303)
+                            hrp.CFrame = CFrame.new(-2864, 135, 4354)
                         end
                     end
                 end
