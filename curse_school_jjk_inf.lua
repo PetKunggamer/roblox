@@ -48,7 +48,12 @@ local function Rescue()
                         wait(.235)
                         fireproximityprompt(prox)
                         wait(.2)
-                        hrp.CFrame = CFrame.new(-4370, -325, 3574)
+                        if getgenv().Dungeon == "Cursed School" then
+                            hrp.CFrame = CFrame.new(-4370, -325, 3574)
+                        end
+                        if getgenv().Dungeon == "Detention Center" then
+                            hrp.CFrame = CFrame.new(-2867, 135, 4303)
+                        end
                     end
                 end
             end
@@ -182,12 +187,22 @@ end
 local function Skill()
     Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("Death Sentence")
 end
-Equip:InvokeServer("Luck Vial")
-Equip:InvokeServer("Wooden Beckoning Cat")
-Equip:InvokeServer("White Lotus")
 
 _G.A = not _G.A
 print(_G.A)
+if _G.A then
+    Equip:InvokeServer("Luck Vial")
+    Equip:InvokeServer("Wooden Beckoning Cat")
+    Equip:InvokeServer("White Lotus")
+end
+
+if game.PlaceId == 16379688837 then
+    local oldpos = hrp.CFrame
+    hrp.CFrame = CFrame.new(281, 386, 427)
+    wait(1)
+    hrp.CFrame = oldpos
+end
+
 while _G.A do task.wait()
         pcall(function()
         Get_Mob()
