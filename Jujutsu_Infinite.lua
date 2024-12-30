@@ -38,7 +38,7 @@ local Money = tonumber(Level*100)
 local GuiService = game:GetService('GuiService')
 local VirtualInputManager = game:GetService('VirtualInputManager')
 local RS = game:GetService("ReplicatedStorage")
-
+local Remotes = RS:WaitForChild("Remotes")
 
 
 
@@ -69,7 +69,7 @@ end
 
 local function Auto_Loot()
     local flip_button = game:GetService("Players").LocalPlayer.PlayerGui.Loot.Frame:FindFirstChild("Flip")
-Get_Loot()
+    Get_Loot()
     wait(.125)
     if flip_button.Visible then
         task.wait(.001)
@@ -137,7 +137,7 @@ local function Check_Level()
 end
 
 local function Find_Mob_Quest()
-    local Current_Level = tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Main.Frame.BottomLeft.Menu.TextLabel.Text)
+    local Current_Level = tonumber(hrp.Health.Level.Text:sub(6))
     local Level = tonumber(Current_Level + 1)
     local mob = nil
     for _, v in ipairs(workspace.Objects.Mobs:GetChildren()) do
@@ -183,11 +183,44 @@ local function Get_Quest()
             ["grade"] = Data.Grade
         }
     }
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("AcceptQuest"):InvokeServer(unpack(args))
+    Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("AcceptQuest"):InvokeServer(unpack(args))
+end
+
+local function Spoof_Quest()
+    local hrp = char:WaitForChild("HumanoidRootPart")
+    if not hrp then return end
+    local Health = hrp:FindFirstChild("Health")
+    if Health then
+        local Lv = Health:FindFirstChild("Level")
+        if Lv then
+            Lv.Text = "Lvl. 420"
+        end
+    end
+    local Money = 50000
+    local EXP = 8455000
+    local args = {
+    [1] = {
+        ["type"] = "Kill",
+        ["set"] = "Yuki Fortress Set",
+        ["rewards"] = {
+            ["essence"] = 2,
+            ["cash"] = Money,
+            ["exp"] = EXP,
+            ["chestMeter"] = 55
+        },
+        ["rewardsText"] = "$"..Money.."| "..EXP.." EXP",
+        ["difficulty"] = 2,
+        ["title"] = "Defeat",
+        ["level"] = 421,
+        ["subtitle"] = "a Curse User",
+        ["grade"] = "Non Sorcerer"
+    }
+}
+    Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("AcceptQuest"):InvokeServer(unpack(args))
 end
 
 local function Auto_Mission()
-    Get_Quest()
+    Spoof_Quest()
     wait(2)
     RS:WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skydive"):FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData:FindFirstChild("quest"))
     wait(2)
@@ -221,7 +254,7 @@ local function Auto_Claim_Chest()
     local args = {
         [1] = Data.Location
     }
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("ChestMeterReward"):FireServer(unpack(args))
+    Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("ChestMeterReward"):FireServer(unpack(args))
 end
 
 local function Promote()
@@ -230,7 +263,7 @@ local function Promote()
         [2] = "Promote"
     }
 
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Dialogue"):WaitForChild("GetResponse"):InvokeServer(unpack(args))
+    Remotes:WaitForChild("Server"):WaitForChild("Dialogue"):WaitForChild("GetResponse"):InvokeServer(unpack(args))
 end
 
 local function God_Mode()
@@ -256,7 +289,7 @@ local function Kill_Aura()
                             }
                         }
 
-                        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
+                        Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
                     end
                 end
             end
@@ -280,7 +313,7 @@ local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates
             local args = {
                 [1] = 1
             }
-            local response = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
             print(response)
             game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["1"].Frame.TextLabel.Text = Power_Slot.Value
             else
@@ -305,13 +338,68 @@ local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates
             local args = {
                 [1] = 2
             }
-            local response = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
             print(response)
             game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["2"].Frame.TextLabel.Text = Power_Slot.Value
             else
             game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["2"].Frame.TextLabel.Text = Power_Slot.Value
         end
     end
+end
+
+local function Spin_3()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("3")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 3
+            }
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["3"].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["3"].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
+local function Spin_4()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("4")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 4
+            }
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["4"].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["4"].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
+local function Unlock_Slot(bool)
+	game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["4"].GamepassLocked.Visible = not bool
+	game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["3"].GamepassLocked.Visible = not bool
 end
 
 --[[
@@ -391,20 +479,37 @@ local Kill_Aura = Farm.element('Toggle', 'Kill Aura', false, function(v)
 end)
 
 
-local Spin_Slot1: any = Spin.element('Toggle', 'Spin Slot 1', false, function(v)
+local Spin_Slot1 = Spin.element('Toggle', 'Spin Slot 1', false, function(v)
     _G.Spin_Slot1 = v.Toggle
     while _G.Spin_Slot1 do task.wait(.001)
         Spin_1()
     end
 end)
 
-local Spin_Slot2: any = Spin.element('Toggle', 'Spin Slot 2', false, function(v)
+local Spin_Slot2 = Spin.element('Toggle', 'Spin Slot 2', false, function(v)
     _G.Spin_Slot2 = v.Toggle
     while _G.Spin_Slot2 do task.wait(.001)
         Spin_2()
     end
 end)
 
+local Spin_Slot3 = Spin.element('Toggle', 'Spin Slot 3', false, function(v)
+    _G.Spin_Slot3 = v.Toggle
+    while _G.Spin_Slot3 do task.wait(.001)
+        Spin_3()
+    end
+end)
+
+local Spin_Slot4 = Spin.element('Toggle', 'Spin Slot 4', false, function(v)
+    _G.Spin_Slot4 = v.Toggle
+    while _G.Spin_Slot4 do task.wait(.001)
+        Spin_4()
+    end
+end)
+
+local Unlock_Slot = Spin.element('Toggle', 'Unlock Lock Slot', false, function(v)
+    Unlock_Slot(v.Toggle)
+end)
 --[[
 
     ███╗░░░███╗██╗░██████╗░█████╗░
@@ -445,6 +550,14 @@ local God_Mode = Misc.element('Toggle', 'Auto GodMode', false, function(v)
         God_Mode()
     end
 end)
+
+local NO_CD = Misc.element('Button', 'No cooldown', false, function()
+    Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("0 COOLDOWN FOR DEBUGGING")
+end) 
+
+
+
+
 
 
 --[[
