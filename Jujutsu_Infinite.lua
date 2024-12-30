@@ -70,9 +70,8 @@ end
 local function Auto_Loot()
     local flip_button = game:GetService("Players").LocalPlayer.PlayerGui.Loot.Frame:FindFirstChild("Flip")
     Get_Loot()
-    wait(.125)
     if flip_button.Visible then
-        task.wait(.001)
+        task.wait(.125)
         GuiService.SelectedCoreObject = flip_button
         VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
         VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
