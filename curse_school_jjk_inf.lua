@@ -1,116 +1,49 @@
-repeat task.wait() until game:IsLoaded()
-wait(10)
-if game.PlaceId == 16379684339 then
-local Players = game:GetService('Players')
-local lp = Players.LocalPlayer
-local char = lp.Character or lp.CharacterAdded:Wait()
-local hrp = char:WaitForChild('HumanoidRootPart')
+
+local A = game:GetService("CoreGui")
+local afk = game:GetService("CoreGui"):FindFirstChild("thisoneissocoldww")
+
+if A then
+    for i,v in ipairs(A:GetChildren()) do
+        if v.Name:find("unknown") then
+            v:Destroy()
+        end
+    end
+end
+
+if afk then
+    afk:Destroy()
+end
+
+--[[
+
+    ███████╗██╗░░░██╗███╗░░██╗░█████╗░████████╗██╗░█████╗░███╗░░██╗
+    ██╔════╝██║░░░██║████╗░██║██╔══██╗╚══██╔══╝██║██╔══██╗████╗░██║
+    █████╗░░██║░░░██║██╔██╗██║██║░░╚═╝░░░██║░░░██║██║░░██║██╔██╗██║
+    ██╔══╝░░██║░░░██║██║╚████║██║░░██╗░░░██║░░░██║██║░░██║██║╚████║
+    ██║░░░░░╚██████╔╝██║░╚███║╚█████╔╝░░░██║░░░██║╚█████╔╝██║░╚███║
+    ╚═╝░░░░░░╚═════╝░╚═╝░░╚══╝░╚════╝░░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝
+
+]]--
+
+
+
+
+
+local lp = game.Players.LocalPlayer
+local char = lp.Character
+local hrp = char:FindFirstChild("HumanoidRootPart")
+local Current_Level = tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Main.Frame.BottomLeft.Menu.TextLabel.Text)
+local Level = tonumber(Current_Level + 1)
+local EXP = tonumber((Level*Level) * 48)
+local Money = tonumber(Level*100)
+local GuiService = game:GetService('GuiService')
+local VirtualInputManager = game:GetService('VirtualInputManager')
 local RS = game:GetService("ReplicatedStorage")
 local Remotes = RS:WaitForChild("Remotes")
-local StorylineDialogueSkip = Remotes:WaitForChild("Client"):WaitForChild("StorylineDialogueSkip")
-local VirtualInputManager = game:GetService('VirtualInputManager')
-local GuiService = game:GetService('GuiService')
 local Equip = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("EquipItem")
 
-local function Get_Mob()
-    local dist, mob = math.huge, nil
-    for _, v in ipairs(workspace.Objects.Mobs:GetChildren()) do
-        if v:IsA("Model") then
-            local target = v:FindFirstChild("HumanoidRootPart")
-            local hum = v:FindFirstChild("Humanoid")
-            local death = v:FindFirstChild("DeathBall")
-            if target and hrp and hum and not death then
-                local mag = (hrp.Position - target.Position).Magnitude
-                if mag < dist then
-                    if target then
-                        dist = mag
-                        mob = v
-                        return mob
-                    end
-                end
-            end
-        end
-    end
-    return
-end
 
-local function Rescue()
-    local hrp = game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if hrp then
-        for i,v in ipairs(workspace.Objects.MissionItems:GetChildren()) do
-            if v:IsA("Model") then
-                local target = v:FindFirstChild("HumanoidRootPart")
-                if target then
-                    local prox = v:FindFirstChild("PickUp")
-                    if prox then
-                        wait(.125)
-                        hrp.CFrame = target.CFrame
-                        wait(.235)
-                        fireproximityprompt(prox)
-                        wait(.2)
-                        if getgenv().Dungeon == "Cursed School" then
-                            hrp.CFrame = CFrame.new(-4370, -325, 3574)
-                        end
-                        if getgenv().Dungeon == "Detention Center" then
-                            hrp.CFrame = CFrame.new(-2864, 135, 4354)
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
 
-local function tp(CF)
-    local distance = (hrp.Position - CF.Position).Magnitude
-    local duration = distance / getgenv().Speed
-    local tweenInfo = TweenInfo.new(
-        duration, -- Duration based on distance and speed
-        Enum.EasingStyle.Linear -- Linear easing for consistent speed
-    )
-
-    -- Add functionality for creating and playing a tween
-    local tweenService = game:GetService("TweenService")
-    local tween = tweenService:Create(hrp, tweenInfo, {CFrame = CF})
-    tween:Play()
-    tween.Completed:Wait()
-end
-
-local function Mission_Item()
-    local hrp = game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if hrp then
-        for i,v in ipairs(workspace.Objects.MissionItems:GetChildren()) do
-            if v:IsA("MeshPart") then
-                local prox = v:FindFirstChild("Collect")
-                if prox then
-                    hrp.CFrame = v.CFrame
-                    wait(.235)
-                    fireproximityprompt(prox)
-                end
-            end
-        end
-    end
-end
-
-local function Replay()
-    local Result = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Results")
-    local ReadyScreen = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("ReadyScreen")
-    if Result and Result.Enabled then
-        wait()
-        if ReadyScreen and ReadyScreen.Enabled then
-            local Frame = ReadyScreen:FindFirstChild("Frame")
-            if Frame then
-                local Replay_button = Frame:FindFirstChild("Replay")
-                if Replay_button then
-                    task.wait(.001)
-                    GuiService.SelectedCoreObject = Replay_button
-                    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-                    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-                end
-            end
-        end
-    end
-end
 
 local function Get_Loot()
     local hrp = game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -121,7 +54,7 @@ local function Get_Loot()
                 local Root = v:FindFirstChild("Root")
                 if Root then
                     local mag = (Root.Position - hrp.Position).magnitude
-                    if mag < 50 then
+                    if mag < 30 then
                         local proximity = v:FindFirstChild("Collect")
                         if proximity then
                             chest = proximity
@@ -138,23 +71,206 @@ end
 
 local function Auto_Loot()
     local flip_button = game:GetService("Players").LocalPlayer.PlayerGui.Loot.Frame:FindFirstChild("Flip")
-    wait(.125)
     Get_Loot()
     if flip_button.Visible then
-        task.wait(.001)
+        task.wait(.125)
         GuiService.SelectedCoreObject = flip_button
         VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
         VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
     end
 end
 
-local function Mugen()
-    local RS = game:GetService("ReplicatedStorage")
-    Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("Infinity: Mugen")
+local function Notify(title,text,dura)
+    game:GetService("StarterGui"):SetCore("SendNotification",{
+    Title = title,
+    Text = text, 
+    Duration = dura
+    })
+end
+
+local function AFK()
+    Notify('Syn0xz Hub', 'Anti afk loaded', 3)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk", true))()
+end
+
+local function low_fps(num)
+    if iswindowactive() then
+        setfpscap(1000) 
+    else 
+        setfpscap(num) 
+    end
+end
+
+local function Check_Level()
+    local Level = tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Main.Frame.BottomLeft.Menu.TextLabel.Text)
+    if Level == 1 or Level < 60 then
+        return {
+            Location = "Shijo Town Set",
+            Grade = "Non Sorcerer",
+            Essence = "2"
+        }
+    elseif Level > 59 and Level < 120 then
+        return {
+            Location = "Umi Village Set",
+            Grade = "Non Sorcerer",
+            Essence = "2"
+        }
+    elseif Level > 119 and Level < 180 then
+        return {
+            Location = "Numa Temple Set",
+            Grade = "Non Sorcerer",
+            Essence = "4"
+        }
+    elseif Level > 179 and Level < 240 then
+        return {
+            Location = "Kura Camp Set",
+            Grade = "Non Sorcerer",
+            Essence = "8"
+        }
+    elseif Level > 240 then
+        return {
+            Location = "Yuki Fortress Set",
+            Grade = "Non Sorcerer",
+            Essence = "12"
+        }
+    end
+    return
+end
+
+local function Find_Mob_Quest()
+    local Current_Level = tonumber(hrp.Health.Level.Text:sub(6))
+    local Level = tonumber(Current_Level + 1)
+    local mob = nil
+    for _, v in ipairs(workspace.Objects.Mobs:GetChildren()) do
+        if v:IsA("Model") then
+            local target = v:FindFirstChild("HumanoidRootPart")
+            if target then
+                local healthObj = target:FindFirstChild("Health")
+                if healthObj then
+                    local mob_level = healthObj:FindFirstChild("Level")
+                    if mob_level then
+                        if mob_level.Text:sub(6) == tostring(Level) then
+                            mob = target
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return mob
+end
+
+local function Get_Quest()
+    local Current_Level = tonumber(game:GetService("Players").LocalPlayer.PlayerGui.Main.Frame.BottomLeft.Menu.TextLabel.Text)
+    local Level = tonumber(Current_Level + 1)
+    local EXP = tonumber((Level*Level) * 48)
+    local Money = tonumber(Level*100)
+    local Data = Check_Level()
+    local args = {
+        [1] = {
+            ["type"] = "Kill",
+            ["set"] = Data.Location,
+            ["rewards"] = {
+                ["essence"] = tonumber(Data.Essence),
+                ["cash"] = Money,
+                ["exp"] = EXP,
+                ["chestMeter"] = 75
+            },
+            ["rewardsText"] = "$"..Money.."| "..EXP.." EXP",
+            ["difficulty"] = 10,
+            ["title"] = "Syn0xz ",
+            ["level"] = Level,
+            ["subtitle"] = "Hub",
+            ["grade"] = Data.Grade
+        }
+    }
+    Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("AcceptQuest"):InvokeServer(unpack(args))
+end
+
+local function Spoof_Quest()
+    local hrp = char:WaitForChild("HumanoidRootPart")
+    if not hrp then return end
+    local Health = hrp:FindFirstChild("Health")
+    if Health then
+        local Lv = Health:FindFirstChild("Level")
+        if Lv then
+            Lv.Text = "Lvl. 420"
+        end
+    end
+    local Money = 50000
+    local EXP = 8455000
+    local args = {
+    [1] = {
+        ["type"] = "Kill",
+        ["set"] = "Yuki Fortress Set",
+        ["rewards"] = {
+            ["essence"] = 2,
+            ["cash"] = Money,
+            ["exp"] = EXP,
+            ["chestMeter"] = 55
+        },
+        ["rewardsText"] = "$"..Money.."| "..EXP.." EXP",
+        ["difficulty"] = 2,
+        ["title"] = "Defeat",
+        ["level"] = 421,
+        ["subtitle"] = "a Curse User",
+        ["grade"] = "Non Sorcerer"
+    }
+}
+    Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("AcceptQuest"):InvokeServer(unpack(args))
+end
+
+local function Auto_Mission()
+    Spoof_Quest()
+    wait(2)
+    RS:WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skydive"):FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData:FindFirstChild("quest"))
+    wait(2)
+    if Find_Mob_Quest() then
+        game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Find_Mob_Quest().CFrame * CFrame.new(0,250,0)
+    end
+    wait(15)
+end
+
+local function Instant()
+    local hrp = game:GetService('Players').LocalPlayer.Character:WaitForChild("HumanoidRootPart")  -- Ensures the HumanoidRootPart exists
+    if hrp then
+        local mob, dist = math.huge
+        for _, v in ipairs(workspace.Objects.Mobs:GetChildren()) do
+            if v:IsA("Model") then
+                local target = v:FindFirstChild("HumanoidRootPart")
+                if target then
+                    local mag = (target.Position - hrp.Position).magnitude
+                    local hum = v:FindFirstChild("Humanoid")
+                    if hum and mag < 70 and hum.Health > 0 then
+                        hum.Health = 0  -- Set health to 0 instead of nil to "kill" the mob
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function Auto_Claim_Chest()
+    local Data = Check_Level()
+    local args = {
+        [1] = Data.Location
+    }
+    Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("ChestMeterReward"):FireServer(unpack(args))
+end
+
+local function Promote()
+    local args = {
+        [1] = "Clan Head Jujutsu High",
+        [2] = "Promote"
+    }
+
+    Remotes:WaitForChild("Server"):WaitForChild("Dialogue"):WaitForChild("GetResponse"):InvokeServer(unpack(args))
 end
 
 local function God_Mode()
-    Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("ReverseHeal"):InvokeServer(-100)
+    local RS = game:GetService("ReplicatedStorage")
+    RS:WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("Infinity: Mugen")
+    wait(5)
 end
 
 local function Kill_Aura()
@@ -166,9 +282,7 @@ local function Kill_Aura()
                 local hum = v:FindFirstChild("Humanoid")
                 if hum then
                     local mag = (hrp.Position - target.Position).magnitude
-                    if hum and mag < 125 then
-                        hum.Health = 0
-                        
+                    if mag < 70 then
                         local args = {
                             [1] = 4,
                             [2] = {
@@ -176,7 +290,7 @@ local function Kill_Aura()
                             }
                         }
 
-                        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
+                        Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("M1"):FireServer(unpack(args))
                     end
                 end
             end
@@ -184,63 +298,333 @@ local function Kill_Aura()
     end
 end
 
-local function Skill()
-    Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("Death Sentence")
-end
+local function Spin_1()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
 
-_G.A = not _G.A
-print(_G.A)
-if _G.A then
-    Equip:InvokeServer("Luck Vial")
-    Equip:InvokeServer("Wooden Beckoning Cat")
-    Equip:InvokeServer("White Lotus")
-end
-
-if game.PlaceId == 16379688837 then
-    local oldpos = hrp.CFrame
-    hrp.CFrame = CFrame.new(281, 386, 427)
-    wait(1)
-    hrp.CFrame = oldpos
-end
-
-while _G.A do task.wait()
-        pcall(function()
-        Get_Mob()
-        spawn(Skill)
-        StorylineDialogueSkip:FireServer()
-        spawn(Auto_Loot)
-        local Result = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Results")
-        local Mission_Item_Check = workspace.Objects.MissionItems
-            if Result and Result.Enabled then
-                Replay()
-            end
-            if Mission_Item_Check:FindFirstChild("CursedObject") then
-                Mission_Item()
-            elseif Mission_Item_Check:FindFirstChild("Civilian") then
-                Rescue()
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("1")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 1
+            }
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["1"].Frame.TextLabel.Text = Power_Slot.Value
             else
-                local mob = Get_Mob()
-                local target = Get_Mob():FindFirstChild("HumanoidRootPart")
-                if mob and target and Get_Mob().Name == "Finger Bearer" then
-	                hrp.CFrame = hrp.CFrame * CFrame.new(0,300,0)
-                    wait(.125)
-	                hrp.Anchored = true
-                    wait(15)
-                    hrp.Anchored = false
-                    wait(.125)
-                    hrp.CFrame = Get_Mob().HumanoidRootPart.CFrame * CFrame.new(0,15,0)
-                    wait(.25)
-                    Kill_Aura()
-                    wait(.25)
-                    hrp.CFrame = hrp.CFrame * CFrame.new(0,300,200)
-                    wait(.125)
-                else
-                    hrp.CFrame = Get_Mob().HumanoidRootPart.CFrame * CFrame.new(0,15,0)
-                    wait(.25)
-                    Kill_Aura()
-                    wait(.125)
-                end
-            end
-        end)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["1"].Frame.TextLabel.Text = Power_Slot.Value
+        end
     end
 end
+
+local function Spin_2()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("2")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 2
+            }
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["2"].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["2"].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
+local function Spin_3()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("3")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 3
+            }
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["3"].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["3"].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
+local function Spin_4()
+local List = {
+    "Infinity",
+    "Demon Vessel",
+    "Star Rage",
+    "Gambler Fever",
+    "Soul Manipulation",
+    "Cursed Queen"
+}
+
+local Power_Slot = game:GetService("Players").LocalPlayer.ReplicatedData.innates:FindFirstChild("4")
+    if Power_Slot then
+        if not table.find(List, Power_Slot.Value) then
+            local args = {
+                [1] = 4
+            }
+            local response = Remotes:WaitForChild("Server"):WaitForChild("Data"):WaitForChild("InnateSpin"):InvokeServer(unpack(args))
+            print(response)
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["4"].Frame.TextLabel.Text = Power_Slot.Value
+            else
+            game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["4"].Frame.TextLabel.Text = Power_Slot.Value
+        end
+    end
+end
+
+local function Unlock_Slot(bool)
+	game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["4"].GamepassLocked.Visible = not bool
+	game:GetService("Players").LocalPlayer.PlayerGui.Customization.Frame.List.Innates["3"].GamepassLocked.Visible = not bool
+end
+
+
+--[[
+
+    ██╗░░░██╗██╗      ███████╗░█████╗░███╗░░██╗███████╗
+    ██║░░░██║██║      ╚════██║██╔══██╗████╗░██║██╔════╝
+    ██║░░░██║██║      ░░███╔═╝██║░░██║██╔██╗██║█████╗░░
+    ██║░░░██║██║      ██╔══╝░░██║░░██║██║╚████║██╔══╝░░
+    ╚██████╔╝██║      ███████╗╚█████╔╝██║░╚███║███████╗
+    ░╚═════╝░╚═╝      ╚══════╝░╚════╝░╚═╝░░╚══╝╚══════╝
+
+]]--
+
+local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/cueshut/saves/main/criminality%20paste%20ui%20library'))()
+
+-- // Window \\ --
+local window = library.new('Syn0xz Hub', 'Syn0xz')
+
+-- // Tabs \\ --
+local tab = window.new_tab('rbxassetid://4483345998')
+
+-- // Sections \\ --
+local section = tab.new_section('- Main -')
+
+
+-- // Sector \\ --
+local Farm = section.new_sector('Farming', 'Left')
+local Spin = section.new_sector('Spin [Menu]', 'Left')
+local Boost = section.new_sector('Auto Boost', 'Left')
+local Misc = section.new_sector('Misc', 'Right')
+local TP = section.new_sector('Teleport', 'Right')
+local FPS = section.new_sector('Low FPS', 'Right')
+
+
+
+
+
+--[[
+
+    ███████╗██╗░░░░░███████╗███╗░░░███╗███████╗███╗░░██╗████████╗
+    ██╔════╝██║░░░░░██╔════╝████╗░████║██╔════╝████╗░██║╚══██╔══╝
+    █████╗░░██║░░░░░█████╗░░██╔████╔██║█████╗░░██╔██╗██║░░░██║░░░
+    ██╔══╝░░██║░░░░░██╔══╝░░██║╚██╔╝██║██╔══╝░░██║╚████║░░░██║░░░
+    ███████╗███████╗███████╗██║░╚═╝░██║███████╗██║░╚███║░░░██║░░░
+    ╚══════╝╚══════╝╚══════╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░
+]]--
+
+
+--[[
+
+    ███████╗░█████╗░██████╗░███╗░░░███╗
+    ██╔════╝██╔══██╗██╔══██╗████╗░████║
+    █████╗░░███████║██████╔╝██╔████╔██║
+    ██╔══╝░░██╔══██║██╔══██╗██║╚██╔╝██║
+    ██║░░░░░██║░░██║██║░░██║██║░╚═╝░██║
+    ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝
+]]--
+
+local Instant = Farm.element('Toggle', 'Auto Instant Mob (Leveling)', false, function(v)
+    _G.Instant = v.Toggle
+    while _G.Instant do task.wait(.001)
+        Instant()
+    end
+end)
+
+local Auto_Mission = Farm.element('Toggle', 'Auto Mission (Leveling)', false, function(v)
+    _G.Auto_Mission = v.Toggle
+    while _G.Auto_Mission do task.wait(.001)
+        Auto_Mission()
+    end
+end)
+
+local Kill_Aura = Farm.element('Toggle', 'Kill Aura', false, function(v)
+    _G.Kill_Aura = v.Toggle
+    while _G.Kill_Aura do task.wait(.001)
+        Kill_Aura()
+    end
+end)
+
+
+local Spin_Slot1 = Spin.element('Toggle', 'Spin Slot 1', false, function(v)
+    _G.Spin_Slot1 = v.Toggle
+    while _G.Spin_Slot1 do task.wait(.001)
+        Spin_1()
+    end
+end)
+
+local Spin_Slot2 = Spin.element('Toggle', 'Spin Slot 2', false, function(v)
+    _G.Spin_Slot2 = v.Toggle
+    while _G.Spin_Slot2 do task.wait(.001)
+        Spin_2()
+    end
+end)
+
+local Spin_Slot3 = Spin.element('Toggle', 'Spin Slot 3', false, function(v)
+    _G.Spin_Slot3 = v.Toggle
+    while _G.Spin_Slot3 do task.wait(.001)
+        Spin_3()
+    end
+end)
+
+local Spin_Slot4 = Spin.element('Toggle', 'Spin Slot 4', false, function(v)
+    _G.Spin_Slot4 = v.Toggle
+    while _G.Spin_Slot4 do task.wait(.001)
+        Spin_4()
+    end
+end)
+
+local Unlock_Slot = Spin.element('Toggle', 'Unlock Lock Slot', false, function(v)
+    Unlock_Slot(v.Toggle)
+end)
+
+
+local Lucky = Boost.element('Toggle', 'Auto Lucky Boost', false, function(v)
+    _G.Lucky = v.Toggle
+    while _G.Lucky do task.wait(10)
+        Equip:InvokeServer("Luck Vial")
+    end
+end)
+
+local WoodCat = Boost.element('Toggle', 'Auto Beckoning Cat', false, function(v)
+    _G.WoodCat = v.Toggle
+    while _G.WoodCat do task.wait(.25)
+        Equip:InvokeServer("Wooden Beckoning Cat")
+    end
+end)
+
+local White_Lotus = Boost.element('Toggle', 'Auto White Lotus', false, function(v)
+    _G.White_Lotus = v.Toggle
+    while _G.White_Lotus do task.wait(.25)
+        Equip:InvokeServer("White Lotus")
+    end
+end)
+--[[
+
+    ███╗░░░███╗██╗░██████╗░█████╗░
+    ████╗░████║██║██╔════╝██╔══██╗
+    ██╔████╔██║██║╚█████╗░██║░░╚═╝
+    ██║╚██╔╝██║██║░╚═══██╗██║░░██╗
+    ██║░╚═╝░██║██║██████╔╝╚█████╔╝
+    ╚═╝░░░░░╚═╝╚═╝╚═════╝░░╚════╝░
+]]--
+
+
+
+local Auto_Claim_Chest = Misc.element('Toggle', 'Auto Claim Chest', false, function(v)
+    _G.Auto_Claim_Chest = v.Toggle
+    while _G.Auto_Claim_Chest do task.wait(.001)
+        Auto_Claim_Chest()
+    end
+end)
+
+
+local Auto_Loot = Misc.element('Toggle', 'Auto Loot', false, function(v)
+    _G.Auto_Loot = v.Toggle
+    while _G.Auto_Loot do task.wait(.001)
+        Auto_Loot()
+    end
+end)
+
+local Promote = Misc.element('Toggle', 'Auto Promote', false, function(v)
+    _G.Promote = v.Toggle
+    while _G.Promote do task.wait(.001)
+        Promote()
+    end
+end)
+
+local God_Mode = Misc.element('Toggle', 'Auto GodMode', false, function(v)
+    _G.God_Mode = v.Toggle
+    while _G.God_Mode do task.wait(.001)
+        God_Mode()
+    end
+end)
+
+local NO_CD = Misc.element('Button', 'No cooldown', false, function()
+    Remotes:WaitForChild("Server"):WaitForChild("Combat"):WaitForChild("Skill"):FireServer("0 COOLDOWN FOR DEBUGGING")
+end) 
+
+
+
+
+
+
+--[[
+
+    ████████╗███████╗██╗░░░░░███████╗██████╗░░█████╗░██████╗░████████╗
+    ╚══██╔══╝██╔════╝██║░░░░░██╔════╝██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝
+    ░░░██║░░░█████╗░░██║░░░░░█████╗░░██████╔╝██║░░██║██████╔╝░░░██║░░░
+    ░░░██║░░░██╔══╝░░██║░░░░░██╔══╝░░██╔═══╝░██║░░██║██╔══██╗░░░██║░░░
+    ░░░██║░░░███████╗███████╗███████╗██║░░░░░╚█████╔╝██║░░██║░░░██║░░░
+    ░░░╚═╝░░░╚══════╝╚══════╝╚══════╝╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░
+]]--
+
+
+local Shop = TP.element('Button', 'Teleport to Lobby', false, function()
+    game:GetService('Players').LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(-405, 4480, -15612)
+end) 
+
+--[[
+
+    ███████╗██████╗░░██████╗  ░█████╗░░█████╗░███╗░░██╗████████╗██████╗░░█████╗░██╗░░░░░
+    ██╔════╝██╔══██╗██╔════╝  ██╔══██╗██╔══██╗████╗░██║╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░
+    █████╗░░██████╔╝╚█████╗░  ██║░░╚═╝██║░░██║██╔██╗██║░░░██║░░░██████╔╝██║░░██║██║░░░░░
+    ██╔══╝░░██╔═══╝░░╚═══██╗  ██║░░██╗██║░░██║██║╚████║░░░██║░░░██╔══██╗██║░░██║██║░░░░░
+    ██║░░░░░██║░░░░░██████╔╝  ╚█████╔╝╚█████╔╝██║░╚███║░░░██║░░░██║░░██║╚█████╔╝███████╗
+    ╚═╝░░░░░╚═╝░░░░░╚═════╝░  ░╚════╝░░╚════╝░╚═╝░░╚══╝░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚══════╝
+]]--
+
+
+local FPS_12 = FPS.element('Toggle', 'FPS 12', false, function(v)
+    _G.FPS_12 = v.Toggle
+    while _G.FPS_12 do task.wait()
+        low_fps(12)
+    end
+end)
+
+local FPS_24 = FPS.element('Toggle', 'FPS 24', false, function(v)
+    _G.FPS_24 = v.Toggle
+    while _G.FPS_24 do task.wait()
+        low_fps(24)
+    end
+end)
+
+
+Notify('Syn0xz Hub', 'Hub is loaded', 3)
+AFK()
