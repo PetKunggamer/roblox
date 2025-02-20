@@ -48,7 +48,14 @@ end
 if placeId == 89438510123061 then
     AS = true
 end
+if placeId == 15866483817 then
+    JJK_Odyssey = true
+end
 
+if JJK_Odyssey then
+	repeat wait() until game:IsLoaded()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/Jujutsu_Infinite.lua"))()  -- 20/2/2025
+end
 
 if JJK_INF then
 	repeat wait() until game:IsLoaded()
