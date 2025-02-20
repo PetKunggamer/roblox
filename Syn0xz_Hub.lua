@@ -54,7 +54,7 @@ end
 
 if JJK_Odyssey then
 	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/Jujutsu_Infinite.lua"))()  -- 20/2/2025
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/JJK_Odyssey.lua"))()  -- 20/2/2025
 end
 
 if JJK_INF then
