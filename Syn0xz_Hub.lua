@@ -1,155 +1,60 @@
 local placeId = game.PlaceId
 
-if placeId == 8540168650 then
-    SUR = true
-end
-if placeId == 6667701234 then
-    FX = true
-end
-if placeId == 9136292138 then
-    GP = true
-end
-if placeId == 6969185078 then
-    EA = true
-end
-if placeId == 9530846958 then
-    EL2 = true
-end
-if placeId == 9516847915 then
-    FPirate = true
-end
-if placeId == 6152116144 then
-    PSlayer = true
-end
-if placeId == 6147702473 then
-    LBA = true
-end
-if placeId == 9417197334 then
-    Anime_story = true
-end
-if placeId == 6735572261 then
-    PG = true
-end
-if placeId == 14069122388 or placeId == 14069678431 then
-    Type_Soul = true
-end
-if placeId == 7390824960 then
-    FF = true
-end
-if placeId == 16139895491 then
-    Project_xl = true
-end
-if placeId == 6897167394 then
-    Demon_Piece = true
-end
-if placeId == 16474126979 then
-    AF = true
-end
-if placeId == 89438510123061 then
-    AS = true
-end
-if placeId == 15866483817 then
-    JJK_Odyssey = true
+local places = {
+    [8540168650] = "SUR",
+    [6667701234] = "FX",
+    [9136292138] = "GP",
+    [6969185078] = "EA",
+    [9530846958] = "EL2",
+    [9516847915] = "FPirate",
+    [6152116144] = "PSlayer",
+    [6147702473] = "LBA",
+    [9417197334] = "Anime_story",
+    [6735572261] = "PG",
+    [14069122388] = "Type_Soul",
+    [14069678431] = "Type_Soul",
+    [7390824960] = "FF",
+    [16139895491] = "Project_xl",
+    [6897167394] = "Demon_Piece",
+    [16474126979] = "AF",
+    [89438510123061] = "AS",
+    [15866483817] = "JJK_Odyssey",
+}
+
+local scripts = {
+    JJK_Odyssey = "JJK_Odyssey.lua",
+    JJK_INF = "Jujutsu_Infinite.lua",
+    AS = "Anime_Shadow_Hub.lua",
+    AF = "AF.lua",
+    Demon_Piece = "Demon_piece_hub.lua",
+    Project_xl = "project_xl_.lua",
+    FF = "FF.lua",
+    Type_Soul = "Type_Soul.lua",
+    PG = "PG.lua",
+    Anime_story = "Anime_Story.lua",
+    LBA = "LBA.lua",
+    PSlayer = "PSlayer.lua",
+    FPirate = "FPirate.lua",
+    EL2 = "EL2.lua",
+    EA = "Elemental_Awakening.lua",
+    SUR = "StandUpRight_Gui.lua",
+    FX = "Fate_Xero.lua",
+    GP = "Grand_Pirates.lua",
+}
+
+local scriptName = places[placeId]
+
+if scriptName then
+    repeat wait() until game:IsLoaded()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/" .. scripts[scriptName]))() -- Script for current placeId
 end
 
-if JJK_Odyssey then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/JJK_Odyssey.lua"))()  -- 20/2/2025
-end
-
-if JJK_INF then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/Jujutsu_Infinite.lua"))()  -- 28/4/2024
-end
-
-if AS then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/refs/heads/main/Anime_Shadow_Hub.lua"))()  -- 28/4/2024
-end
-	
-if AF then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/AF.lua"))()  -- 28/4/2024
-end
-
-if Demon_Piece then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Demon_piece_hub.lua"))()  -- 28/4/2024
-end
-
-if Project_xl then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/project_xl_.lua"))()  -- 3/3/2024
-end
-
-if FF then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FF.lua"))() -- Outdate
-end
-
-if Type_Soul then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Type_Soul.lua"))() -- Outdate
-end
-
-if PG then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PG.lua"))() -- Outdate
-end
-
-if Anime_story then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Anime_Story.lua"))() -- Outdate
-end
-
-if LBA then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/LBA.lua"))() -- Outdate
-end
-
-if PSlayer then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/PSlayer.lua"))() -- Outdate
-end
-
-if FPirate then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/FPirate.lua"))() -- Outdate
-end
-
-if EL2 then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/EL2.lua"))() -- Outdate
-end
-
-if EA then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Elemental_Awakening.lua"))() -- Outdate
-end
-
-if SUR then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/StandUpRight_Gui.lua"))() -- ขี้เกียจทำละ hehe boi
-end
-
-if FX then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PetKunggamer/roblox/main/Fate_Xero.lua"))() -- Outdate
-end
-    
-
-if GP then
-	repeat wait() until game:IsLoaded()
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/PetKunggamer/roblox/main/Grand_Pirates.lua'))() -- ขี้เกียจทำล้า hehe boi
-end
-
-
-
---anti afk kick
+-- Anti-AFK
 local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function()
-   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-   wait(1)
-   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
 end)
-print("Anti Kick : Enabled")
+
+print("Anti Kick: Enabled")
