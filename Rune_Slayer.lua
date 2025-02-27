@@ -1,3 +1,18 @@
+-- Wait for the game to load
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+-- Wait for LocalPlayer's HumanoidRootPart
+local player = game:GetService("Players").LocalPlayer
+repeat
+    wait()
+until player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+
+print("Game and HumanoidRootPart are loaded!")
+
+if not (game.PlaceId == 99995671928896) then return end
+
 local A = game:GetService("CoreGui")
 local afk = game:GetService("CoreGui"):FindFirstChild("thisoneissocoldww")
 
@@ -148,7 +163,7 @@ local function UpdateESP()
         local hum = v:FindFirstChild("Humanoid")
         local rootPart = v:FindFirstChild("HumanoidRootPart")
         local Boolvalue = v:FindFirstChild("BoolValues")
-        if hum and rootPart and Boolvalue then
+        if root and hum and rootPart and Boolvalue then
             local ESP = rootPart:FindFirstChild("ESP")
             local Posture = Boolvalue:FindFirstChild("Posture")
             local distance = (root.Position - rootPart.Position).Magnitude
@@ -189,10 +204,9 @@ local function Instant()
                 if target and root and hum and ((hum.Health / hum.MaxHealth) * 100) < 90 and not master then
                     local mag = (root.Position - target.Position).magnitude
                     if mag < 100 then
-                        --if isnetworkowner(target) then
+                        if isnetworkowner(target) then
                             hum.Health = -math.huge
-                            --Void(target)
-                        -- end
+                        end
                     end
                 end
             end
@@ -485,13 +499,6 @@ end)
 
 local BypassTP = Misc.element('Button', 'Sleep', false, function()
     Sleep()
-end)
-
-local God_Mode = Misc.element('Toggle', 'God Mode', false, function(v)
-    _G.God_Mode = v.Toggle
-    while _G.God_Mode do task.wait(0.01)
-        Remote("Roll")
-    end
 end)
 
 local Instant = Misc.element('Toggle', 'Instant Kill', false, function(v)
