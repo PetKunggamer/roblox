@@ -204,9 +204,9 @@ local function Instant()
                 if target and root and hum and ((hum.Health / hum.MaxHealth) * 100) < 90 and not master then
                     local mag = (root.Position - target.Position).magnitude
                     if mag < 100 then
-                        if isnetworkowner(target) then
+                        --if isnetworkowner(target) then
                             hum.Health = -math.huge
-                        end
+                        --end
                     end
                 end
             end
@@ -414,6 +414,32 @@ local function AutoBoss(msg)
     end
 end
 
+local function Server_hop()
+    local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+    local PlaceId, JobId = game.PlaceId, game.JobId
+    local Players = game.Players
+    local HttpService = cloneref(game:GetService("HttpService"))
+    local TeleportService = cloneref(game:GetService('TeleportService'))
+    -- thanks to NoobSploit for fixing
+    if httprequest then
+        local servers = {}
+        local req = httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true", PlaceId)})
+        local body = HttpService:JSONDecode(req.Body)
+
+        if body and body.data then
+            for i, v in next, body.data do
+                if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= JobId then
+                    table.insert(servers, 1, v.id)
+                end
+            end
+        end
+
+        if #servers > 0 then
+            TeleportService:TeleportToPlaceInstance(PlaceId, servers[math.random(1, #servers)], Players.LocalPlayer)
+        end
+    end
+end
+
 
 --[[
 
@@ -444,6 +470,7 @@ local section = tab.new_section('- Main -')
 -- // Sector \\ --
 local Farm = section.new_sector('Farming', 'Left')
 local Misc = section.new_sector('Misc', 'Left')
+local Server_Hop = section.new_sector('Server Hop', 'Right')
 local TP = section.new_sector('Teleport', 'Right')
 
 
@@ -522,6 +549,10 @@ local Health = Misc.element('Toggle', 'Show Health', false, function(v)
         UpdateESP()
     end
 end)
+
+local ServerHop = Server_Hop.element('Button', 'Server Hop', false, function()
+    Server_hop()
+end) 
 
 local Bahlgar = TP.element('Button', 'Bahlgar', false, function()
     TO_CFrame(CFrame.new(-899, 260, -1007))
