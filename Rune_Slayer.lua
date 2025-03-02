@@ -184,7 +184,7 @@ local function Void(part)
     if not part:FindFirstChild("Void") then
         local void = Instance.new("BodyPosition")
         void.MaxForce = Vector3.new(0,1e9,0)
-        void.Position = Vector3.new(0,-10000,0)
+        void.Position = Vector3.new(0,-300,0)
         void.Name = "Void"
         void.Parent = part
     end
@@ -204,9 +204,10 @@ local function Instant()
                 if target and root and hum and ((hum.Health / hum.MaxHealth) * 100) < 90 and not master then
                     local mag = (root.Position - target.Position).magnitude
                     if mag < 100 then
-                        --if isnetworkowner(target) then
-                            hum.Health = -math.huge
-                        --end
+                        hum.Health = -math.huge
+                        if isnetworkowner(target) then
+                            Void(target)
+                        end
                     end
                 end
             end
@@ -552,6 +553,14 @@ end)
 
 local ServerHop = Server_Hop.element('Button', 'Server Hop', false, function()
     Server_hop()
+end) 
+
+local Feind = TP.element('Button', 'Feind', false, function()
+    TO_CFrame(CFrame.new(-490, -48, -112))
+end) 
+
+local Basilik = TP.element('Button', 'Basilik', false, function()
+    TO_CFrame(CFrame.new(2626, 231, -1652))
 end) 
 
 local Bahlgar = TP.element('Button', 'Bahlgar', false, function()
