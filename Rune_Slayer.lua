@@ -76,14 +76,42 @@ end
 
 local function BypassTP()
     local ColosseumEntrance = workspace.InvisibleParts.ColosseumEntrance
-    local root = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    
     if root then
         local oldpos = root.CFrame
-        fireproximityprompt(ColosseumEntrance.InteractPrompt)
-        wait(.25)
-        root.CFrame = oldpos
+        
+        -- Check if NoFall exists
+        local NoFall = char:FindFirstChild("NoFall")
+        
+        -- If NoFall is not found, proceed with the loop
+        if not NoFall then
+            local timeout = tick() + 10  -- Timeout after 10 seconds to avoid infinite loop
+            repeat
+                fireproximityprompt(ColosseumEntrance.InteractPrompt)
+                task.wait()  -- Wait for 1 second before the next check
+                
+                -- Re-check if NoFall appears or if the timeout is reached
+                NoFall = char:FindFirstChild("NoFall")
+                
+                if tick() > timeout then
+                    warn("Timeout reached, NoFall was not found.")
+                    break
+                end
+            until NoFall
+            
+            -- If NoFall is found, reset position
+            if NoFall then
+                root.CFrame = oldpos
+            end
+        end
+    else
+        warn("HumanoidRootPart not found.")
     end
 end
+
 
 local function TO_CFrame(CFrame)
     local root = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
