@@ -221,7 +221,7 @@ local function No_Stun()
     local blacklist = 
     {'CantRoll','IsRolling','CantRun','ActionSignal','CanFeint','M1CoolDown','Swinging',
     'UsingAbility','ParrySignal','SetRagdoll','RollCD','Stun','FeintCD','Ragdolled','StopAutoRotate',
-    'FootPrintCD','','RagDolled','CheckingDebris','RunningAttackCD',
+    'FootPrintCD','','RagDolled','CheckingDebris','RunningAttackCD','Dodge',
     'ChargingAttack','CustomShiftLock','SkillActivated','Sliding','TeleportCD'
     }
     for i,v in ipairs(char:GetChildren()) do
@@ -441,6 +441,83 @@ local function Server_hop()
     end
 end
 
+local function NoFog()
+    local Lighting = game:GetService("Lighting")
+    local Atmosphere = Lighting:FindFirstChild('Atmosphere')
+    Lighting.TimeOfDay = 14
+    Lighting.Brightness = 2
+    Lighting.GlobalShadows = false
+    Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+    Lighting.FogStart = 1e9
+    Lighting.FogEnd = 1e9
+    if Atmosphere then
+        Atmosphere:Destroy()
+    end
+end
+
+local function Get_NearMob()
+    local dist, mob = math.huge,nil
+    for i,v in ipairs(game:GetService('Workspace').Alive:GetChildren()) do
+        if v:IsA("Model") and v.Name ~= game.Players.LocalPlayer.Character.Name then
+            local root = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            local target = v:FindFirstChild("HumanoidRootPart")
+            local hum = v:FindFirstChild("Humanoid")
+            local Species = v:FindFirstChild("Species") 
+            if target and root and Species.Value ~= v and hum and hum.Health > 0 then
+                local mag = (target.Position - root.Position).magnitude
+                if mag < _G.Attach_Distance then
+                    dist = mag
+                    mob = target
+                end
+            end
+        end
+    end
+    return mob
+end
+
+local function Attach_Mob()
+    local mob = Get_NearMob()
+    if mob then
+        local root = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if root then
+            root.CFrame = mob.CFrame * CFrame.new(0,_G.Height or 3,_G.Distance or 8) * CFrame.Angles(_G.Angle or 0, 0, 0)
+            root.Velocity = Vector3.zero
+        end
+    end
+end
+
+local function Get_NearPlr()
+    local dist, mob = math.huge,nil
+    for i,v in ipairs(game:GetService('Workspace').Alive:GetChildren()) do
+        if v:IsA("Model") and v.Name ~= game.Players.LocalPlayer.Character.Name then
+            local root = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            local target = v:FindFirstChild("HumanoidRootPart")
+            local hum = v:FindFirstChild("Humanoid")
+            local Species = v:FindFirstChild("Species") 
+            if target and root and Species.Value == v.Name and hum and hum.Health > 0 then
+                local mag = (target.Position - root.Position).magnitude
+                if mag < _G.Alert_Dist then
+                    dist = mag
+                    Notify(v.Name.." "..math.floor(dist).." Stud")
+                    wait(1)
+                end
+            end
+        end
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 --[[
 
@@ -466,16 +543,19 @@ local tab = window.new_tab('rbxassetid://4483345998')
 
 -- // Sections \\ --
 local section = tab.new_section('- Main -')
-
+local section2 = tab.new_section('- Teleport -')
 
 -- // Sector \\ --
 local Farm = section.new_sector('Farming', 'Left')
-local Misc = section.new_sector('Misc', 'Left')
+local Boss_Farm = section.new_sector('Boss Farming', 'Right')
+local Misc = section.new_sector('Misc', 'Right')
+local Uchiha = section.new_sector('Uchiha Function', 'Left')
 local Server_Hop = section.new_sector('Server Hop', 'Right')
-local TP = section.new_sector('Teleport', 'Right')
+local Near_Player = section.new_sector('Alert Players', 'Left')
 
 
-
+-- // Sector 2 \\ --
+local TP = section2.new_sector('Teleport', 'Left')
 
 
 --[[
@@ -499,25 +579,48 @@ local TP = section.new_sector('Teleport', 'Right')
     ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝
 ]]--
 
+local dist = Farm.element('Slider', 'Distance', {default = {min = 0, max = 30, default = 8}}, function(v)
+   _G.Distance = v.Slider
+end)
 
-local Lycan = Farm.element('Toggle', 'Auto BOSS (Lycan)', false, function(v)
+local hight = Farm.element('Slider', 'Height', {default = {min = 0, max = 30, default = 3}}, function(v)
+   _G.Height = v.Slider
+end)
+
+local angle = Farm.element('Slider', 'Angle', {default = {min = 0, max = 360, default = 0}}, function(v)
+   _G.Angle = v.Slider
+end)
+
+local attach_dist = Farm.element('Slider', 'Attach Mob Distance', {default = {min = 0, max = 100, default = 0}}, function(v)
+   _G.Attach_Distance = v.Slider
+end)
+
+local Attach_Mob = Farm.element('Toggle', 'Attach Mob', false, function(v)
+    _G.Attach_Mob = v.Toggle
+    while _G.Attach_Mob do task.wait()
+        Attach_Mob()
+    end
+end)
+
+local AutoHit = Farm.element('Toggle', 'Auto Attack', false, function(v)
+    _G.AutoHit = v.Toggle
+    while _G.AutoHit do task.wait()
+        Remote("Button1Down")
+        Remote("Button1Up")
+    end
+end)
+
+local Lycan = Boss_Farm.element('Toggle', 'Auto BOSS (Lycan)', false, function(v)
     _G.Lycan = v.Toggle
     while _G.Lycan do task.wait()
         AutoBoss("Challenge The Champion Of The Colosseum, Lycanthar.")
     end
 end)
 
-local Boss = Farm.element('Toggle', 'Auto BOSS (Drogar)', false, function(v)
+local Boss = Boss_Farm.element('Toggle', 'Auto BOSS (Drogar)', false, function(v)
     _G.Drogar = v.Toggle
     while _G.Drogar do task.wait()
         AutoBoss("Challenge The Demon Claw, Drogar.")
-    end
-end)
-
-local Respawn = Farm.element('Toggle', 'Auto Respawn', false, function(v)
-    _G.Respawn = v.Toggle
-    while _G.Respawn do task.wait(1)
-        Respawn()
     end
 end)
 
@@ -543,7 +646,14 @@ local No_Stun = Misc.element('Toggle', 'No Stun', false, function(v)
     end
 end)
 
-local Health = Misc.element('Toggle', 'Show Health', false, function(v)
+local Respawn = Misc.element('Toggle', 'Auto Respawn', false, function(v)
+    _G.Respawn = v.Toggle
+    while _G.Respawn do task.wait(1)
+        Respawn()
+    end
+end)
+
+local Health = Uchiha.element('Toggle', 'Show Health', false, function(v)
     _G.ESP = v.Toggle
     while _G.ESP do task.wait(0.01)
         Put()
@@ -551,9 +661,44 @@ local Health = Misc.element('Toggle', 'Show Health', false, function(v)
     end
 end)
 
+local NoFog = Uchiha.element('Toggle', 'No Fog & Fullbright', false, function(v)
+    _G.NoFog = v.Toggle
+    while _G.NoFog do task.wait(0.01)
+        NoFog()
+    end
+end)
+
 local ServerHop = Server_Hop.element('Button', 'Server Hop', false, function()
     Server_hop()
 end) 
+
+local alert_dist = Near_Player.element('Slider', 'Alert Distance', {default = {min = 0, max = 1000, default = 300}}, function(v)
+   _G.Alert_Dist = v.Slider
+end)
+
+local Alert_Nearst = Near_Player.element('Toggle', 'Alert Nearst Player', false, function(v)
+    _G.Alert_Nearst = v.Toggle
+    while _G.Alert_Nearst do task.wait(0.01)
+        Get_NearPlr()
+    end
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 local Feind = TP.element('Button', 'Feind', false, function()
     TO_CFrame(CFrame.new(-490, -48, -112))
@@ -582,6 +727,8 @@ end)
 local Wildness = TP.element('Button', 'Spider Cave', false, function()
     TO_CFrame(CFrame.new(2043, -434, -335))
 end) 
+
+
 
 
 Notify('Hub is loaded')
