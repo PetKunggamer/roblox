@@ -619,7 +619,7 @@ local function Farm_Mob(Name,Safe_Spot)
                 if root then
                     local mag = (target.Position - root.Position).magnitude
                     if mag < 100 then
-                        root.CFrame = target.CFrame * CFrame.new(0,2,15)
+                        root.CFrame = target.CFrame * CFrame.new(0,_G.Height or 2,_G.Distance or 15)
                         root.Velocity = Vector3.zero
                     else
                         TO_CFrame(target.CFrame)
