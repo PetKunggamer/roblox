@@ -249,7 +249,7 @@ local function No_Stun()
     local blacklist = 
     {'CantRoll','IsRolling','CantRun','ActionSignal','CanFeint','M1CoolDown','Swinging',
     'UsingAbility','ParrySignal','SetRagdoll','RollCD','Stun','FeintCD','Ragdolled','StopAutoRotate',
-    'FootPrintCD','','RagDolled','CheckingDebris','RunningAttackCD','Dodge',
+    'FootPrintCD','','RagDolled','CheckingDebris','RunningAttackCD','Dodge','Deafening',
     'ChargingAttack','CustomShiftLock','SkillActivated','Sliding','TeleportCD'
     }
     for i,v in ipairs(char:GetChildren()) do
@@ -341,8 +341,11 @@ end
 
 
 local function Respawn()
+    local lp = game.Players.LocalPlayer
+    local char = lp.Character or lp.CharacterAdded:Wait()
     local GuiService = game:GetService('GuiService')
     local VirtualInputManager = game:GetService('VirtualInputManager')
+    local hum = char:FindFirstChild('Humanoid')
     for i,v in ipairs(game:GetService("Players").LocalPlayer.PlayerGui.InfoOverlays:GetChildren()) do
         if v:IsA("ImageLabel") then
             local MF = v:FindFirstChild("MainFrame")
@@ -351,10 +354,12 @@ local function Respawn()
                 if BF then
                     local Confirm = BF:FindFirstChild("ConfirmButton")
                     if Confirm then
-                        task.wait(.125)
-                        GuiService.SelectedCoreObject = Confirm
-                        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-                        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                        if hum and hum.Health == 0 then
+                            task.wait(.125)
+                            GuiService.SelectedCoreObject = Confirm
+                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                        end
                     end
                 end
             end
@@ -417,7 +422,7 @@ local function AutoBoss(msg)
                     local target = boss:FindFirstChild("HumanoidRootPart")
                     if target then
                         Equip()
-                        root.CFrame = target.CFrame * CFrame.new(0,5,8)
+                        root.CFrame = target.CFrame * CFrame.new(0,_G.Height or 5,_G.Distance or 8) * CFrame.Angles(_G.Angle or 0, 0, 0)
                         root.Velocity = Vector3.zero
                         Remote("Button1Down")
                         task.wait(.01)
@@ -436,7 +441,7 @@ local function AutoBoss(msg)
         end
     else
         root.CFrame = root.CFrame * CFrame.new(0,-100,0)
-        task.wait(.1)
+        task.wait()
         hum.Health = 0
         _G.Drogar = false
         _G.Lycan = false
@@ -534,11 +539,103 @@ local function Get_NearPlr()
     end
 end
 
+local function Noclip()
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character
+    if not char then return end
+    for _, v in ipairs(char:GetChildren()) do
+        if v:IsA("Part") and v.CanCollide then
+            v.CanCollide = false
+            task.wait()
+        end
+    end
+end
 
+local function Hit()
+    Remote("Button1Down")
+    Remote("Button1Up")
+end
 
+local function moveCharacterBySteps(targetCFrame, stepDistance)
+    Noclip()
+    local plr = game.Players.LocalPlayer
+    local chr = plr.Character or plr.CharacterAdded:Wait()
+    local root = chr and chr:FindFirstChild("HumanoidRootPart")
+    
+    if not root then
+        warn("HumanoidRootPart not found.")
+        return
+    end
+    
+    local currentCFrame = root.CFrame
+    local direction = (targetCFrame.Position - currentCFrame.Position).unit
+    local targetPosition = targetCFrame.Position
+    while (currentCFrame.Position - targetPosition).Magnitude > stepDistance do
+        Noclip()
+        currentCFrame = currentCFrame + direction * stepDistance
+        root.CFrame = currentCFrame  -- Move the player smoothly
+        root.Velocity = Vector3.zero
+        task.wait(.01)  -- Adjust for speed control
+    end
+    if (root.Position - targetPosition).Magnitude <= stepDistance then -- Prevent Teleport When Not Close To Target Position
+        Noclip()
+        root.CFrame = targetCFrame  -- Ensure exact final position
+    end
+end
 
+local function GetMob_(Name)
+    local lp = game.Players.LocalPlayer
+    local char = lp.Character or lp.CharacterAdded:Wait()
+    local root = char:WaitForChild("HumanoidRootPart")
+    local mob, _target = nil,nil
+    for i, v in ipairs(workspace.Alive:GetChildren()) do
+        if v:IsA("Model") and v.Name:find(Name) then
+            local target = v:FindFirstChild("HumanoidRootPart")
+            local master = v:FindFirstChild("Master")
+            if target and root and not master then
+                mob = v
+                _target = target
+            end
+        end
+    end
+    return mob,_target
+end
 
-
+local function Farm_Mob(Name,Safe_Spot)
+    local Name = Name
+    local lp = game.Players.LocalPlayer
+    local char = lp.Character or lp.CharacterAdded:Wait()
+    local root = char:WaitForChild("HumanoidRootPart")
+    local BoolValues = char:FindFirstChild('BoolValues')
+    local mob, target = GetMob_(Name..".")
+    local Boss = false
+    task.spawn(Noclip)
+    if BoolValues then
+        local CT = BoolValues:FindFirstChild('CombatTag')
+        if CT then
+            if mob and target and not GetPlayer(300) then
+                Equip()
+                Hit()
+                if root then
+                    local mag = (target.Position - root.Position).magnitude
+                    if mag < 100 then
+                        root.CFrame = target.CFrame * CFrame.new(0,2,15)
+                        root.Velocity = Vector3.zero
+                    else
+                        TO_CFrame(target.CFrame)
+                    end
+                end
+            else
+                local mag = (root.Position - Safe_Spot.Position).magnitude
+                if mag < 300 then
+                    moveCharacterBySteps(Safe_Spot,4)
+                else
+                    TO_CFrame(Safe_Spot)
+                end
+            end
+        end
+    end
+end
 
 
 
@@ -580,6 +677,7 @@ local Misc = section.new_sector('Misc', 'Right')
 local Uchiha = section.new_sector('Uchiha Function', 'Left')
 local Server_Hop = section.new_sector('Server Hop', 'Right')
 local Near_Player = section.new_sector('Alert Players', 'Left')
+local Auto_Mob = section.new_sector('Auto Farming Mob', 'Right')
 
 
 -- // Sector 2 \\ --
@@ -611,7 +709,7 @@ local dist = Farm.element('Slider', 'Distance', {default = {min = 0, max = 30, d
    _G.Distance = v.Slider
 end)
 
-local hight = Farm.element('Slider', 'Height', {default = {min = 0, max = 30, default = 3}}, function(v)
+local hight = Farm.element('Slider', 'Height', {default = {min = -30, max = 30, default = 3}}, function(v)
    _G.Height = v.Slider
 end)
 
@@ -681,6 +779,10 @@ local Respawn = Misc.element('Toggle', 'Auto Respawn', false, function(v)
     end
 end)
 
+local Shop = Misc.element('Toggle', 'Shop', false, function(v)
+    game.Players.LocalPlayer.Character.CharacterHandler.Input.Events.SellEvent:FireServer(v.Toggle)
+end)
+
 local Health = Uchiha.element('Toggle', 'Show Health', false, function(v)
     _G.ESP = v.Toggle
     while _G.ESP do task.wait(0.01)
@@ -711,9 +813,19 @@ local Alert_Nearst = Near_Player.element('Toggle', 'Alert Nearst Player', false,
     end
 end)
 
+local Basilisk = Auto_Mob.element('Toggle', 'Auto Basilisk', false, function(v)
+    _G.Basilisk = v.Toggle
+    while _G.Basilisk do task.wait(0.01)
+        Farm_Mob('Basilisk',CFrame.new(2597, 199, -1635))
+    end
+end)
 
-
-
+local Basilisk = Auto_Mob.element('Toggle', 'Auto Fiend', false, function(v)
+    _G.Fiend = v.Toggle
+    while _G.Fiend do task.wait(0.01)
+        Farm_Mob('Fiend',CFrame.new(-566, 26, -156))
+    end
+end)
 
 
 
