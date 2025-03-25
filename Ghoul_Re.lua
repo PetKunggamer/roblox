@@ -543,7 +543,7 @@ Window:SelectTab(1)
 Fluent:Notify({
     Title = "Syn0xz Hub",
     Content = "The script has been loaded.",
-    Duration = 8
+    Duration = 5
 })
 
 -- You can use the SaveManager:LoadAutoloadConfig() to load a config
