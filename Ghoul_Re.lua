@@ -50,36 +50,36 @@ local function AFK()
     end)
 end
 
+local function Get_Board(faction)
+    for _,board in ipairs(workspace.MissionBoards[faction]:GetChildren()) do
+        if board:IsA("Model") then
+            local Holder = board:FindFirstChild("Holder")
+            if Holder then
+                for i,v in ipairs(Holder:GetChildren()) do
+                    if v:IsA("Part") then
+                        local SurfaceGui = v:FindFirstChild("SurfaceGui")
+                        local cd = v:FindFirstChild("ClickDetector")
+                        if SurfaceGui then
+                            local Rating = SurfaceGui:FindFirstChild("Rating")
+                            if Rating and table.find(_G.Values, Rating.Text) then
+                                fireclickdetector(cd)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function Get_Quest()
     local char = game.Players.LocalPlayer.Character
     local race = char:FindFirstChild("Race")
     if race then
         if race.Value == "Human" then
-            for i,v in ipairs(workspace.MissionBoards.CCG.MissionBoard.Holder:GetChildren()) do
-                if v:IsA("Part") then
-                    local SurfaceGui = v:FindFirstChild("SurfaceGui")
-                    local cd = v:FindFirstChild("ClickDetector")
-                    if SurfaceGui then
-                        local Rating = SurfaceGui:FindFirstChild("Rating")
-                        if Rating and table.find(_G.Values, Rating.Text) then
-                            fireclickdetector(cd)
-                        end
-                    end
-                end
-            end
+            Get_Board('CCG')
         else
-            for i,v in ipairs(workspace.MissionBoards.Ghoul.MissionBoard.Holder:GetChildren()) do
-                if v:IsA("Part") then
-                    local SurfaceGui = v:FindFirstChild("SurfaceGui")
-                    local cd = v:FindFirstChild("ClickDetector")
-                    if SurfaceGui then
-                        local Rating = SurfaceGui:FindFirstChild("Rating")
-                        if Rating and table.find(_G.Values, Rating.Text) then
-                            fireclickdetector(cd)
-                        end
-                    end
-                end
-            end
+            Get_Board('Ghoul')
         end
     end
 end
@@ -97,7 +97,6 @@ local function Auto_Loot()
                     if ItemsFrame then
                         for i,v in ipairs(ItemsFrame:GetChildren()) do
                             if v:IsA("TextButton") then
-                                print(v)
                                 GuiService.SelectedCoreObject = v
                                 VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game) task.wait()
                                 VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
@@ -188,7 +187,7 @@ local function webhooks()
         timestamp = string.format('%d-%d-%dT%02d:%02d:%02dZ', Time.year, Time.month, Time.day, Time.hour, Time.min, Time.sec);
     };
     (syn and syn.request or http_request) {
-        Url = 'https://discord.com/api/webhooks/1353434895514468383/Ghw4U-m6N6V2S5oy6R2oZOcBcykdXbtpsOv5OzFrKI631QejpJjeZ7U7fRMELCBS__Je';
+        Url = _G.Webhook;
         Method = 'POST';
         Headers = {
             ['Content-Type'] = 'application/json';
@@ -216,7 +215,38 @@ local function Noclip()
     end
 end
 
-
+local function Store_Item()
+    local player = game:GetService("Players").LocalPlayer
+    local bank = player.PlayerGui:FindFirstChild("BankInterface")
+    
+    if bank and bank:FindFirstChild("Overlay") then
+        local overlay = bank.Overlay
+    
+        -- Remove existing button if it exists
+        local existingButton = overlay:FindFirstChild("Store Item")
+        if existingButton then return end
+        -- Create new button
+        local button = Instance.new('TextButton')
+        button.Name = "Store Item"
+        button.Text = 'Store Item'
+        button.TextSize = 30
+        button.Size = UDim2.new(.24, 0, .15, 0)
+        button.Position = UDim2.new(.4, 0, .55, 0)
+        button.Font = Enum.Font.SourceSansBold
+        button.Parent = overlay
+    
+        -- Connect the click event
+        button.MouseButton1Click:Connect(function()
+            for i,v in ipairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                if v:IsA("Tool") then
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("PutInBank"):FireServer(tostring(v))
+                end
+            end
+        end)
+    else
+        warn("Hold Item")
+    end
+end
 
 
 -- UI
@@ -460,6 +490,28 @@ do
     })
 end
 
+    local Bank = Tabs.QoL:AddToggle("Bank", {Title = "Bank", Default = false })
+
+    Bank:OnChanged(function()
+        _G.Bank = Options.Bank.Value
+        Store_Item()
+        while _G.Bank do task.wait()
+            local pgui = game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+            if pgui then
+                local BankInterface = pgui:FindFirstChild("BankInterface")
+                if BankInterface then
+                    local Overlay = BankInterface:FindFirstChild("Overlay")
+                    if Overlay then
+                        if _G.Bank then
+                            Overlay.Visible = true
+                        else
+                            Overlay.Visible = false
+                        end
+                    end
+                end
+            end
+        end
+    end)
 
 -- Addons:
 -- SaveManager (Allows you to have a configuration system)
