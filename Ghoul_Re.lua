@@ -354,8 +354,6 @@ end
 local default_clip = {}
 local noclip_state = {
     CanCollide = false,
-    CanQuery = false,
-    CanTouch = false,
     CollisionGroup = "Default"
 }
 local movement_dir_z, movement_dir_x = 0, 0
