@@ -831,7 +831,7 @@ do
     local ManaRunKey = Tabs.Character:AddKeybind("ManaRunKeyBind", {
         Title = "ManaRun Key",
         Mode = "Toggle",
-        Default = "M",
+        Default = "N",
     })
 
     MovementModeDropdown:OnChanged(function(Value)
