@@ -34,6 +34,7 @@ local env = _G
 
 env.JobId = ""
 env.Values = ""
+env.Region = {}
 env.QoL = false
 env.Health_Below = 0
 
@@ -161,8 +162,8 @@ local function AFK()
         env.Anti_AFK:Disconnect()
     end
     env.Anti_AFK = player.Idled:connect(function()
-    	Afk:CaptureController()
-    	Afk:ClickButton2(Vector2.new())
+    	env.Anti_AFK:CaptureController()
+    	env.Anti_AFK:ClickButton2(Vector2.new())
     end)
 end
 
@@ -383,7 +384,10 @@ local function Goto_Mission()
     if char and hrp then
         for i,v in ipairs(char:GetChildren()) do
             if v:IsA("Part") and v.Name == "MissionIcon" then
-                moveCharacterBySteps(CFrame.new(v.Position.X,1,v.Position.Z), _G.SpeedQuest)
+                moveCharacterBySteps(CFrame.new(v.Position.X,10,v.Position.Z), _G.SpeedQuest)
+                hrp.Anchored = true
+                wait(2)
+                hrp.Anchored = false
             end
         end
     end
@@ -542,6 +546,88 @@ env.ManaStuff_UIS_Ended = UIS.InputEnded:Connect(function(input,gameProcessed)
     end
 end)
 
+local function Find_Region()
+    local plr = game:GetService("Players").LocalPlayer
+    local playergui = plr:FindFirstChild("PlayerGui")
+    if playergui then
+        local ServerListUI = playergui:FindFirstChild("ServerListUI")
+        if ServerListUI then
+            local Container = ServerListUI:FindFirstChild("Container")
+            if Container then
+                local Cosmetic = Container:FindFirstChild("CosmeticInterface")
+                if Cosmetic then
+                    local SF = Cosmetic:FindFirstChild("ScrollingFrame")
+                    if SF then
+                        for i, v in ipairs(SF:GetChildren()) do
+                            if v:IsA("TextButton") then
+                                local Region = v:FindFirstChild("Region")
+                                if Region and string.match(Region.Text, "Singapore, North West") then
+                                    v.Visible = true
+                                else
+                                    v.Visible = false
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function Find_Region_Off()
+    local plr = game:GetService("Players").LocalPlayer
+    local playergui = plr:FindFirstChild("PlayerGui")
+    if playergui then
+        local ServerListUI = playergui:FindFirstChild("ServerListUI")
+        if ServerListUI then
+            local Container = ServerListUI:FindFirstChild("Container")
+            if Container then
+                local Cosmetic = Container:FindFirstChild("CosmeticInterface")
+                if Cosmetic then
+                    local SF = Cosmetic:FindFirstChild("ScrollingFrame")
+                    if SF then
+                        for i, v in ipairs(SF:GetChildren()) do
+                            if v:IsA("TextButton") then
+                                v.Visible = true
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function Find_Permadeath()
+    local plr = game:GetService("Players").LocalPlayer
+    local playergui = plr:FindFirstChild("PlayerGui")
+    if playergui then
+        local ServerListUI = playergui:FindFirstChild("ServerListUI")
+        if ServerListUI then
+            local Container = ServerListUI:FindFirstChild("Container")
+            if Container then
+                local Cosmetic = Container:FindFirstChild("CosmeticInterface")
+                if Cosmetic then
+                    local SF = Cosmetic:FindFirstChild("ScrollingFrame")
+                    if SF then
+                        for i, v in ipairs(SF:GetChildren()) do
+                            if v:IsA("TextButton") then
+                                local ServerName = v:FindFirstChild("ServerName")
+                                if ServerName and not string.match(ServerName.Text, "PERMADEATH") then
+                                    v.Visible = false
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+
+
 -- UI
 
 AFK()
@@ -564,6 +650,7 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
     Character = Window:AddTab({ Title = "Character", Icon = "user" }),
+    Server = Window:AddTab({ Title = "Server", Icon = "server" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "sun" }),
     QoL = Window:AddTab({ Title = "Quality Of Life", Icon = "briefcase" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
@@ -703,13 +790,40 @@ do
             Bring_Mob()
         end
     end)
+
+    Tabs.Server:AddParagraph({
+        Title = "Find Server Region",
+        Content = "Select ur Region"
+    })
     
-    Tabs.Main:AddParagraph({
+    local Auto_Find_Server = Tabs.Server:AddToggle("Auto_Find_Server", {Title = "Find Region [Singapore]", Default = false })
+
+    Auto_Find_Server:OnChanged(function()
+        env.Find_Server = Options.Auto_Find_Server.Value
+        if env.Find_Server then
+            Find_Region()
+        else
+            Find_Region_Off()
+        end
+    end)
+
+    local Find_PD = Tabs.Server:AddToggle("Find_PD", {Title = "Find Permadeath", Default = false })
+
+    Find_PD:OnChanged(function()
+        env.Find_PD_Server = Options.Find_PD.Value
+        if env.Find_PD_Server then
+            Find_Permadeath()
+        else
+            Find_Region_Off()
+        end
+    end)
+
+    Tabs.Server:AddParagraph({
         Title = "Join Server Function",
         Content = "Press Copy and Join"
     })
     
-    Tabs.Main:AddButton({
+    Tabs.Server:AddButton({
         Title = "Copy JobId",
         Description = "",
         Callback = function()
@@ -734,7 +848,7 @@ do
         end
     })
 
-    local Input = Tabs.Main:AddInput("Input", {
+    local Input = Tabs.Server:AddInput("Input", {
         Title = "Join Server",
         Default = "",
         Placeholder = "JobId",
