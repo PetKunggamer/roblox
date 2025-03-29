@@ -350,6 +350,46 @@ local function Store_Item()
     end
 end
 
+local function moveCharacterBySteps(targetCFrame, stepDistance)
+    local plr = game.Players.LocalPlayer
+    local chr = plr.Character or plr.CharacterAdded:Wait()
+    local root = chr and chr:FindFirstChild("HumanoidRootPart")
+    
+    if not root then
+        warn("HumanoidRootPart not found.")
+        return
+    end
+    
+    local currentCFrame = root.CFrame
+    local direction = (targetCFrame.Position - currentCFrame.Position).unit
+    local targetPosition = targetCFrame.Position
+    
+    while (currentCFrame.Position - targetPosition).Magnitude > stepDistance do
+        currentCFrame = currentCFrame + direction * stepDistance
+        root.CFrame = currentCFrame  -- Move the player smoothly
+        root.Velocity = Vector3.zero
+        task.wait()  -- Adjust for speed control
+    end
+    
+    root.CFrame = targetCFrame  -- Ensure exact final position
+end
+
+
+local function Goto_Mission()
+    local icon = nil
+    local lp = game.Players.LocalPlayer
+    local char = lp.Character or lp.CharacterAdded:Wait()
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if char and hrp then
+        for i,v in ipairs(char:GetChildren()) do
+            if v:IsA("Part") and v.Name == "MissionIcon" then
+                moveCharacterBySteps(CFrame.new(v.Position.X,1,v.Position.Z), _G.SpeedQuest)
+            end
+        end
+    end
+end
+
+
 --//Mana Stuff
 local default_clip = {}
 local noclip_state = {
@@ -556,6 +596,28 @@ do
         end
     end)
 
+    local To_Mission = Tabs.Main:AddToggle("To_Mission", {Title = "Auto To Quest", Default = false })
+
+    To_Mission:OnChanged(function()
+        env.To_Mission = Options.To_Mission.Value
+        while env.To_Mission do task.wait(.1)
+            Goto_Mission()
+            wait(1.75)
+        end
+    end)
+
+    local Speed_Quest = Tabs.Main:AddSlider("Speed_Quest", {
+        Title = "Speed to Mission",
+        Description = "decrease it when lag",
+        Default = 3,
+        Min = 1,
+        Max = 4,
+        Rounding = 0,
+        Callback = function(Value)
+            _G.SpeedQuest = Value
+        end
+    })
+
     Tabs.Character:AddButton({
         Title = "Reset Character",
         Description = "",
@@ -633,27 +695,6 @@ do
         end
     end)
 
-    Tabs.Main:AddButton({
-        Title = "Open Inventory",
-        Description = "",
-        Callback = function()
-            Window:Dialog({
-                Title = "Open Inventory",
-                Content = "",
-                Buttons = {
-                    {
-                        Title = "Open Inventory",
-                        Callback = function()
-                            local vim = game:GetService('VirtualInputManager')
-                            vim:SendKeyEvent(true, Enum.KeyCode.Backquote, false, game)
-                            vim:SendKeyEvent(false, Enum.KeyCode.Backquote, false, game)
-                        end
-                    }
-                }
-            })
-        end
-    })
-
     local Auto_Bring = Tabs.Misc:AddToggle("Auto_Bring", {Title = "Auto Bring Mob", Default = false })
 
     Auto_Bring:OnChanged(function()
@@ -662,8 +703,7 @@ do
             Bring_Mob()
         end
     end)
-
-
+    
     Tabs.Main:AddParagraph({
         Title = "Join Server Function",
         Content = "Press Copy and Join"
