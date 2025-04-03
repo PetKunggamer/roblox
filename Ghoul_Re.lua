@@ -10,6 +10,11 @@ local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService('VirtualUser')
 local UIS = game:GetService("UserInputService")
 local players = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+local Remotes = RS:FindFirstChild("Remotes")
+local GetLives = Remotes:FindFirstChild("GetLives")
+
+
 
 -- Wait for LocalPlayer's HumanoidRootPart
 local player = players.LocalPlayer
@@ -281,7 +286,7 @@ local function Bring_Mob()
                 local mag = (target.Position - root.Position).magnitude
                 if mag < 100 and hum.Health > 0 then
                     if isnetworkowner(target) then
-                        target.CFrame = root.CFrame * CFrame.new(0,3,0)
+                        target.CFrame = root.CFrame * CFrame.new(0,10,0)
                     end
                 end
             end
@@ -627,6 +632,191 @@ local function Find_Permadeath()
 end
 
 
+local function Talk()
+local args = {
+    [1] = {
+        [1] = {
+            ["Message"] = "Oh, you have come Light. What are you here for?",
+            ["Choice"] = "I seek a new start.",
+            ["Name"] = "???",
+            ["Choices"] = {
+                [1] = "I seek a new start.",
+                [2] = "I should go.",
+                [3] = "I want to go back."
+            },
+            ["Properties"] = {
+                ["RegularDelay"] = 0.02,
+                ["DotDelay"] = 0,
+                ["Name"] = "?",
+                ["Sound"] = "rbxassetid://6929790120"
+            },
+            ["Part"] = 1,
+            ["NPCName"] = ""
+        },
+        [2] = "\3"
+    }
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Bridgenet2Main"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+
+local args = {
+    [1] = {
+        [1] = {
+            ["Message"] = "Do you seek a new beginning, or perhaps do you seek something else?",
+            ["Choice"] = "Im ready for a new beginning.",
+            ["Name"] = "???",
+            ["Choices"] = {
+                [1] = "Im ready for a new beginning.",
+                [2] = "I'm not too sure."
+            },
+            ["Properties"] = {
+                ["RegularDelay"] = 0.02,
+                ["DotDelay"] = 0,
+                ["Name"] = "?",
+                ["Sound"] = "rbxassetid://6929790120"
+            },
+            ["Part"] = 2,
+            ["NPCName"] = ""
+        },
+        [2] = "\3"
+    }
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Bridgenet2Main"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+
+local args = {
+    [1] = {
+        [1] = {
+            ["Message"] = "Very well... But know this: once your past is erased, theres no going back.",
+            ["Choice"] = "I accept my fate.",
+            ["Name"] = "???",
+            ["Choices"] = {
+                [1] = "I accept my fate.",
+                [2] = "Wait, Im not sure."
+            },
+            ["Properties"] = {
+                ["RegularDelay"] = 0.02,
+                ["DotDelay"] = 0,
+                ["Name"] = "?",
+                ["Sound"] = "rbxassetid://6929790120"
+            },
+            ["Part"] = 3,
+            ["NPCName"] = ""
+        },
+        [2] = "\3"
+    }
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Bridgenet2Main"):WaitForChild("dataRemoteEvent"):FireServer(unpack(args))
+end
+
+local function Get_Dialogue(Text)
+    local plr = game:GetService("Players").LocalPlayer
+    if plr then
+        local pgui =plr:FindFirstChild("PlayerGui")
+        if pgui then
+            local Dialogue = pgui:FindFirstChild('Dialogue')
+            if Dialogue then
+                local MF = Dialogue:FindFirstChild('MainFrame')
+                if MF then
+                    local Options = MF:FindFirstChild('Options')
+                    if Options then
+                        for i,v in ipairs(Options:GetChildren()) do
+                            if v:IsA('TextButton') then
+                                local Option = v:FindFirstChild('Option')
+                                if Option then
+                                    if Option.Text == Text then
+                                        GuiService.SelectedCoreObject = Option
+                                        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                                        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function Create(Gender,Race,Name)
+    local plr = game:GetService("Players").LocalPlayer
+    if plr then
+        local PlayerGui = plr:FindFirstChild('PlayerGui')
+        if PlayerGui then
+            local CUSTOMIZE = PlayerGui:FindFirstChild('CUSTOMIZE')
+            if CUSTOMIZE then
+                local RemoteEvent = CUSTOMIZE:FindFirstChild('RemoteEvent')
+                if RemoteEvent then
+                    RemoteEvent:FireServer(Gender,Race,Name)
+                end
+            end
+        end
+    end
+end
+
+local function Talk_NPC(NPC_Name)
+    local root_npc, proximity = nil,nil
+    for i,v in ipairs(workspace.Dialogues:GetChildren()) do
+        if v:IsA("Model") then
+            if v.Name == NPC_Name then
+                local target = v:FindFirstChild("HumanoidRootPart")
+                if target then
+                    local Detector = target:FindFirstChild("Detector")
+                    if Detector then
+                        root_npc = target
+                        proximity = Detector
+                    end
+                end
+            end
+        end
+    end
+    return root_npc,proximity
+end
+
+local function Get_Live()
+    return GetLives:InvokeServer()
+end
+
+local wl_Clan = {'Kaneki','Yoshimura','Suzuya','Arima'}
+
+local function Get_Clan()
+    local plr = game:GetService("Players").LocalPlayer
+    local char = plr.Character or plr.CharacterAdded:Wait()
+    local hum = char:FindFirstChild("Humanoid")
+    local root = char:FindFirstChild("HumanoidRootPart")
+    if not char then return end
+    if not root then return end
+    if not hum then return end
+    for i,v in ipairs(plr.Character:GetChildren()) do
+        if v:IsA('StringValue') then
+            if v.Name == "Clan" then
+                if table.find(wl_Clan, v.Value) then
+                    print('We got it', v.Value)
+                    wait(1)
+                elseif v.Value == "None" then
+                    Create('Male','Ghoul','Light')
+                    wait(.45)
+                else
+                    if Get_Live() == 3 then
+                        hum.Health = 0
+                    else
+                        local npc, prompt = Talk_NPC('???')
+                        if npc and root then
+                            root.CFrame = npc.CFrame
+                            fireproximityprompt(prompt)
+                        else
+                            root.CFrame = CFrame.new(15281, 9, 2)
+                        end
+                        Get_Dialogue('I seek a new start.')
+                        Talk()
+                    end
+                end
+            end
+        end
+    end
+end
 
 -- UI
 
@@ -650,8 +840,8 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
     Character = Window:AddTab({ Title = "Character", Icon = "user" }),
-    Server = Window:AddTab({ Title = "Server", Icon = "server" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "sun" }),
+    Server = Window:AddTab({ Title = "Server", Icon = "server" }),
     QoL = Window:AddTab({ Title = "Quality Of Life", Icon = "briefcase" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
@@ -737,6 +927,19 @@ do
 
     Noclip_Func:OnChanged(function()
         env.Noclip = Options.Noclip_Func.Value
+    end)
+
+    local Roll_Clan = Tabs.Misc:AddToggle("Roll_Clan", {
+        Title = "Auto Roll Clan Work on PD Only",
+        Default = false
+    })
+
+    Roll_Clan:OnChanged(function()
+        env.Roll_Clan = Options.Roll_Clan.Value
+        print(env.Roll_Clan)
+        while env.Roll_Clan do task.wait(.125)
+            Get_Clan()
+        end
     end)
 
     local Instant_Kill = Tabs.Misc:AddToggle("Instant_Kill", {
