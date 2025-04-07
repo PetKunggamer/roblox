@@ -25,9 +25,10 @@ for i,v in ipairs(hub:GetChildren()) do
 end
 
 local function AFK()
-    _G.Anti_AFK = player.Idled:connect(function()
-    _G.Anti_AFK:CaptureController()
-    _G.Anti_AFK:ClickButton2(Vector2.new())
+    local Afk = game:service'VirtualUser'
+    game:service'Players'.LocalPlayer.Idled:connect(function()
+    	Afk:CaptureController()
+    	Afk:ClickButton2(Vector2.new())
     end)
 end
 
