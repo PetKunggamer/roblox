@@ -102,35 +102,11 @@ local function Get_Mob()
 end
 
 local function Retreat()
-    local args = {
-        [1] = {
-            [1] = {
-                [1] = "PetSystem",
-                [2] = "Retreat",
-                ["n"] = 2
-            },
-            [2] = "\2"
-        }
-    }
-
-    dataRemoteEvent:FireServer(unpack(args))
+    dataRemoteEvent:FireServer(unpack({{{"PetSystem", "Retreat", n = 2}, "\2"}}))
 end
 
 local function Attack()
-    local args = {
-        [1] = {
-            [1] = {
-                [1] = "PetSystem",
-                [2] = "Attack",
-                [3] = tostring(Get_Mob()),
-                [4] = true,
-                ["n"] = 133
-            },
-            [2] = "\2"
-        }
-    }
-
-    dataRemoteEvent:FireServer(unpack(args))
+    dataRemoteEvent:FireServer(unpack({{{"PetSystem", "Attack", tostring(Get_Mob()), true, n = 133}, "\2"}}))
 end
 
 local function Disabled_Effect()
@@ -174,12 +150,23 @@ local function PET_MOB()
                             local target = v:FindFirstChild("HumanoidRootPart")
                             if target and Mob then
                                 local mag = (target.Position - Mob.Position).magnitude
-                                if mag > 30 then
+                                if mag > 15 then
                                     target.CFrame = Mob.CFrame
                                 end
                             end
                         end
                     end
+                end
+            end
+        end
+    end
+    for i,v in ipairs(workspace._IGNORE.ShinyModels:GetChildren()) do
+        if v:IsA('Model') then
+            local target = v:FindFirstChild("HumanoidRootPart")
+            if target and Mob then
+                local mag = (target.Position - Mob.Position).magnitude
+                if mag > 15 then
+                    target.CFrame = Mob.CFrame
                 end
             end
         end
@@ -196,67 +183,84 @@ local function SetUp_Attack()
     wait(.25)
 end
 
-local function In_Dungeon()
-    local dungeon = workspace._MAP:FindFirstChild("Dungeon")
-    if dungeon then
-        local my_dungeon = dungeon:FindFirstChild(plr.UserId)
-        if my_dungeon then
-            return true
-        else
-            return false
+local function Current_World()
+    local world = nil
+    local map = workspace._MAP
+    if map then
+        for i,v in ipairs(map:GetChildren()) do
+            if v:IsA("Folder") then
+                local spawn = v:FindFirstChild('Spawn')
+                local another = v:FindFirstChild(plr.UserId)
+                if spawn then
+                    world = tostring(v)
+                elseif another then
+                    local spawn_ = another:FindFirstChild('Spawn')
+                    if spawn_ then
+                        world = tostring(v)
+                    end
+                end
+            end
         end
+    end
+    return world
+end
+
+local function In_Dungeon()
+    local current = Current_World()
+    if current == 'Dungeon' then
+        return true
     end
     return
 end
 
+local function In_Raid()
+    local current = Current_World()
+    if current == 'Raid' then
+        return true
+    end
+    return
+end
 
 local function Dungeon_Start()
     if not Check_Dungeon() then
+        if In_Raid() then return end
         if In_Dungeon() then return end
-        local args = {
-            [1] = {
-                [1] = {
-                    [1] = "DungeonSystem",
-                    [2] = "Create",
-                    ["n"] = 2
-                },
-                [2] = "\2"
-            }
-        }
-
-        dataRemoteEvent:FireServer(unpack(args))
-
-        local args = {
-            [1] = {
-                [1] = {
-                    [1] = "DungeonSystem",
-                    [2] = "SelectMap",
-                    [3] = "RuinedPrison",
-                    ["n"] = 3
-                },
-                [2] = "\2"
-            }
-        }
-
-        dataRemoteEvent:FireServer(unpack(args))
-
-        local args = {
-            [1] = {
-                [1] = {
-                    [1] = "DungeonSystem",
-                    [2] = "Start",
-                    ["n"] = 2
-                },
-                [2] = "\2"
-            }
-        }
-
-        dataRemoteEvent:FireServer(unpack(args))
+        dataRemoteEvent:FireServer(unpack({{{"DungeonSystem", "Create", n = 2}, "\2"}}))
+        dataRemoteEvent:FireServer(unpack({{{"DungeonSystem", "SelectMap", "RuinedPrison", n = 3}, "\2"}}))
+        dataRemoteEvent:FireServer(unpack({{{"DungeonSystem", "Start", n = 2}, "\2"}}))
         wait(15)
     else
         TP_Mob()
     end
 end
+
+local function Click_Damage()
+    dataRemoteEvent:FireServer(unpack({{{"PetSystem", "Click", n = 2}, "\2"}}))
+end
+
+local function Auto_Egg()
+    local current_world = Current_World()
+    if current_world == 'Dungeon' then return end
+    if current_world == 'Raid' then return end
+    if current_world == "4" then
+        local pos = CFrame.new(2671, 98, -7507)
+        local root = plr.Character:FindFirstChild("HumanoidRootPart")
+        local mag = (root.Position - pos.Position).magnitude
+        if not (mag > 10) then
+            dataRemoteEvent:FireServer(unpack({{{"PetSystem","Open","Cursed Star","All",n = 4},"\2"}}))
+        else
+            root.CFrame = pos
+        end
+    else
+        dataRemoteEvent:FireServer(unpack({{{"TeleportSystem","To",4,n = 3},"\2"}}))
+        wait(3)
+    end
+end
+
+
+
+
+
 
 
 
@@ -412,6 +416,32 @@ do
         print('_G.Mob_TPS : ', _G.Mob_TPS)
         while _G.Mob_TPS do task.wait(.1)
             PET_MOB()
+        end
+    end)
+
+    local Auto_Eggs = Tabs.Main:AddToggle("Auto_Eggs", {
+        Title = "Auto Egg (World 4)",
+        Default = false
+    })
+ 
+    Auto_Eggs:OnChanged(function()
+        _G.Auto_Egg = Options.Auto_Eggs.Value
+        print('_G.Auto_Egg : ', _G.Auto_Egg)
+        while _G.Auto_Egg do task.wait(.1)
+            Auto_Egg()
+        end
+    end)
+
+    local Damage_Clicker = Tabs.Main:AddToggle("Damage_Clicker", {
+        Title = "Clicker Damage",
+        Default = false
+    })
+ 
+    Damage_Clicker:OnChanged(function()
+        _G.Click_Damage = Options.Damage_Clicker.Value
+        print('_G.Click_Damage : ', _G.Click_Damage)
+        while _G.Click_Damage do task.wait(.1)
+            Click_Damage()
         end
     end)
 
