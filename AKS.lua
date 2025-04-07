@@ -38,36 +38,32 @@ local dataRemoteEvent = ffrostflame_bridgenet2:FindFirstChild("dataRemoteEvent")
 local plr = game:GetService("Players").LocalPlayer
 local TS = game:GetService('TeleportService')
 
-local count_= 0
-
 local function Check_Dungeon()
-    if plr then
-        local pgui = plr:FindFirstChild('PlayerGui')
-        if pgui then
-            local Mode = pgui:FindFirstChild('Mode')
-            if Mode then
-                local Content = Mode:FindFirstChild("Content")
-                if Content then 
-                    local Dungeon = Content:FindFirstChild('Dungeon')
-                    if Dungeon and Dungeon.Visible then
-                        return true
+    local In_Doing = nil
+    local pgui = plr:FindFirstChild('PlayerGui')
+    if pgui then
+        local Mode = pgui:FindFirstChild('Mode')
+        if Mode then
+            local Content = Mode:FindFirstChild("Content")
+            if Content then 
+                for i,v in ipairs(Content:GetChildren()) do
+                    if v:IsA('Frame') and v.Visible then
+                        In_Doing = v
                     end
                 end
             end
         end
     end
-    return
+    return In_Doing
 end
 
 local function Check_Mob()
     local folder_mob = nil
-    for _,folder in ipairs(workspace._ENEMIES.Server:GetChildren()) do
-        if folder:IsA("Folder") then
-            if folder.Name == "Dungeon" or folder.Name == "Raid" then
-                for i,v in pairs(folder:GetChildren()) do
-                    if v:IsA("Folder") and v.Name == tostring(game.Players.LocalPlayer.UserId) and #v:GetChildren() > 0 then
-                        folder_mob = v
-                    end
+    for _, folder in ipairs(workspace._ENEMIES.Server:GetChildren()) do
+        if folder:IsA("Folder") and (folder.Name == "Dungeon" or folder.Name == "Raid") then
+            for _, v in pairs(folder:GetChildren()) do
+                if v:IsA("Folder") and v.Name == tostring(game.Players.LocalPlayer.UserId) and #v:GetChildren() > 0 then
+                    folder_mob = v
                 end
             end
         end
@@ -76,20 +72,24 @@ local function Check_Mob()
 end
 
 local function Get_Mob()
-    Check_Mob()
-    local dist,mob = math.huge,nil
-    local root = plr.Character:FindFirstChild("HumanoidRootPart")
+    local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
     if not root then return end
-    for __folder,folder_enemy in ipairs(workspace._ENEMIES.Server:GetChildren()) do
+
+    local dist, mob = math.huge, nil
+
+    for _, folder_enemy in ipairs(workspace._ENEMIES.Server:GetChildren()) do
         if folder_enemy:IsA("Folder") then
-            if Check_Mob() then
-                folder_enemy = Check_Mob()
+            local target_folder = Check_Mob()
+            if target_folder then
+                folder_enemy = target_folder
             end
-            for i,v in ipairs(folder_enemy:GetChildren()) do
-                local HP = v:GetAttribute('HP')
-                if HP and HP > 0 then
+            for _, v in ipairs(folder_enemy:GetChildren()) do
+                local HP = v:GetAttribute("HP")
+                local Shield = v:GetAttribute("Shield") -- might be nil
+
+                if HP and HP > 0 and Shield ~= true then
                     if v:IsA("Part") then
-                        local mag = (root.Position - v.Position).magnitude
+                        local mag = (root.Position - v.Position).Magnitude
                         if mag < dist then
                             dist = mag
                             mob = v
@@ -100,6 +100,10 @@ local function Get_Mob()
         end
     end
     return mob
+end
+
+local function Equip_Team(ID)
+    dataRemoteEvent:FireServer(unpack({{{"PetSystem","EquipTeam",tostring(ID),["n"] = 3},"\2"}}))
 end
 
 local function Retreat()
@@ -258,13 +262,40 @@ local function Auto_Egg()
     end
 end
 
+local function Cd_Raid()
+    local PlayerGui = plr:FindFirstChild('PlayerGui')
+    local cooldown = false
+    if PlayerGui then
+        local center = PlayerGui:FindFirstChild("_CENTER")
+        if center then 
+            local RaidList = center:FindFirstChild('RaidList')
+            if RaidList then
+                local Info = RaidList:FindFirstChild('Info')
+                if Info and Info.Visible then
+                    cooldown = true
+                end
+            end
+        end
+    end
+    return cooldown
+end
 
+local function Create_Raid()
+    dataRemoteEvent:FireServer(unpack({{{"RaidSystem", "Create", n = 2}, "\2"}}))
+    dataRemoteEvent:FireServer(unpack({{{"RaidSystem", "SelectMap", 4, n = 3}, "\2"}}))
+    dataRemoteEvent:FireServer(unpack({{{"RaidSystem", "Start", n = 2}, "\2"}}))
+end
 
-
-
-
-
-
+local function Doing_Raid()
+    if Cd_Raid() then return end
+    if Check_Dungeon() == nil then
+        Create_Raid()
+        wait(3)
+    else
+        -- Equip_Team("7977a44bb50b4c168ca4a50a9bb1df0c") -- DPS
+        TP_Mob()
+    end
+end
 
 
 
@@ -429,6 +460,7 @@ do
         _G.Auto_Egg = Options.Auto_Eggs.Value
         print('_G.Auto_Egg : ', _G.Auto_Egg)
         while _G.Auto_Egg do task.wait(.1)
+            -- Equip_Team("b3e8fbac41964698890ac12d9dac6e7d") -- LUCK
             Auto_Egg()
         end
     end)
@@ -446,6 +478,19 @@ do
         end
     end)
 
+    local Auto_Raid = Tabs.Main:AddToggle("Auto_Raid", {
+        Title = "Auto Raid",
+        Default = false
+    })
+ 
+    Auto_Raid:OnChanged(function()
+        _G.Doing_Raid = Options.Auto_Raid.Value
+        print('_G.Doing_Raid : ', _G.Doing_Raid)
+        while _G.Doing_Raid do task.wait(.1)
+            Doing_Raid()
+        end
+    end)
+    
     local Auto_Dun = Tabs.Main:AddToggle("Auto_Dun", {
         Title = "Auto Dungeon",
         Default = false
