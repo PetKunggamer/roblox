@@ -39,6 +39,7 @@ local env = _G
 
 env.JobId = ""
 env.Values = ""
+env.wl_Clan = ""
 env.Region = {}
 env.QoL = false
 env.Health_Below = 0
@@ -779,8 +780,6 @@ local function Get_Live()
     return GetLives:InvokeServer()
 end
 
-local wl_Clan = {'Kaneki','Yoshimura','Suzuya','Arima'}
-
 local function Get_Clan()
     local plr = game:GetService("Players").LocalPlayer
     local char = plr.Character or plr.CharacterAdded:Wait()
@@ -792,7 +791,7 @@ local function Get_Clan()
     for i,v in ipairs(plr.Character:GetChildren()) do
         if v:IsA('StringValue') then
             if v.Name == "Clan" then
-                if table.find(wl_Clan, v.Value) then
+                if table.find(env.wl_Clan, v.Value) then
                     print('We got it', v.Value)
                     wait(1)
                 elseif v.Value == "None" then
@@ -841,6 +840,7 @@ local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
     Character = Window:AddTab({ Title = "Character", Icon = "user" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "sun" }),
+    Roll_Clan = Window:AddTab({ Title = "Roll Clan", Icon = "plane" }),
     Server = Window:AddTab({ Title = "Server", Icon = "server" }),
     QoL = Window:AddTab({ Title = "Quality Of Life", Icon = "briefcase" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
@@ -929,16 +929,31 @@ do
         env.Noclip = Options.Noclip_Func.Value
     end)
 
-    local Roll_Clan = Tabs.Misc:AddToggle("Roll_Clan", {
+    local Tab_Auto_Roll_Clan = Tabs.Roll_Clan:AddToggle("Tab_Auto_Roll_Clan", {
         Title = "Auto Roll Clan Work on PD Only",
         Default = false
     })
 
-    Roll_Clan:OnChanged(function()
-        env.Roll_Clan = Options.Roll_Clan.Value
-        print(env.Roll_Clan)
-        while env.Roll_Clan do task.wait(.125)
+    Tab_Auto_Roll_Clan:OnChanged(function()
+        env.Clan_Roll = Options.Tab_Auto_Roll_Clan.Value
+        print(env.Clan_Roll)
+        while env.Clan_Roll do task.wait(.125)
             Get_Clan()
+        end
+    end)
+
+    local WL_ROLL_CLAN = Tabs.Roll_Clan:AddDropdown("WL_ROLL_CLAN", {
+        Title = "Whitelist Clan",
+        Description = "Select Clans.",
+        Values = {"Abara", "Akashi", "Aliza", "Ami", "Arima", "Atou", "Banjou", "Fujimi", "Fueguchi", "Gehner", "Ginshi", "Hachikawa", "Hazuki", "Hirako", "Hoito", "Hogi", "Hooguro", "Hori", "Hsiao", "Iba", "Ichimi", "Ihei", "Jin", "Kaiko", "Kamishiro", "Kaneki", "Kanou", "Kazuichi", "Kirishima", "Kobayashi", "Koma", "Koutarou", "Kureha", "Kureo", "Kuroiwa", "Kusaba", "Mado", "Ōmaeda", "Mikage", "Minami", "Mitsuki", "Momochi", "Mutsuki", "Nagachika", "Naki", "Nakajima", "Nishio", "Porpora", "Sasada", "Sasaki", "Sato", "Shimoguchi", "Shikorae", "Shiono", "Shirazu", "Suzuya", "Tagata", "Tainaka", "Takizawa", "Takeomi", "Tokage", "Toga", "Torso", "Tsuneyoshi", "Uruka", "Urie", "Von Rosewald", "Yamada", "Yoshimura", "Yukimichi"},
+        Multi = true,
+        Default = {'Kaneki','Yoshimura','Suzuya','Arima'},
+    })
+
+    WL_ROLL_CLAN:OnChanged(function(Value)
+        env.wl_Clan = {}
+        for Value, State in next, Value do
+            table.insert(env.wl_Clan, Value)
         end
     end)
 
