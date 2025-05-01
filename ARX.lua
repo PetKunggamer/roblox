@@ -140,10 +140,221 @@ local function Notification()
     return
 end
 
+local function Egg_Counter()
+    pcall(function()
+        local Players = game:GetService("Players")
+        local CoreGui = game:GetService("CoreGui")
 
+        local player = Players.LocalPlayer
 
+        -- Wait for character to load
+        if not player.Character or not player.Character.Parent then
+            player.CharacterAdded:Wait()
+        end
 
+        -- Clean up old GUI
+        if CoreGui:FindFirstChild("ThaiCounterGui") then
+            CoreGui.ThaiCounterGui:Destroy()
+        end
 
+        -- Create GUI
+        local screenGui = Instance.new("ScreenGui")
+        screenGui.Name = "ThaiCounterGui"
+        screenGui.ResetOnSpawn = false
+        screenGui.IgnoreGuiInset = true
+        screenGui.Parent = CoreGui
+
+        -- Shadow frame
+        local shadow = Instance.new("Frame")
+        shadow.Size = UDim2.new(0, 220, 0, 80)
+        shadow.Position = UDim2.new(0.5, 4, 0.1, 4)
+        shadow.AnchorPoint = Vector2.new(0.5, 0)
+        shadow.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+        shadow.BackgroundTransparency = 0.6
+        shadow.BorderSizePixel = 0
+        shadow.ZIndex = 0
+        shadow.Parent = screenGui
+
+        local shadowCorner = Instance.new("UICorner")
+        shadowCorner.CornerRadius = UDim.new(0, 20)
+        shadowCorner.Parent = shadow
+
+        -- Outer frame
+        local outerFrame = Instance.new("Frame")
+        outerFrame.Size = UDim2.new(0, 220, 0, 80)
+        outerFrame.Position = UDim2.new(0.5, 0, 0.1, 0)
+        outerFrame.AnchorPoint = Vector2.new(0.5, 0)
+        outerFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+        outerFrame.BackgroundTransparency = 0
+        outerFrame.BorderSizePixel = 0
+        outerFrame.ZIndex = 1
+        outerFrame.Parent = screenGui
+
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 20)
+        corner.Parent = outerFrame
+
+        -- Label
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, 0, 1, 0)
+        label.BackgroundTransparency = 1
+        label.Position = UDim2.new(0, 0, 0, 0)
+        label.Font = Enum.Font.GothamBold
+        label.TextColor3 = Color3.fromRGB(0, 150, 255)
+        label.TextStrokeTransparency = 0.8
+        label.TextScaled = true
+        label.ZIndex = 2
+        label.Parent = outerFrame
+
+        -- Set text
+        local Player_Data = RS:FindFirstChild('Player_Data')
+        if Player_Data then
+            local plr_name = Player_Data[game.Players.LocalPlayer.Character.Name]
+            if plr_name then
+                local Data = plr_name:FindFirstChild('Data')
+                if Data then
+                    local Egg = Data:FindFirstChild('Egg')
+                    if Egg then
+                        label.Text = tostring(Egg.Value) .. " Eggs"
+                    end
+                end
+            end
+        end
+    end)
+end
+
+local function Punk_Counter()
+    pcall(function()
+        local RS = game:GetService('ReplicatedStorage') 
+        local Players = game:GetService("Players")
+        local CoreGui = game:GetService("CoreGui")
+
+        local player = Players.LocalPlayer
+
+        -- Wait for character to load
+        if not player.Character or not player.Character.Parent then
+            player.CharacterAdded:Wait()
+        end
+
+        -- Clean up old GUI
+        if CoreGui:FindFirstChild("MegaCounterGui") then
+            CoreGui.MegaCounterGui:Destroy()
+        end
+
+        -- Create GUI
+        local screenGui = Instance.new("ScreenGui")
+        screenGui.Name = "MegaCounterGui"
+        screenGui.ResetOnSpawn = false
+        screenGui.IgnoreGuiInset = true
+        screenGui.Parent = CoreGui
+
+        -- Shadow frame
+        local shadow = Instance.new("Frame")
+        shadow.Size = UDim2.new(0, 220, 0, 80)
+        shadow.Position = UDim2.new(0.5, 4, 0.1, 4)
+        shadow.AnchorPoint = Vector2.new(0.5, 0)
+        shadow.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+        shadow.BackgroundTransparency = 0.6
+        shadow.BorderSizePixel = 0
+        shadow.ZIndex = 0
+        shadow.Parent = screenGui
+
+        local shadowCorner = Instance.new("UICorner")
+        shadowCorner.CornerRadius = UDim.new(0, 20)
+        shadowCorner.Parent = shadow
+
+        -- Outer frame
+        local outerFrame = Instance.new("Frame")
+        outerFrame.Size = UDim2.new(0, 220, 0, 80)
+        outerFrame.Position = UDim2.new(0.5, 0, 0.1, 0)
+        outerFrame.AnchorPoint = Vector2.new(0.5, 0)
+        outerFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+        outerFrame.BackgroundTransparency = 0
+        outerFrame.BorderSizePixel = 0
+        outerFrame.ZIndex = 1
+        outerFrame.Parent = screenGui
+
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 20)
+        corner.Parent = outerFrame
+
+        -- Label
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, 0, 1, 0)
+        label.BackgroundTransparency = 1
+        label.Position = UDim2.new(0, 0, 0, 0)
+        label.Font = Enum.Font.GothamBold
+        label.TextColor3 = Color3.new(1.000000, 0.000000, 0.000000)
+        label.TextStrokeTransparency = 0.8
+        label.TextScaled = true
+        label.ZIndex = 2
+        label.Parent = outerFrame
+
+        -- Set text
+        local Player_Data = RS:FindFirstChild('Player_Data')
+        if Player_Data then
+            local plr_name = Player_Data[game.Players.LocalPlayer.Character.Name]
+            if plr_name then
+                local Items = plr_name:FindFirstChild('Items')
+                if Items then
+                    local Punk = Items:FindFirstChild('Dr. Megga Punk')
+                    if Punk then
+                        local Punk_Amount = Punk:FindFirstChild('Amount')
+                        if Punk_Amount then
+                            label.Text = tostring(Punk_Amount.Value) .. " Punk"
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end
+
+local priorityList = {
+    {name = "Naruto", requiredLevel = 0, priority = 1},
+    {name = "Rui", requiredLevel = 3, priority = 2},
+    {name = "Carrot:Evo", requiredLevel = 4, priority = 3}
+}
+
+-- Sort by priority
+table.sort(priorityList, function(a, b)
+    return a.priority < b.priority
+end)
+
+local function Req_Unit(_Unit, _RequiredLevel)
+    local plr = game:GetService('Players').LocalPlayer
+    if plr then
+        local UnitsFolder = plr:FindFirstChild('UnitsFolder')
+        if UnitsFolder then
+            local Unit = UnitsFolder:FindFirstChild(_Unit)
+            if Unit then
+                local Upgrade_F = Unit:FindFirstChild('Upgrade_Folder')
+                if Upgrade_F then
+                    local Level = Upgrade_F:FindFirstChild('Level')
+                    if Level then
+                        local currentLevel = tonumber(Level.Value)
+                        local requiredLevel = tonumber(_RequiredLevel)
+                        -- Only upgrade if the current level is less than the required level
+                        if currentLevel < requiredLevel then
+                            Upgrade:FireServer(Unit)
+                            print("Upgrading", _Unit, "to level", requiredLevel)
+                            return false -- Return false to indicate it's still being upgraded
+                        else
+                            -- Once the level is met, deploy the unit
+                            Upgrade:FireServer(Unit)
+                            Deployment:FireServer(Collection[_Unit])
+                            print("Deploying", _Unit, "at level", currentLevel)
+                            return true -- Return true to indicate it's ready for deployment
+                        end
+                    else
+                        print('No Level found for unit', _Unit)
+                    end
+                end
+            end
+        end
+    end
+    return true -- Default to true if no level info is found
+end
 
 
 
@@ -294,9 +505,23 @@ do
         end
     end)
     
+    local Tab_Egg_Counter = Tabs.Main:AddToggle("Tab_Egg_Counter", {Title = "Egg Counter", Default = false })
 
+    Tab_Egg_Counter:OnChanged(function()
+        _G.Auto_Egg_Counter = Options.Tab_Egg_Counter.Value
+        while _G.Auto_Egg_Counter do task.wait(.1)
+            Egg_Counter()
+        end
+    end)
 
+    local Tab_Punk_Counter = Tabs.Main:AddToggle("Tab_Punk_Counter", {Title = "Punk Counter", Default = false })
 
+    Tab_Punk_Counter:OnChanged(function()
+        _G.Auto_Punk_Counter = Options.Tab_Punk_Counter.Value
+        while _G.Auto_Punk_Counter do task.wait(.1)
+            Punk_Counter()
+        end
+    end)
 
 
 
