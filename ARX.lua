@@ -26,12 +26,18 @@ local PlayerGui = plr:FindFirstChild('PlayerGui')
 
 local RS = game:GetService("ReplicatedStorage")
 local TS = game:GetService('TeleportService')
+local CoreGui = game:GetService("CoreGui")
+
 local Player_Data = RS:FindFirstChild('Player_Data')
 local plr_name = Player_Data[game.Players.LocalPlayer.Character.Name]
 local Collection = plr_name:FindFirstChild('Collection')
 local Remote = RS:FindFirstChild("Remote")
 local Server = Remote:FindFirstChild("Server")
 local OnGame = Server:FindFirstChild('OnGame')
+local PlayRoom = Server:FindFirstChild('PlayRoom')
+local Event = PlayRoom:FindFirstChild('Event')
+
+
 local Voting = OnGame:FindFirstChild('Voting')
 local VotePlaying = Voting:FindFirstChild('VotePlaying')
 local VoteRetry = Voting:FindFirstChild('VoteRetry')
@@ -140,94 +146,84 @@ local function Notification()
     return
 end
 
-local function Egg_Counter()
-    pcall(function()
-        local Players = game:GetService("Players")
-        local CoreGui = game:GetService("CoreGui")
+local plr = game.Players.LocalPlayer
+local PlayerGui = plr:FindFirstChild('PlayerGui')
 
-        local player = Players.LocalPlayer
+local RS = game:GetService("ReplicatedStorage")
+local TS = game:GetService('TeleportService')
+local Player_Data = RS:FindFirstChild('Player_Data')
+local plr_name = Player_Data[game.Players.LocalPlayer.Character.Name]
+local Collection = plr_name:FindFirstChild('Collection')
+local Remote = RS:FindFirstChild("Remote")
+local Server = Remote:FindFirstChild("Server")
+local OnGame = Server:FindFirstChild('OnGame')
+local PlayRoom = Server:FindFirstChild('PlayRoom')
+local Event = PlayRoom:FindFirstChild('Event')
 
-        -- Wait for character to load
-        if not player.Character or not player.Character.Parent then
-            player.CharacterAdded:Wait()
-        end
 
-        -- Clean up old GUI
-        if CoreGui:FindFirstChild("ThaiCounterGui") then
-            CoreGui.ThaiCounterGui:Destroy()
-        end
+local Voting = OnGame:FindFirstChild('Voting')
+local VotePlaying = Voting:FindFirstChild('VotePlaying')
+local VoteRetry = Voting:FindFirstChild('VoteRetry')
+local VoteNext = Voting:FindFirstChild('VoteNext')
 
-        -- Create GUI
-        local screenGui = Instance.new("ScreenGui")
-        screenGui.Name = "ThaiCounterGui"
-        screenGui.ResetOnSpawn = false
-        screenGui.IgnoreGuiInset = true
-        screenGui.Parent = CoreGui
+local Units = Server:FindFirstChild("Units")
+local Upgrade = Units:FindFirstChild('Upgrade')
+local Deployment = Units:FindFirstChild("Deployment")
 
-        -- Shadow frame
-        local shadow = Instance.new("Frame")
-        shadow.Size = UDim2.new(0, 220, 0, 80)
-        shadow.Position = UDim2.new(0.5, 4, 0.1, 4)
-        shadow.AnchorPoint = Vector2.new(0.5, 0)
-        shadow.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-        shadow.BackgroundTransparency = 0.6
-        shadow.BorderSizePixel = 0
-        shadow.ZIndex = 0
-        shadow.Parent = screenGui
 
-        local shadowCorner = Instance.new("UICorner")
-        shadowCorner.CornerRadius = UDim.new(0, 20)
-        shadowCorner.Parent = shadow
-
-        -- Outer frame
-        local outerFrame = Instance.new("Frame")
-        outerFrame.Size = UDim2.new(0, 220, 0, 80)
-        outerFrame.Position = UDim2.new(0.5, 0, 0.1, 0)
-        outerFrame.AnchorPoint = Vector2.new(0.5, 0)
-        outerFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
-        outerFrame.BackgroundTransparency = 0
-        outerFrame.BorderSizePixel = 0
-        outerFrame.ZIndex = 1
-        outerFrame.Parent = screenGui
-
-        local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, 20)
-        corner.Parent = outerFrame
-
-        -- Label
-        local label = Instance.new("TextLabel")
-        label.Size = UDim2.new(1, 0, 1, 0)
-        label.BackgroundTransparency = 1
-        label.Position = UDim2.new(0, 0, 0, 0)
-        label.Font = Enum.Font.GothamBold
-        label.TextColor3 = Color3.fromRGB(0, 150, 255)
-        label.TextStrokeTransparency = 0.8
-        label.TextScaled = true
-        label.ZIndex = 2
-        label.Parent = outerFrame
-
-        -- Set text
-        local Player_Data = RS:FindFirstChild('Player_Data')
-        if Player_Data then
-            local plr_name = Player_Data[game.Players.LocalPlayer.Character.Name]
-            if plr_name then
-                local Data = plr_name:FindFirstChild('Data')
-                if Data then
-                    local Egg = Data:FindFirstChild('Egg')
-                    if Egg then
-                        label.Text = tostring(Egg.Value) .. " Eggs"
+local function Check_Game()
+    local GamePlay = RS:FindFirstChild('Gameplay')
+    if GamePlay then
+        local Game = GamePlay:FindFirstChild('Game')
+        if Game then
+            local Challenge = Game:FindFirstChild('Challenge')
+            if Challenge then
+                local Items = Challenge:FindFirstChild('Items')
+                if Items then
+                    for i,v in Items:GetChildren() do
+                        if v:IsA("BoolValue") then
+                            if v.Name:find('Dr. Megga Punk') then
+                                return true
+                            end
+                        end
                     end
                 end
             end
         end
-    end)
+    end
+    return
 end
 
-local function Punk_Counter()
+local function Easter()
+    local Building = workspace:FindFirstChild('Building')
+    if Building then
+        for i,v in workspace.Building:GetChildren() do
+            if v:IsA("MeshPart") then
+                if v.Name:find("Meshes/egg") then
+                    return true
+                end
+            end
+        end
+    else
+        return true
+    end
+    return
+end
+
+local function Delete_Counter()
+for i,v in CoreGui:GetChildren() do
+        if v:IsA('ScreenGui') then
+            if v.Name:find("UnifiedCounterGui") then
+                v:Destroy()
+            end
+        end
+    end
+end
+
+local function Show_Counters()
     pcall(function()
-        local RS = game:GetService('ReplicatedStorage') 
+        local RS = game:GetService("ReplicatedStorage")
         local Players = game:GetService("Players")
-        local CoreGui = game:GetService("CoreGui")
 
         local player = Players.LocalPlayer
 
@@ -236,72 +232,99 @@ local function Punk_Counter()
             player.CharacterAdded:Wait()
         end
 
-        -- Clean up old GUI
-        if CoreGui:FindFirstChild("MegaCounterGui") then
-            CoreGui.MegaCounterGui:Destroy()
-        end
+
+        -- Remove any old GUI
+        Delete_Counter()
 
         -- Create GUI
+        if not _G.Auto_Show_Counters then return end
         local screenGui = Instance.new("ScreenGui")
-        screenGui.Name = "MegaCounterGui"
+        screenGui.Name = "UnifiedCounterGui"
         screenGui.ResetOnSpawn = false
         screenGui.IgnoreGuiInset = true
         screenGui.Parent = CoreGui
 
-        -- Shadow frame
-        local shadow = Instance.new("Frame")
-        shadow.Size = UDim2.new(0, 220, 0, 80)
-        shadow.Position = UDim2.new(0.5, 4, 0.1, 4)
-        shadow.AnchorPoint = Vector2.new(0.5, 0)
-        shadow.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-        shadow.BackgroundTransparency = 0.6
-        shadow.BorderSizePixel = 0
-        shadow.ZIndex = 0
-        shadow.Parent = screenGui
-
-        local shadowCorner = Instance.new("UICorner")
-        shadowCorner.CornerRadius = UDim.new(0, 20)
-        shadowCorner.Parent = shadow
-
-        -- Outer frame
-        local outerFrame = Instance.new("Frame")
-        outerFrame.Size = UDim2.new(0, 220, 0, 80)
-        outerFrame.Position = UDim2.new(0.5, 0, 0.1, 0)
-        outerFrame.AnchorPoint = Vector2.new(0.5, 0)
-        outerFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
-        outerFrame.BackgroundTransparency = 0
-        outerFrame.BorderSizePixel = 0
-        outerFrame.ZIndex = 1
-        outerFrame.Parent = screenGui
+        -- Main Frame
+        local frame = Instance.new("Frame")
+        frame.Size = UDim2.new(0, 250, 0.21, 100)
+        frame.Position = UDim2.new(0.2, 0, 0.1, 0)
+        frame.AnchorPoint = Vector2.new(0.5, 0)
+        frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        frame.BorderSizePixel = 0
+        frame.ZIndex = 1
+        frame.Parent = screenGui
 
         local corner = Instance.new("UICorner")
-        corner.CornerRadius = UDim.new(0, 20)
-        corner.Parent = outerFrame
+        corner.CornerRadius = UDim.new(0, 15)
+        corner.Parent = frame
 
-        -- Label
-        local label = Instance.new("TextLabel")
-        label.Size = UDim2.new(1, 0, 1, 0)
-        label.BackgroundTransparency = 1
-        label.Position = UDim2.new(0, 0, 0, 0)
-        label.Font = Enum.Font.GothamBold
-        label.TextColor3 = Color3.new(1.000000, 0.000000, 0.000000)
-        label.TextStrokeTransparency = 0.8
-        label.TextScaled = true
-        label.ZIndex = 2
-        label.Parent = outerFrame
+        -- UI Layout
+        local layout = Instance.new("UIListLayout")
+        layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        layout.VerticalAlignment = Enum.VerticalAlignment.Center
+        layout.SortOrder = Enum.SortOrder.LayoutOrder
+        layout.Padding = UDim.new(0, 5)
+        layout.Parent = frame
 
-        -- Set text
-        local Player_Data = RS:FindFirstChild('Player_Data')
+        -- Function to add a label inside the same frame
+        local function createLabel(text, color)
+            local label = Instance.new("TextLabel")
+            label.Size = UDim2.new(1, -20, 0, 40)
+            label.BackgroundTransparency = 1
+            label.Font = Enum.Font.GothamBold
+            label.TextColor3 = color
+            label.TextStrokeTransparency = 0.6
+            label.TextScaled = false
+            label.TextSize = 45
+            label.Text = text
+            label.ZIndex = 2
+            label.Parent = frame
+        end
+
+        -- Get data and show both in the same frame
+        local Player_Data = RS:FindFirstChild("Player_Data")
         if Player_Data then
-            local plr_name = Player_Data[game.Players.LocalPlayer.Character.Name]
-            if plr_name then
-                local Items = plr_name:FindFirstChild('Items')
-                if Items then
-                    local Punk = Items:FindFirstChild('Dr. Megga Punk')
-                    if Punk then
-                        local Punk_Amount = Punk:FindFirstChild('Amount')
-                        if Punk_Amount then
-                            label.Text = tostring(Punk_Amount.Value) .. " Punk"
+            local charName = player.Character and player.Character.Name
+            local plrData = Player_Data:FindFirstChild(charName)
+            if plrData then
+                if charName then
+                    createLabel(tostring(charName), Color3.new(1.000000, 0.901961, 0.000000))
+                end
+
+                local data = plrData:FindFirstChild("Data")
+                local egg = data and data:FindFirstChild("Egg")
+                if egg then
+                    createLabel(tostring(egg.Value) .. " Eggs", Color3.fromRGB(0, 150, 255))
+                end
+
+                local items = plrData:FindFirstChild("Items")
+                local punk = items and items:FindFirstChild("Dr. Megga Punk")
+                local amount = punk and punk:FindFirstChild("Amount")
+                if amount then
+                    createLabel(tostring(amount.Value) .. " Punk", Color3.fromRGB(255, 60, 60))
+                end
+
+                local Easter = Easter()
+                if Easter then
+                    createLabel('Farm Event', Color3.new(1.000000, 0.466667, 0.760784))
+                end
+
+                local Punk = Check_Game()
+                if Punk then
+                    createLabel('Farm Punk', Color3.new(1.000000, 0.466667, 0.760784))
+                end
+
+                local PlayerGui = game:GetService('Players').LocalPlayer.PlayerGui
+                local RewardsUI = PlayerGui:FindFirstChild('RewardsUI')
+                if RewardsUI then
+                    local Main = RewardsUI:FindFirstChild('Main')
+                    if Main then
+                        local LeftSide = Main:FindFirstChild('LeftSide')
+                        if LeftSide then
+                            local TotalTime = LeftSide:FindFirstChild('TotalTime')
+                            if TotalTime then
+                                createLabel('End: '..tostring(TotalTime.Text):sub(16), Color3.new(0.937255, 0.776471, 1.000000))
+                            end
                         end
                     end
                 end
@@ -356,7 +379,60 @@ local function Req_Unit(_Unit, _RequiredLevel)
     return true -- Default to true if no level info is found
 end
 
+local function Check_Game()
+    local GamePlay = RS:FindFirstChild('Gameplay')
+    if GamePlay then
+        local Game = GamePlay:FindFirstChild('Game')
+        if Game then
+            local Challenge = Game:FindFirstChild('Challenge')
+            if Challenge then
+                local Items = Challenge:FindFirstChild('Items')
+                if Items then
+                    for i,v in Items:GetChildren() do
+                        if v:IsA("BoolValue") then
+                            if v.Name:find('Dr. Megga Punk') then
+                                return true
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return
+end
 
+local function Easter()
+    local Building = workspace:FindFirstChild('Building')
+    if Building then
+        for i,v in workspace.Building:GetChildren() do
+            if v:IsA("MeshPart") then
+                if v.Name:find("Meshes/egg") then
+                    return true
+                end
+            end
+        end
+    else
+        return true
+    end
+    return
+end
+
+local function Check_Punk_Easter()
+    local punk = Check_Game()
+    local easter_event = Easter()
+    if punk then
+        if easter_event then
+            Event:FireServer("Create",{CreateChallengeRoom = true})
+            Event:FireServer("Start")
+        end
+    else
+        if not easter_event then
+            Event:FireServer("Easter-Event")
+            Event:FireServer("Start")
+        end
+    end
+end
 
 
 
@@ -505,26 +581,39 @@ do
         end
     end)
     
-    local Tab_Egg_Counter = Tabs.Main:AddToggle("Tab_Egg_Counter", {Title = "Egg Counter", Default = false })
+    local Tab_Auto_Show_Counters = Tabs.Main:AddToggle("Tab_Auto_Show_Counters", {Title = "Data Counter", Default = false })
 
-    Tab_Egg_Counter:OnChanged(function()
-        _G.Auto_Egg_Counter = Options.Tab_Egg_Counter.Value
-        while _G.Auto_Egg_Counter do task.wait(.1)
-            Egg_Counter()
+    Tab_Auto_Show_Counters:OnChanged(function()
+        _G.Auto_Show_Counters = Options.Tab_Auto_Show_Counters.Value
+        while _G.Auto_Show_Counters do task.wait(.1)
+            Show_Counters()
         end
     end)
 
-    local Tab_Punk_Counter = Tabs.Main:AddToggle("Tab_Punk_Counter", {Title = "Punk Counter", Default = false })
+    local Tab_Auto_Account_b0bbtt = Tabs.Main:AddToggle("Tab_Auto_Account_b0bbtt", {Title = "Auto b0bbtt", Default = false })
 
-    Tab_Punk_Counter:OnChanged(function()
-        _G.Auto_Punk_Counter = Options.Tab_Punk_Counter.Value
-        while _G.Auto_Punk_Counter do task.wait(.1)
-            Punk_Counter()
+    Tab_Auto_Account_b0bbtt:OnChanged(function()
+        _G.b0bbtt = Options.Tab_Auto_Account_b0bbtt.Value
+        while _G.b0bbtt do task.wait(.1)
+            task.wait(.35)
+            -- Iterate through the priority list
+            for _, unit in ipairs(priorityList) do
+                -- If the unit is upgraded and deployed, move to the next
+                if Req_Unit(unit.name, unit.requiredLevel) then
+                    print(unit.name, "is deployed. Moving to next unit.")
+                end
+            end
         end
     end)
 
+    local Tab_Punk_Check = Tabs.Main:AddToggle("Tab_Punk_Check", {Title = "Auto Punk and Easter", Default = false })
 
-
+    Tab_Punk_Check:OnChanged(function()
+        _G.Check_PunkEaster = Options.Tab_Punk_Check.Value
+        while _G.Check_PunkEaster do task.wait(1)
+            Check_Punk_Easter()
+        end
+    end)
 
 
 
@@ -560,7 +649,7 @@ SaveManager:SetIgnoreIndexes({})
 -- a script hub could have themes in a global folder
 -- and game configs in a separate folder per game
 InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/Anime_Ranger_X")
+SaveManager:SetFolder("FluentScriptHub/ARX_"..game.Players.LocalPlayer.Character.Name)
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
