@@ -56,10 +56,10 @@ local function Hit()
     for i = 1,4 do
         local args = {
         	i,
-        	plr.Character:WaitForChild("FistCombat"):WaitForChild("WeaponInfoFolder"):WaitForChild("Katana"),
+        	plr.Character:WaitForChild("FistCombat"):WaitForChild("WeaponInfoFolder"):WaitForChild("Toji"),
         	plr.Character.HumanoidRootPart.CFrame,
         	true,
-        	plr.Character:WaitForChild("FistCombat"):WaitForChild("WeaponInfoFolder"):WaitForChild("Katana")
+        	plr.Character:WaitForChild("FistCombat"):WaitForChild("WeaponInfoFolder"):WaitForChild("Toji")
         }
         CombatEvent:FireServer(unpack(args))
         task.wait()
