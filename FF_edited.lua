@@ -96,18 +96,6 @@ local function Attach()
     end
 end
 
-local function Instant()
-    local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-    local mob = Get_Mob()
-    if mob then
-        local target = mob:FindFirstChild("HumanoidRootPart")
-        local hum = mob:FindFirstChild("Humanoid")
-        if target and root and hum then
-            hum.Health = 0
-        end
-    end
-end
-
 local function GetMob_List()
     local mob_table = {}
     local dist, mob = math.huge, nil
@@ -260,15 +248,6 @@ do
         _G.Auto_Attach = Options.Tab_Auto_Attach.Value
         while _G.Auto_Attach do task.wait(.01)
             Attach()
-        end
-    end)
-
-    local Tab_Auto_Instant = Tabs.Main:AddToggle("Tab_Auto_Instant", {Title = "Auto Instant", Default = false })
-
-    Tab_Auto_Instant:OnChanged(function()
-        _G.Auto_Instant = Options.Tab_Auto_Instant.Value
-        while _G.Auto_Instant do task.wait(.01)
-            Instant()
         end
     end)
 
