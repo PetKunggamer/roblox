@@ -288,7 +288,7 @@ end
 local function Farm()
     local closestMob, dist = GetClosestMob()
     if closestMob and dist > 30 then
-        task.wait(0.1)
+        task.wait(0.45)
         TeleportToAllMobs()
     else
         local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
@@ -309,11 +309,11 @@ local function Farm()
             local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
             if result and result.Position.Y < closestMob.Position.Y then
                 -- Hit is below the mob, we stand there
-                local floorPosition = result.Position + Vector3.new(0, 3, 0)
+                local floorPosition = result.Position + Vector3.new(0, 0, 0)
                 root.CFrame = CFrame.new(floorPosition, closestMob.Position)
             else
                 -- fallback: place behind mob with mob's Y (to avoid roof)
-                local fallback = Vector3.new(behindPosition.X, closestMob.Position.Y + 3, behindPosition.Z)
+                local fallback = Vector3.new(behindPosition.X, closestMob.Position.Y + 0, behindPosition.Z)
                 root.CFrame = CFrame.new(fallback, closestMob.Position)
             end
         end
