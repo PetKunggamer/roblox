@@ -285,40 +285,47 @@ local function Hit()
     VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, game, 1)
 end
 
-local function Farm()
-    local closestMob, dist = GetClosestMob()
-    if closestMob and dist > 30 then
-        task.wait(0.45)
-        TeleportToAllMobs()
+local function RaycastToFloor(fromPosition)
+    local rayOrigin = fromPosition + Vector3.new(0, 5, 0) -- a bit above floor level
+    local rayDirection = Vector3.new(0, -20, 0) -- cast downward
+
+    local params = RaycastParams.new()
+    params.FilterDescendantsInstances = {workspace.Enemy.Mob, plr.Character}
+    params.FilterType = Enum.RaycastFilterType.Blacklist
+    params.IgnoreWater = true
+
+    local result = workspace:Raycast(rayOrigin, rayDirection, params)
+    if result then
+        return result.Position + Vector3.new(0, 3, 0) -- stand 3 studs above floor
     else
-        local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
-        if root and closestMob then
-            -- Calculate position 5 studs behind mob
-            local behindOffset = -closestMob.CFrame.LookVector * 5
-            local behindPosition = closestMob.Position + behindOffset
-
-            -- Raycast straight down from Y+100
-            local rayOrigin = behindPosition + Vector3.new(0, 100, 0)
-            local rayDirection = Vector3.new(0, -200, 0)
-
-            local raycastParams = RaycastParams.new()
-            raycastParams.FilterDescendantsInstances = {workspace.Enemy.Mob, plr.Character}
-            raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
-            raycastParams.IgnoreWater = true
-
-            local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
-            if result and result.Position.Y < closestMob.Position.Y then
-                -- Hit is below the mob, we stand there
-                local floorPosition = result.Position + Vector3.new(0, 0, 0)
-                root.CFrame = CFrame.new(floorPosition, closestMob.Position)
-            else
-                -- fallback: place behind mob with mob's Y (to avoid roof)
-                local fallback = Vector3.new(behindPosition.X, closestMob.Position.Y + 0, behindPosition.Z)
-                root.CFrame = CFrame.new(fallback, closestMob.Position)
-            end
-        end
+        return fromPosition -- fallback if nothing hit
     end
 end
+
+local function Farm()
+    local closestMob, dist = GetClosestMob()
+    local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
+    if not root or not closestMob then return end
+
+    if dist > 60 then
+        TeleportToAllMobs()
+        return
+    end
+
+    -- Get position behind mob using LookVector
+    local offsetBehind = -closestMob.CFrame.LookVector.Unit * 7
+    local targetPos = closestMob.Position + offsetBehind
+
+    -- Get ground position from that point
+    local groundedPos = RaycastToFloor(targetPos)
+
+    -- Face toward the mob (natural angle)
+    local lookAt = Vector3.new(closestMob.Position.X, groundedPos.Y, closestMob.Position.Z)
+
+    -- Final teleport
+    root.CFrame = CFrame.new(groundedPos, lookAt)
+end
+
 
 
 
