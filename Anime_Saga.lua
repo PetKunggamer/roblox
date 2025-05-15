@@ -394,7 +394,7 @@ do
 
     Tab_Auto_Start:OnChanged(function()
         _G.Auto_Start = Options.Tab_Auto_Start.Value
-        while _G.Auto_Start do task.wait(.01)
+        while _G.Auto_Start do task.wait(1)
             Start()
         end
     end)
@@ -403,7 +403,7 @@ do
 
     Tab_Auto_Replay:OnChanged(function()
         _G.Auto_Replay = Options.Tab_Auto_Replay.Value
-        while _G.Auto_Replay do task.wait(.01)
+        while _G.Auto_Replay do task.wait(1)
             Replay()
         end
     end)
