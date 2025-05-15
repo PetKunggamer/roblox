@@ -269,7 +269,7 @@ local function Farm()
     else
         local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
         if root and closestMob then
-            root.CFrame = closestMob.CFrame * CFrame.new(0,-2,8)
+            root.CFrame = closestMob.CFrame * CFrame.new(0,-2.5,8)
         end
     end
 end
