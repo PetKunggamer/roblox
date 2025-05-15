@@ -259,14 +259,13 @@ local function TeleportToAllMobs()
     for _, mobHRP in ipairs(mobs) do
         root.CFrame = mobHRP.CFrame * CFrame.new(0, 10, 5)
         root.Velocity = Vector3.new(0, 0, 0)
-        task.wait(0.1)
+        task.wait(0.185)
     end
 
     if mobs[1] then
         root.CFrame = mobs[1].CFrame * CFrame.new(0, 0, 5)
         root.Velocity = Vector3.new(0, 0, 0)
     end
-    task.wait(.01)
 end
 
 local function AutoSkill()
