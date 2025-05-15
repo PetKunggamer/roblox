@@ -257,6 +257,7 @@ local function Hit()
     local centerX = screenSize.X / 2
     local centerY = screenSize.Y / 2
     VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, true, game, 1)
+    wait(0.1)
     VirtualInputManager:SendMouseButtonEvent(centerX, centerY, 0, false, game, 1)
 end
 
@@ -294,6 +295,7 @@ local Window = Fluent:CreateWindow({
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
+    _Start = Window:AddTab({ Title = "Started", Icon = "" }),
     Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
     Misc = Window:AddTab({ Title = "Misc", Icon = "activity" }),
     Server = Window:AddTab({ Title = "Server", Icon = "server" }),
@@ -360,7 +362,7 @@ do
 
     Tab_Auto_Hit:OnChanged(function()
         _G.Auto_Hit = Options.Tab_Auto_Hit.Value
-        while _G.Auto_Hit do task.wait(.2)
+        while _G.Auto_Hit do task.wait(.01)
             Hit()
         end
     end)
