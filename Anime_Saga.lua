@@ -246,7 +246,6 @@ end
 local function TeleportToAllMobs()
     local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
     if not root then return end
-
     local mobs = {}
     for _, mobModel in ipairs(workspace.Enemy.Mob:GetChildren()) do
         if mobModel:IsA("Model") then
@@ -306,8 +305,7 @@ local function Farm()
     local closestMob, dist = GetClosestMob()
     local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
     if not root or not closestMob then return end
-
-    if dist > 60 then
+    if dist > 30 then
         TeleportToAllMobs()
         return
     end
