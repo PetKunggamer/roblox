@@ -266,6 +266,7 @@ local function TeleportToAllMobs()
         root.CFrame = mobs[1].CFrame * CFrame.new(0, 0, 5)
         root.Velocity = Vector3.new(0, 0, 0)
     end
+    task.wait(.01)
 end
 
 local function AutoSkill()
@@ -306,22 +307,22 @@ local function Farm()
     local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
     if not root or not closestMob then return end
     if dist > 30 then
+        wait(.125)
         TeleportToAllMobs()
-        return
+    else
+        -- Get position behind mob using LookVector
+        local offsetBehind = -closestMob.CFrame.LookVector.Unit * 7
+        local targetPos = closestMob.Position + offsetBehind
+        
+        -- Get ground position from that point
+        local groundedPos = RaycastToFloor(targetPos)
+        
+        -- Face toward the mob (natural angle)
+        local lookAt = Vector3.new(closestMob.Position.X, groundedPos.Y, closestMob.Position.Z)
+        
+        -- Final teleport
+        root.CFrame = CFrame.new(groundedPos, lookAt)
     end
-
-    -- Get position behind mob using LookVector
-    local offsetBehind = -closestMob.CFrame.LookVector.Unit * 7
-    local targetPos = closestMob.Position + offsetBehind
-
-    -- Get ground position from that point
-    local groundedPos = RaycastToFloor(targetPos)
-
-    -- Face toward the mob (natural angle)
-    local lookAt = Vector3.new(closestMob.Position.X, groundedPos.Y, closestMob.Position.Z)
-
-    -- Final teleport
-    root.CFrame = CFrame.new(groundedPos, lookAt)
 end
 
 
