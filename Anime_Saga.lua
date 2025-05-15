@@ -187,6 +187,30 @@ local function Replay()
     end
 end
 
+local function Next()
+    local PlayerGui = plr:FindFirstChild('PlayerGui')
+    if PlayerGui then
+        local Win = PlayerGui:FindFirstChild('Win')
+        if Win then
+            local Frame = Win:FindFirstChild('Frame')
+            if Frame then
+                local progmain = Frame:FindFirstChild('progmain')
+                if progmain then
+                    local buttons = progmain:FindFirstChild('buttons')
+                    if buttons then
+                        local next = buttons:FindFirstChild('next')
+                        if next then
+                            GuiService.SelectedCoreObject = next
+                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function GetClosestMob()
     local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
     if not root then return nil end
@@ -405,6 +429,15 @@ do
         _G.Auto_Replay = Options.Tab_Auto_Replay.Value
         while _G.Auto_Replay do task.wait(1)
             Replay()
+        end
+    end)
+
+    local Tab_Auto_Next = Tabs.Misc:AddToggle("Tab_Auto_Next", {Title = "Auto Replay", Default = false })
+
+    Tab_Auto_Next:OnChanged(function()
+        _G.Auto_Next = Options.Tab_Auto_Next.Value
+        while _G.Auto_Next do task.wait(1)
+            Next()
         end
     end)
 
