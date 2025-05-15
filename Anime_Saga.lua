@@ -396,7 +396,7 @@ do
 
     Tab_Auto_Farm:OnChanged(function()
         _G.Auto_Farm = Options.Tab_Auto_Farm.Value
-        while _G.Auto_Farm do task.wait(.01)
+        while _G.Auto_Farm do task.wait(.1)
             if not _G.Stop then
                 Farm()
             end
