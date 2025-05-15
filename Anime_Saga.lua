@@ -432,7 +432,7 @@ do
         end
     end)
 
-    local Tab_Auto_Next = Tabs.Misc:AddToggle("Tab_Auto_Next", {Title = "Auto Replay", Default = false })
+    local Tab_Auto_Next = Tabs.Misc:AddToggle("Tab_Auto_Next", {Title = "Auto Next", Default = false })
 
     Tab_Auto_Next:OnChanged(function()
         _G.Auto_Next = Options.Tab_Auto_Next.Value
