@@ -287,37 +287,40 @@ end
 
 local function Farm()
     local closestMob, dist = GetClosestMob()
-    if closestMob and dist > 50 then
+    if closestMob and dist > 30 then
         task.wait(0.1)
         TeleportToAllMobs()
     else
         local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
         if root and closestMob then
-            -- Position 5 studs behind mob
+            -- Calculate position 5 studs behind mob
             local behindOffset = -closestMob.CFrame.LookVector * 5
             local behindPosition = closestMob.Position + behindOffset
 
-            -- Raycast from above behind position to ground
-            local rayOrigin = behindPosition + Vector3.new(0, 50, 0)
-            local rayDirection = Vector3.new(0, -100, 0)
+            -- Raycast straight down from Y+100
+            local rayOrigin = behindPosition + Vector3.new(0, 100, 0)
+            local rayDirection = Vector3.new(0, -200, 0)
 
             local raycastParams = RaycastParams.new()
-            raycastParams.FilterDescendantsInstances = {
-                plr.Character, closestMob.Parent, workspace.Enemy.Mob
-            }
+            raycastParams.FilterDescendantsInstances = {workspace.Enemy.Mob, plr.Character}
             raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
             raycastParams.IgnoreWater = true
 
             local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
-            if result then
-                -- Use exact Y from ground
-                local groundY = result.Position.Y
-                local finalPosition = Vector3.new(behindPosition.X, groundY, behindPosition.Z)
-                root.CFrame = CFrame.new(finalPosition, closestMob.Position)
+            if result and result.Position.Y < closestMob.Position.Y then
+                -- Hit is below the mob, we stand there
+                local floorPosition = result.Position + Vector3.new(0, 3, 0)
+                root.CFrame = CFrame.new(floorPosition, closestMob.Position)
+            else
+                -- fallback: place behind mob with mob's Y (to avoid roof)
+                local fallback = Vector3.new(behindPosition.X, closestMob.Position.Y + 3, behindPosition.Z)
+                root.CFrame = CFrame.new(fallback, closestMob.Position)
             end
         end
     end
 end
+
+
 
 
 
@@ -396,7 +399,7 @@ do
 
     Tab_Auto_Farm:OnChanged(function()
         _G.Auto_Farm = Options.Tab_Auto_Farm.Value
-        while _G.Auto_Farm do task.wait(.1)
+        while _G.Auto_Farm do task.wait(.01)
             if not _G.Stop then
                 Farm()
             end
