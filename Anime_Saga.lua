@@ -187,6 +187,30 @@ local function Replay()
     end
 end
 
+local function Start_Infinity()
+    local PlayerGui = plr:FindFirstChild('PlayerGui')
+    if PlayerGui then
+        local RoomUi = PlayerGui:FindFirstChild('RoomUi')
+        if RoomUi then
+            local NextF = RoomUi:FindFirstChild('NextF')
+            if NextF then
+                local Frame = NextF:FindFirstChild('Frame')
+                if Frame then
+                    local StartButton = Frame:FindFirstChild('StartButton')
+                    if StartButton then
+                        local Ready = StartButton:FindFirstChild('Ready')
+                        if Ready then
+                            GuiService.SelectedCoreObject = Ready
+                            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function Next()
     local PlayerGui = plr:FindFirstChild('PlayerGui')
     if PlayerGui then
@@ -222,19 +246,11 @@ local function GetClosestMob()
         if mobModel:IsA("Model") then
             local mobHRP = mobModel:FindFirstChild("HumanoidRootPart")
             local Part = mobModel:FindFirstChild("Part")
-            if not Part then
-                if mobHRP then
-                    local distance = (root.Position - mobHRP.Position).Magnitude
-                    if distance < closestDist then
-                        closestDist = distance
-                        closestMob = mobHRP
-                    end
-                end
-            else
+            if mobHRP then
                 local distance = (root.Position - mobHRP.Position).Magnitude
                 if distance < closestDist then
                     closestDist = distance
-                    closestMob = Part
+                    closestMob = mobHRP
                 end
             end
         end
@@ -470,7 +486,14 @@ do
         end
     end)
 
+    local Tab_Auto_Start_Inf = Tabs.Misc:AddToggle("Tab_Auto_Start_Inf", {Title = "Auto Start (Infinity Mode)", Default = false })
 
+    Tab_Auto_Start_Inf:OnChanged(function()
+        _G.Auto_Start_Inf = Options.Tab_Auto_Start_Inf.Value
+        while _G.Auto_Start_Inf do task.wait(1)
+            Start_Infinity()
+        end
+    end)
 
     -- CLose Function
 end
