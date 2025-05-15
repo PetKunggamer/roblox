@@ -293,7 +293,28 @@ local function Farm()
     else
         local root = plr.Character and plr.Character:FindFirstChild("HumanoidRootPart")
         if root and closestMob then
-            root.CFrame = closestMob.CFrame * CFrame.new(0,-2.5,8)
+            -- Position 5 studs behind mob
+            local behindOffset = -closestMob.CFrame.LookVector * 5
+            local behindPosition = closestMob.Position + behindOffset
+
+            -- Raycast from above behind position to ground
+            local rayOrigin = behindPosition + Vector3.new(0, 50, 0)
+            local rayDirection = Vector3.new(0, -100, 0)
+
+            local raycastParams = RaycastParams.new()
+            raycastParams.FilterDescendantsInstances = {
+                plr.Character, closestMob.Parent, workspace.Enemy.Mob
+            }
+            raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+            raycastParams.IgnoreWater = true
+
+            local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+            if result then
+                -- Use exact Y from ground
+                local groundY = result.Position.Y
+                local finalPosition = Vector3.new(behindPosition.X, groundY, behindPosition.Z)
+                root.CFrame = CFrame.new(finalPosition, closestMob.Position)
+            end
         end
     end
 end
